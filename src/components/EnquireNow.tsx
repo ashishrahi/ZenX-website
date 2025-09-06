@@ -42,7 +42,7 @@ const EnquireNow = () => {
         transition={{ duration: 0.6 }}
         className="text-center mb-10"
       >
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+        <h2 className="text-3xl md:text-4xl font-extralight text-gray-900">
           Enquire Now
         </h2>
         <p className="mt-3 text-gray-600 max-w-2xl mx-auto">

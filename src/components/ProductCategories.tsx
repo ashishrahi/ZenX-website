@@ -37,8 +37,8 @@ const ProductCategories = () => {
     <section className="py-16 bg-background" id="products">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-foreground mb-4 uppercase tracking-wide">
-            PRODUCTS
+          <h2 className="text-3xl font-extralight text-foreground mb-4 uppercase tracking-wide">
+           Ours PRODUCTS
           </h2>
         </div>
 
