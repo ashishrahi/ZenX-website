@@ -32,8 +32,8 @@ const navItems = [
 const navItemsScreen = [
   { name: "TRUNKS", href: "#home" },
   { name: "GYM WESTS", href: "#about" },
-  { name: "KIDS WEAR", href: "#sanitaryware" },
-  { name: "WINTER WEAR", href: "#faucets" },
+  { name: "KIDS WEAR", href: "#kidswear" },
+  { name: "WINTER WEAR", href: "#winterwear" },
 ];
 
 const topBarMessages = [
