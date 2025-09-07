@@ -1,18 +1,23 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import TrunkImage from '../assets/Trunks-Banner.png'
+import VestBlogImage from '../assets/VestsBlog-Banner.jpg'
 
 const HeroSection = () => {
+
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const slides = [
     {
       title: "The future of hygiene is here",
-      image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=1200&h=500&fit=crop",
+      // image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=1200&h=500&fit=crop",
+      image:TrunkImage
     },
     {
-      title: "Lifetime Warranty on faucets performance",
-      image: "https://images.unsplash.com/photo-1620626011761-996317b8d101?w=1200&h=500&fit=crop",
+      title: "Lifetime Warranty on Quality",
+      // image: "https://images.unsplash.com/photo-1620626011761-996317b8d101?w=1200&h=500&fit=crop",
+      image: VestBlogImage
     },
     {
       title: "Luxury for everyone",
@@ -86,7 +91,7 @@ const HeroSection = () => {
         {slides.map((_, index) => (
           <button
             key={index}
-            className={`w-3 h-3 rounded-full transition-all duration-500 ease-in-out ${
+            className={`w-2 h-2 rounded-full transition-all duration-500 ease-in-out ${
               index === currentSlide ? "bg-primary scale-125" : "bg-white/50"
             }`}
             onClick={() => setCurrentSlide(index)}

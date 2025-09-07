@@ -38,7 +38,7 @@ const ProductCategories = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-extralight text-foreground mb-4 uppercase tracking-wide">
-           Ours PRODUCTS
+           Ours Categories
           </h2>
         </div>
 
@@ -60,7 +60,7 @@ const ProductCategories = () => {
                 </CardContent>
 
                 {/* Overlay */}
-                <div className="absolute inset-0 bg-black bg-opacity-70 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 text-center">
+                <div className="absolute inset-0 bg-black bg-opacity-70 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 text-center ">
                   <p className="text-sm leading-relaxed">{category.description}</p>
                 </div>
               </Card>
