@@ -11,14 +11,14 @@ import Chatbot from "@/components/Chatbot";
 const Index = () => {
   return (
     <div className="min-h-screen bg-background relative">
+      
       {/* Top Section */}
-      <Header />
       <HeroSection />
       <ProductCategories />
       <About />
 
       {/* Product Grid Section */}
-      <ProductGrid />
+      {/* <ProductGrid /> */}
 
       {/* Enquire Now Section */}
       <EnquireNow />

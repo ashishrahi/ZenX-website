@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import {
   Menu,
   X,
-  MoreHorizontal,
   Facebook,
   Instagram,
   Linkedin,
@@ -11,17 +10,18 @@ import {
   Mail,
   MapPin,
   Factory,
+  MoreVertical,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import Logo from "../assets/Zen-X-Logo-300x139.png";
+import Logo from "../assets/Zen-X-Logo-300x139-removebg-preview.webp";
 
 const navItems = [
   { name: "Home", href: "#home" },
   { name: "About Us", href: "#about" },
   { name: "TRUNKS", href: "#trunks" },
-  { name: "GYM WESTS", href: "#gymwest" },
-  { name: "KIDS WEAR", href: "#kidswear" },
-  { name: "WINTER WEAR", href: "#winterwear" },
+  { name: "GYM VESTS", href: "#gymwest" },
+  { name: "KIDS WEAR", href: "#kids-wear" },
+  { name: "WINTER WEAR", href: "#winter-wear" },
   { name: "Our Quality", href: "#quality" },
   { name: "Media", href: "#media" },
   { name: "ESG", href: "#esg" },
@@ -31,9 +31,9 @@ const navItems = [
 
 const navItemsScreen = [
   { name: "TRUNKS", href: "#home" },
-  { name: "GYM WESTS", href: "#about" },
+  { name: "GYM VESTS", href: "#about" },
   { name: "KIDS WEAR", href: "#kidswear" },
-  { name: "WINTER WEAR", href: "#winterwear" },
+  { name: "WINTER WEAR", href: "#winter-wear" },
 ];
 
 const topBarMessages = [
@@ -67,9 +67,11 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Sticky header
+  // Detect scroll for top bar visibility
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -84,34 +86,48 @@ const Header = () => {
 
   return (
     <header className="fixed w-full top-0 z-50">
-      {/* Top Bar */}
-      <div className="bg-red-500 text-white text-sm md:text-base">
-        <div className="max-w-7xl mx-auto px-4 py-2 flex flex-col items-center">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeIndex}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              transition={{ duration: 0.4 }}
-              className="text-center font-medium"
-            >
-              {topBarMessages[activeIndex]}
-            </motion.div>
-          </AnimatePresence>
-          <div className="flex space-x-2 mt-1">
-            {topBarMessages.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setActiveIndex(index)}
-                className={`h-2 w-2 rounded-full transition-colors duration-300 ${
-                  index === activeIndex ? "bg-white" : "bg-gray-400"
-                }`}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
+      {/* Top Bar with smooth hide */}
+      <AnimatePresence>
+        {!isScrolled && (
+          <motion.div
+            key="top-bar"
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -50, opacity: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="bg-white shadow-sm text-black-500 text-sm md:text-base"
+          >
+            <div className="max-w-7xl mx-auto px-4 py-1 flex flex-col items-center">
+              {/* Rotating Message */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeIndex}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ duration: 0.4 }}
+                  className="text-center font-extralight"
+                >
+                  {topBarMessages[activeIndex]}
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Dots indicator */}
+              <div className="flex space-x-1.5 mt-0.5">
+                {topBarMessages.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setActiveIndex(index)}
+                    className={`h-1.5 w-1.5 rounded-full transition-colors duration-300 ${
+                      index === activeIndex ? "bg-red-500" : "bg-gray-400"
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Main Header */}
       <div
@@ -120,45 +136,66 @@ const Header = () => {
         }`}
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between p-4 md:p-6">
-          <img src={Logo} alt="Logo" className="h-10 md:h-12" />
+          <motion.img
+            src={Logo}
+            alt="Logo"
+            className="h-10 md:h-12"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          />
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8 font-semibold">
+          <nav className="hidden md:flex space-x-8 font-extralight">
             {navItemsScreen.map((item, index) => (
               <motion.a
                 key={item.name}
                 href={item.href}
-                custom={index}
-                initial="hidden"
-                animate="visible"
-                variants={navVariants}
-                className={`relative group overflow-hidden transition-colors duration-300 ${
+                initial="rest"
+                whileHover="hover"
+                animate="rest"
+                className={`relative overflow-hidden ${
                   isScrolled ? "text-white" : "text-gray-800"
                 }`}
               >
-                <span className="flex space-x-1">
+                <motion.span
+                  className="flex space-x-0.5"
+                  variants={{
+                    rest: { transition: { staggerChildren: 0 } },
+                    hover: { transition: { staggerChildren: 0.05 } },
+                  }}
+                >
                   {item.name.split("").map((char, idx) => (
-                    <span
+                    <motion.span
                       key={idx}
-                      className="inline-block transition-colors duration-300 group-hover:text-red-600"
+                      variants={{
+                        rest: { color: isScrolled ? "#fff" : "#1f2937" },
+                        hover: { color: "#ef4444" },
+                      }}
+                      transition={{ duration: 0.15 }}
                     >
                       {char}
-                    </span>
+                    </motion.span>
                   ))}
-                </span>
+                </motion.span>
               </motion.a>
             ))}
           </nav>
 
           {/* Overlay Trigger */}
-          <button
+          <motion.button
             className={`hidden md:block transition-colors ${
               isScrolled ? "text-white" : "text-gray-800"
             }`}
             onClick={() => setIsOverlayOpen(true)}
+            whileTap={{ scale: 0.9 }}
+            whileHover={{ scale: 1.1 }}
+            initial={{ rotate: 0 }}
+            animate={{ rotate: isOverlayOpen ? 90 : 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
           >
-            <MoreHorizontal size={28} />
-          </button>
+            <MoreVertical size={28} />
+          </motion.button>
 
           {/* Mobile Menu Button */}
           <button
@@ -179,7 +216,7 @@ const Header = () => {
                 <a
                   key={item.name}
                   href={item.href}
-                  className="font-semibold text-white hover:text-red-600 transition-colors"
+                  className="font-extralight text-white hover:text-red-600 transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}
@@ -190,7 +227,7 @@ const Header = () => {
         )}
       </div>
 
-      {/* FULL SCREEN OVERLAY */}
+      {/* Full Screen Overlay */}
       <AnimatePresence>
         {isOverlayOpen && (
           <motion.div
@@ -199,7 +236,7 @@ const Header = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            {/* Left Section: Navigation with Rotation */}
+            {/* Left Section: Navigation */}
             <div className="w-1/2 p-8 flex flex-col justify-center space-y-6 border-r border-gray-700">
               <img src={Logo} alt="Logo" className="h-10 w-3/12 md:h-12" />
               <div className="space-y-4">
@@ -226,48 +263,59 @@ const Header = () => {
               </div>
             </div>
 
-            {/* Right Section: Contact Info with Icons */}
+            {/* Right Section: Contact Info */}
             <div className="w-1/2 p-10 flex flex-col justify-between">
               <div>
-                <h2 className="text-lg tracking-wider mb-6">CONTACT US</h2>
+                <h2 className="text-lg tracking-wider mb-6 font-extralight">
+                  CONTACT US
+                </h2>
 
                 {/* Phone Numbers */}
                 <div className="mb-6 space-y-2">
                   <p className="flex items-center space-x-2">
-                    <Phone size={20} style={{color:"red"}}/> <span>+91 94127 27706, +91 94127 27707</span>
+                    <Phone size={20} style={{ color: "red" }} />
+                    <span>+91 94127 27706, +91 94127 27707</span>
                   </p>
-                 
                 </div>
 
                 {/* Email */}
                 <div className="mb-6">
-                  <p className="flex items-center space-x-2 ">
-                    <Mail size={20} style={{color:"red"}} /> <span>info@zenx.com</span>
+                  <p className="flex items-center space-x-2">
+                    <Mail size={20} style={{ color: "red" }} />
+                    <span>info@zenx.com</span>
                   </p>
                 </div>
 
                 {/* Corporate Office */}
-                <div className="mb-6">
-                  <h3 className="font-semibold flex items-center space-x-2">
-                    <MapPin size={20} style={{color:"red"}} /> <span>Corporate Office</span>
+                <div className="mb-6 flex flex-col gap-2">
+                  <h3 className="font-extralight flex items-center space-x-2">
+                    <MapPin size={20} style={{ color: "red" }} />
+                    <span>Corporate Office</span>
                   </h3>
-                  <p className="ml-6">
-                    Zen-X PVT. LTD.<br />
-                    Mig-1/4 Mahabalipuram<br />
-                    Kalyanpur, Kanpur Nagar, 208017<br />
+                  <p className="ml-6 font-extralight">
+                    Zen-X PVT. LTD.
+                    <br />
+                    Mig-1/4 Mahabalipuram
+                    <br />
+                    Kalyanpur, Kanpur Nagar, 208017
+                    <br />
                     26B/2k Dadanagar 208001, Kanpur, India
                   </p>
                 </div>
 
                 {/* Manufacturing Unit */}
                 <div>
-                  <h3 className="font-semibold flex items-center space-x-2">
-                    <Factory size={20} style={{color:"red"}}/> <span>Manufacturing Unit</span>
+                  <h3 className="font-extralight flex items-center space-x-2">
+                    <Factory size={20} style={{ color: "red" }} />
+                    <span>Manufacturing Unit</span>
                   </h3>
-                  <p className="ml-6">
-                    Zen-X PVT. LTD.<br />
-                    Mig-1/4 Mahabalipuram<br />
-                    Kalyanpur, Kanpur Nagar, 208017<br />
+                  <p className="ml-6 font-extralight">
+                    Zen-X PVT. LTD.
+                    <br />
+                    Mig-1/4 Mahabalipuram
+                    <br />
+                    Kalyanpur, Kanpur Nagar, 208017
+                    <br />
                     26B/2k Dadanagar 208001, Kanpur, India
                   </p>
                 </div>
@@ -275,7 +323,9 @@ const Header = () => {
 
               {/* Social Media */}
               <div>
-                <h2 className="text-lg tracking-wider mb-4">FOLLOW US</h2>
+                <h2 className="text-lg tracking-wider mb-4 font-extralight">
+                  FOLLOW US
+                </h2>
                 <div className="flex space-x-6">
                   <a href="#" className="hover:text-red-600 transition-colors">
                     <Facebook size={28} />

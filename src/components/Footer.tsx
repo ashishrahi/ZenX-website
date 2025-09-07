@@ -1,4 +1,4 @@
-import Logo from '../assets/Zen-X-Logo-300x139.png'
+import Logo from '../assets/Zen-X-Logo-300x139-removebg-preview.webp'
 
 const Footer = () => {
   return (

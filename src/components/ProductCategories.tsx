@@ -1,68 +1,119 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import TrunkImage from '../assets/trunk.png';
-import GymImage from '../assets/gymwest.png';
-import KidsImage from '../assets/kids.png';
-import WinterImage from '../assets/winter.png';
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import TrunkImage from "../assets/trunk.webp";
+import GymImage from "../assets/gymwest.webp";
+import KidsImage from "../assets/kids.webp";
+import WinterImage from "../assets/winter.webp";
 
 const ProductCategories = () => {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const navigate = useNavigate();
+
   const categories = [
     {
       title: "Trunks",
+      slug: "trunks",
       description:
         "Plumber Bathware's new sanitaryware features a range of designs, including world-class wash basins and smart water closets. Discover the perfection from the best bathroom fittings manufacturers in India.",
       image: TrunkImage,
     },
     {
       title: "Gyms Vests",
+      slug: "gyms-vests",
       description:
         "Plumber Bathware, a leading faucet manufacturer in India, offers an exclusive range of single lever, quarter turn, and half turn faucets. Experience modern beauty, flawless performance, and efficient water-saving designs for every bathroom style.",
       image: GymImage,
     },
     {
       title: "Kids Wear",
+      slug: "kids-wear",
       description:
         "Plumber Bathware offers a range of overhead and hand showers, blending water and air for a relaxing experience. Choose from various designs and finishes to complement your bathroom.",
       image: KidsImage,
     },
     {
       title: "Winter Wear",
+      slug: "winter-wear",
       description:
         "Plumber Bathware offers a range of overhead and hand showers, blending water and air for a relaxing experience. Choose from various designs and finishes to complement your bathroom.",
       image: WinterImage,
-    }
-    
+    },
   ];
+
+  // Overlay animation
+  const overlayVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 0.85, transition: { duration: 0.3 } },
+  };
+
+  // Text animation
+  const textVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+  };
+
+  // Handle navigation
+  const handleCardClick = (slug: string) => {
+    navigate(`/category/${slug}`);
+  };
 
   return (
     <section className="py-16 bg-background" id="products">
       <div className="container mx-auto px-4">
+        {/* Section Heading */}
         <div className="text-center mb-12">
           <h2 className="text-3xl font-extralight text-foreground mb-4 uppercase tracking-wide">
-           Ours Categories
+            Our Categories
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Product Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {categories.map((category, index) => (
-            <div key={index} className="relative group">
-              <Card className="cursor-pointer border-2 hover:border-primary overflow-hidden">
-                <CardHeader className="text-center z-10 relative">
-                  <CardTitle className="text-xl font-bold text-primary uppercase">
+            <div
+              key={index}
+              className="relative flex justify-center"
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              onClick={() => handleCardClick(category.slug)}
+            >
+              <Card className="cursor-pointer border hover:border-primary overflow-hidden transition-all duration-300 w-72 h-80 rounded-xl relative">
+                {/* Card Header */}
+                <CardHeader className="text-center z-10 relative p-4">
+                  <CardTitle className="text-lg font-serif text-primary uppercase">
                     {category.title}
                   </CardTitle>
                 </CardHeader>
 
+                {/* Image Area */}
                 <CardContent
-                  className="h-48 bg-cover bg-center"
+                  className="h-56 bg-cover bg-center relative rounded-xl"
                   style={{ backgroundImage: `url(${category.image})` }}
-                >
-                  {/* Empty content, image is set as background */}
-                </CardContent>
+                />
 
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-black bg-opacity-70 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 text-center ">
-                  <p className="text-sm leading-relaxed">{category.description}</p>
-                </div>
+                {/* Overlay with rounded corners */}
+                <AnimatePresence>
+                  {hoveredIndex === index && (
+                    <motion.div
+                      className="absolute inset-0 flex items-center justify-center p-4 text-center rounded-xl overflow-hidden"
+                      initial="hidden"
+                      animate="visible"
+                      exit="hidden"
+                      variants={overlayVariants}
+                      style={{ backgroundColor: "rgba(0, 0, 0, 0.8)" }}
+                    >
+                      <motion.p
+                        className="text-white text-sm leading-relaxed max-w-xs px-2"
+                        variants={textVariants}
+                      >
+                        {category.description}
+                      </motion.p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </Card>
             </div>
           ))}

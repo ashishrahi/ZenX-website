@@ -1,103 +1,95 @@
-import { useState, useEffect } from "react";
+import Slider from "react-slick";
+import TrunkImage from "../assets/gymwest.webp";
+import VestBlogImage from "../assets/VestsBlog-Banner.webp";
+import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import TrunkImage from '../assets/Trunks-Banner.png'
-import VestBlogImage from '../assets/VestsBlog-Banner.jpg'
+
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+const slides = [
+  {
+    id: 1,
+    image: TrunkImage,
+    title: "Premium Quality Trunks",
+    description: "Experience ultimate comfort and style with our premium trunks.",
+  },
+  {
+    id: 2,
+    image: VestBlogImage,
+    title: "Stylish Vests",
+    description: "Stay cool and stylish with our modern vest collection.",
+  },
+];
 
 const HeroSection = () => {
+  let sliderRef;
 
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  const slides = [
-    {
-      title: "The future of hygiene is here",
-      // image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=1200&h=500&fit=crop",
-      image:TrunkImage
-    },
-    {
-      title: "Lifetime Warranty on Quality",
-      // image: "https://images.unsplash.com/photo-1620626011761-996317b8d101?w=1200&h=500&fit=crop",
-      image: VestBlogImage
-    },
-    {
-      title: "Luxury for everyone",
-      image: "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=1200&h=500&fit=crop",
-    },
-  ];
-
-  // ⏱ Slower auto-slide interval for a smoother experience
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 7000); // 7 seconds between slides
-    return () => clearInterval(timer);
-  }, [slides.length]);
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 1200,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 6000,
+    fade: true,
+    pauseOnHover: true,
+    arrows: false, // hide default arrows
+    draggable: true, // enable mouse drag
   };
 
   return (
-    <section className="relative h-[100vh] overflow-hidden">
-      {slides.map((slide, index) => (
-        <div
-          key={index}
-          className={`absolute inset-0 transition-opacity duration-[3000ms] ease-in-out ${
-            index === currentSlide ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <div
-            className="w-full h-full bg-cover bg-center relative"
-            style={{ backgroundImage: `url(${slide.image})` }}
-          >
-            <div className="absolute inset-0 bg-black/30" />
-            <div className="relative z-10 flex items-center h-full">
-              <div className="container mx-auto px-4">
-                <div className="max-w-2xl">
-                  <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight transition-all duration-1000 ease-in-out">
-                    {slide.title}
-                  </h1>
-                </div>
-              </div>
+    <section className="relative w-full h-[80vh] overflow-hidden group">
+      {/* Custom Arrows */}
+      <button
+        className="absolute top-1/2 left-4 transform -translate-y-1/2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        onClick={() => sliderRef.slickPrev()}
+      >
+        <ChevronLeft className="text-white w-8 h-8" />
+      </button>
+      <button
+        className="absolute top-1/2 right-4 transform -translate-y-1/2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        onClick={() => sliderRef.slickNext()}
+      >
+        <ChevronRight className="text-white w-8 h-8" />
+      </button>
+
+      <Slider ref={(slider) => (sliderRef = slider)} {...settings} className="w-full h-full">
+        {slides.map((slide) => (
+          <div key={slide.id} className="relative w-full h-[80vh]">
+            {/* Background Image */}
+            <motion.img
+              src={slide.image}
+              alt={slide.title}
+              className="w-full h-full object-cover"
+              initial={{ scale: 1.1 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 6, ease: "easeOut" }}
+            />
+
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center p-4">
+              <motion.h1
+                className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg"
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+              >
+                {slide.title}
+              </motion.h1>
+              <motion.p
+                className="text-lg md:text-xl text-gray-200 max-w-2xl"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, ease: "easeOut", delay: 0.2 }}
+              >
+                {slide.description}
+              </motion.p>
             </div>
           </div>
-        </div>
-      ))}
-
-      {/* Navigation Buttons */}
-      <Button
-        variant="ghost"
-        size="icon"
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:bg-white/20 transition duration-300"
-        onClick={prevSlide}
-      >
-        <ChevronLeft className="h-6 w-6" />
-      </Button>
-      <Button
-        variant="ghost"
-        size="icon"
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:bg-white/20 transition duration-300"
-        onClick={nextSlide}
-      >
-        <ChevronRight className="h-6 w-6" />
-      </Button>
-
-      {/* Dots Indicator */}
-      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2">
-        {slides.map((_, index) => (
-          <button
-            key={index}
-            className={`w-2 h-2 rounded-full transition-all duration-500 ease-in-out ${
-              index === currentSlide ? "bg-primary scale-125" : "bg-white/50"
-            }`}
-            onClick={() => setCurrentSlide(index)}
-          />
         ))}
-      </div>
+      </Slider>
     </section>
   );
 };
