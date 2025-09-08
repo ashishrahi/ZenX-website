@@ -1,9 +1,9 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { allProducts, sizeGuide, sizes } from '../api/productsData'
+import { allProducts, sizeGuide, sizes } from "../api/productsData";
 import Magnifier from "@/utilis/Magnifier";
-
+import PurchaseAssistantModal from "../components/PurchaseAssistantModal"; // Make sure path is correct
 
 const ProductDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -13,23 +13,20 @@ const ProductDetailsPage = () => {
   const [activeSizeRange, setActiveSizeRange] = useState<"XXS-S" | "M-XL" | "XXL-3XL">("XXS-S");
   const [selectedColor, setSelectedColor] = useState("Burgundy");
   const [currentImage, setCurrentImage] = useState(0);
-
   const [openSections, setOpenSections] = useState({
     description: false,
     materials: false,
     care: false,
     delivery: false,
   });
+  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
 
   const toggleSection = (section: keyof typeof openSections) => {
-    setOpenSections(prev => ({ ...prev, [section]: !prev[section] }));
+    setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
   };
 
-
-  const product = allProducts.find(p => p.id === Number(id));
+  const product = allProducts.find((p) => p.id === Number(id));
   if (!product) return <p className="text-center mt-20 text-lg">Product not found.</p>;
-
-
 
   useEffect(() => setCurrentImage(0), [selectedColor]);
 
@@ -53,8 +50,9 @@ const ProductDetailsPage = () => {
                 key={idx}
                 src={img}
                 alt={`${product.name} ${idx}`}
-                className={`w-20 h-20 object-cover rounded cursor-pointer border-2 ${currentImage === idx ? "border-red-600" : "border-gray-300"
-                  }`}
+                className={`w-20 h-20 object-cover rounded cursor-pointer border-2 ${
+                  currentImage === idx ? "border-red-600" : "border-gray-300"
+                }`}
                 onMouseEnter={() => setCurrentImage(idx)}
                 onClick={() => setCurrentImage(idx)}
                 whileHover={{ scale: 1.1 }}
@@ -78,16 +76,14 @@ const ProductDetailsPage = () => {
                 <button
                   key={color}
                   onClick={() => setSelectedColor(color)}
-                  className={`
-          flex items-center gap-2 px-3 py-2 rounded border font-medium transition
-          ${selectedColor === color
+                  className={`flex items-center gap-2 px-3 py-2 rounded border font-medium transition ${
+                    selectedColor === color
                       ? "border-red-600 bg-red-50"
                       : "border-gray-300 hover:border-red-600 hover:bg-red-50"
-                    }`}
+                  }`}
                 >
-                  {/* Small product image for the color */}
                   <img
-                    src={product.images[color][0]} // first image for that color
+                    src={product.images[color][0]}
                     alt={`${color} preview`}
                     className="w-16 h-16 rounded object-cover border"
                   />
@@ -97,20 +93,18 @@ const ProductDetailsPage = () => {
             </div>
           </div>
 
-
           {/* Size selection */}
           <div className="space-y-2">
             <p className="font-semibold">Selected size: {selectedSize ?? "None"}</p>
             <div className="flex gap-2 flex-wrap">
-              {sizes.map(size => (
+              {sizes.map((size) => (
                 <button
                   key={size}
-                  className={`
-                    px-3 py-1 rounded border font-medium transition
-                    ${selectedSize === size
+                  className={`px-3 py-1 rounded border font-medium transition ${
+                    selectedSize === size
                       ? "bg-red-600 text-white border-red-600"
                       : "bg-white text-gray-700 border-gray-300 hover:bg-red-600 hover:text-white"
-                    }`}
+                  }`}
                   onClick={() => setSelectedSize(size)}
                 >
                   {size}
@@ -128,19 +122,20 @@ const ProductDetailsPage = () => {
           {/* Action buttons */}
           <div className="flex gap-4">
             <button className="flex-1 py-2 bg-red-500 text-white rounded font-medium hover:bg-red-700 transition">
-              Add
+              ADD
             </button>
-            <button className="flex-1 py-2 border rounded hover:bg-gray-100 font-medium">
-              Find in store
+            <button
+              className="flex-1 py-2 border rounded hover:bg-gray-200 font-medium"
+              onClick={() => setShowPurchaseModal(true)}
+            >
+              PURCHASE ASSISTANT
             </button>
           </div>
-          <button className="text-blue-600 hover:underline text-sm">
-            Check availability
-          </button>
+          <button className="text-blue-600 hover:underline text-sm">Check availability</button>
 
           {/* Collapsible sections */}
           <div className="space-y-4">
-            {["description", "materials", "care", "delivery"].map(sectionKey => {
+            {["description", "materials", "care", "delivery"].map((sectionKey) => {
               const labels: Record<string, string> = {
                 description: "Description & Fit",
                 materials: "Materials",
@@ -214,14 +209,15 @@ const ProductDetailsPage = () => {
                 </div>
                 <div className="p-4 space-y-4">
                   <div className="flex gap-2 mb-2">
-                    {["XXS-S", "M-XL", "XXL-3XL"].map(range => (
+                    {["XXS-S", "M-XL", "XXL-3XL"].map((range) => (
                       <button
                         key={range}
-                        className={`px-3 py-1 rounded border font-medium transition ${activeSizeRange === range
-                          ? "bg-red-600 text-white border-red-600"
-                          : "bg-white text-gray-700 border-gray-300 hover:bg-red-600 hover:text-white"
-                          }`}
-                        onClick={() => setActiveSizeRange(range)}
+                        className={`px-3 py-1 rounded border font-medium transition ${
+                          activeSizeRange === range
+                            ? "bg-red-600 text-white border-red-600"
+                            : "bg-white text-gray-700 border-gray-300 hover:bg-red-600 hover:text-white"
+                        }`}
+                        onClick={() => setActiveSizeRange(range as any)}
                       >
                         {range}
                       </button>
@@ -259,6 +255,12 @@ const ProductDetailsPage = () => {
           </>
         )}
       </AnimatePresence>
+
+      {/* Purchase Assistant Modal */}
+      <PurchaseAssistantModal
+        isOpen={showPurchaseModal}
+        onClose={() => setShowPurchaseModal(false)}
+      />
     </>
   );
 };

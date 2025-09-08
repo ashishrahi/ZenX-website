@@ -33,4 +33,11 @@ export const categories = [
       "Stay warm and stylish with our winter wear collection. From cozy sweaters to thermal essentials, our range is designed to keep you comfortable and protected in chilly weather.",
     image: WinterImage,
   },
+    {
+    title: "Summer Wear",
+    slug: "winter-wear",
+    description:
+      "Stay warm and stylish with our winter wear collection. From cozy sweaters to thermal essentials, our range is designed to keep you comfortable and protected in chilly weather.",
+    image: WinterImage,
+  },
 ];

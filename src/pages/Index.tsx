@@ -7,6 +7,7 @@ import Sidebar from "@/components/Sidebar";
 import About from "@/components/About";
 import EnquireNow from "@/components/EnquireNow";
 import Chatbot from "@/components/Chatbot";
+import TrendingProducts from "@/components/TrendingProducts";
 
 const Index = () => {
   return (
@@ -15,8 +16,8 @@ const Index = () => {
       {/* Top Section */}
       <HeroSection />
       <ProductCategories />
-      <About />
-
+      {/* <About /> */}
+      <TrendingProducts/>
       {/* Product Grid Section */}
       {/* <ProductGrid /> */}
 

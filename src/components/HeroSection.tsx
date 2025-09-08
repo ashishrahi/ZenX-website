@@ -1,29 +1,12 @@
 import Slider from "react-slick";
-import TrunkImage from "../assets/gymwest.webp";
-import VestBlogImage from "../assets/VestsBlog-Banner.webp";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-const slides = [
-  {
-    id: 1,
-    image: TrunkImage,
-    title: "Premium Quality Trunks",
-    description: "Experience ultimate comfort and style with our premium trunks.",
-  },
-  {
-    id: 2,
-    image: VestBlogImage,
-    title: "Stylish Vests",
-    description: "Stay cool and stylish with our modern vest collection.",
-  },
-];
+import { slides } from "../api/slidesData";
 
 const HeroSection = () => {
-  let sliderRef;
+  let sliderRef: Slider | null = null;
 
   const settings = {
     dots: true,
@@ -40,29 +23,29 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative w-full h-[80vh] overflow-hidden group">
+    <section className="relative w-full h-[80vh] md:h-screen overflow-hidden group">
       {/* Custom Arrows */}
       <button
         className="absolute top-1/2 left-4 transform -translate-y-1/2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        onClick={() => sliderRef.slickPrev()}
+        onClick={() => sliderRef?.slickPrev()}
       >
-        <ChevronLeft className="text-white w-8 h-8" />
+        <ChevronLeft className="text-white w-10 h-10" />
       </button>
       <button
         className="absolute top-1/2 right-4 transform -translate-y-1/2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        onClick={() => sliderRef.slickNext()}
+        onClick={() => sliderRef?.slickNext()}
       >
-        <ChevronRight className="text-white w-8 h-8" />
+        <ChevronRight className="text-white w-10 h-10" />
       </button>
 
       <Slider ref={(slider) => (sliderRef = slider)} {...settings} className="w-full h-full">
         {slides.map((slide) => (
-          <div key={slide.id} className="relative w-full h-[80vh]">
+          <div key={slide.id} className="relative w-full h-[80vh] md:h-screen">
             {/* Background Image */}
             <motion.img
               src={slide.image}
               alt={slide.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-center"
               initial={{ scale: 1.1 }}
               animate={{ scale: 1 }}
               transition={{ duration: 6, ease: "easeOut" }}
