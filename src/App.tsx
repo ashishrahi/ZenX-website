@@ -8,7 +8,7 @@ import NotFound from "./pages/NotFound";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Products from "./components/Products";
-import ProductDetailsPage from "./components/ProductDetails";
+import ProductDetailsPage from "./pages/ProductDetailPage/ProductDetailPage";
 
 const queryClient = new QueryClient();
 
@@ -18,18 +18,16 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        
-      <Header />
-          <Routes>
-          <Route path="/" element={<Index />} />
-      <Route path="/category/:slug" element={<Products />} />
-      <Route path="product/:id" element={<ProductDetailsPage />} />
-         
 
+        <Header />
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/category/:slug" element={<Products />} />
+          <Route path="product/:id" element={<ProductDetailsPage />} />
           <Route path="*" element={<NotFound />} />
-          </Routes>
-      <Footer/>
-        
+        </Routes>
+        <Footer />
+
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

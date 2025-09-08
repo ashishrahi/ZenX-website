@@ -14,33 +14,8 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Logo from "../assets/Zen-X-Logo-300x139-removebg-preview.webp";
-
-const navItems = [
-  { name: "Home", href: "#home" },
-  { name: "About Us", href: "#about" },
-  { name: "TRUNKS", href: "#trunks" },
-  { name: "GYM VESTS", href: "#gymwest" },
-  { name: "KIDS WEAR", href: "#kids-wear" },
-  { name: "WINTER WEAR", href: "#winter-wear" },
-  { name: "Our Quality", href: "#quality" },
-  { name: "Media", href: "#media" },
-  { name: "ESG", href: "#esg" },
-  { name: "Downloads", href: "#downloads" },
-  { name: "Contact Us", href: "#contact" },
-];
-
-const navItemsScreen = [
-  { name: "TRUNKS", href: "#home" },
-  { name: "GYM VESTS", href: "#about" },
-  { name: "KIDS WEAR", href: "#kidswear" },
-  { name: "WINTER WEAR", href: "#winter-wear" },
-];
-
-const topBarMessages = [
-  "Free Shipping on orders above ₹999!",
-  "24/7 Customer Support for all our clients.",
-  "Quality you can trust, since 1995.",
-];
+import { topBarMessages } from '../api/headerData'
+import { navItems, navItemsScreen } from "@/api/navItemsData";
 
 // Overlay nav animation
 const overlayNavVariants = {
@@ -67,7 +42,7 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Detect scroll for top bar visibility
+  // Detect scroll for header transformation
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -86,60 +61,65 @@ const Header = () => {
 
   return (
     <header className="fixed w-full top-0 z-50">
-      {/* Top Bar with smooth hide */}
-      <AnimatePresence>
-        {!isScrolled && (
-          <motion.div
-            key="top-bar"
-            initial={{ y: -50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -50, opacity: 0 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="bg-white shadow-sm text-black-500 text-sm md:text-base"
-          >
-            <div className="max-w-7xl mx-auto px-4 py-1 flex flex-col items-center">
-              {/* Rotating Message */}
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeIndex}
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  transition={{ duration: 0.4 }}
-                  className="text-center font-extralight"
-                >
-                  {topBarMessages[activeIndex]}
-                </motion.div>
-              </AnimatePresence>
-
-              {/* Dots indicator */}
-              <div className="flex space-x-1.5 mt-0.5">
-                {topBarMessages.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setActiveIndex(index)}
-                    className={`h-1.5 w-1.5 rounded-full transition-colors duration-300 ${
-                      index === activeIndex ? "bg-red-500" : "bg-gray-400"
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Main Header */}
-      <div
-        className={`transition-all duration-300 ${
-          isScrolled ? "bg-black shadow-md" : "bg-transparent"
-        }`}
+      {/* Main Header Container with smooth transformation */}
+      <motion.div
+        className={`w-full transition-all duration-300 ${isScrolled ? "bg-black shadow-md" : "bg-transparent"
+          }`}
+        initial={false}
+        animate={{
+          height: isScrolled ? "80px" : "auto",
+        }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
       >
+        {/* Top Bar - now part of the main header container */}
+        <AnimatePresence>
+          {!isScrolled && (
+            <motion.div
+              key="top-bar"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="bg-white shadow-sm text-black-500 text-sm md:text-base overflow-hidden"
+            >
+              <div className="max-w-7xl mx-auto px-4 py-1 flex flex-col items-center">
+                {/* Rotating Message */}
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeIndex}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.4 }}
+                    className="text-center font-extralight"
+                  >
+                    {topBarMessages[activeIndex]}
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* Dots indicator */}
+                <div className="flex space-x-1.5 mt-0.5">
+                  {topBarMessages.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setActiveIndex(index)}
+                      className={`h-1.5 w-1.5 rounded-full transition-colors duration-300 ${index === activeIndex ? "bg-red-500" : "bg-gray-400"
+                        }`}
+                    />
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Navigation Section */}
         <div className="max-w-7xl mx-auto flex items-center justify-between p-4 md:p-6">
           <motion.img
             src={Logo}
             alt="Logo"
-            className="h-10 md:h-12"
+            className={`h-10 md:h-12 transition-all duration-300 ${isScrolled ? "invert brightness-0" : ""
+              }`}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
@@ -154,9 +134,8 @@ const Header = () => {
                 initial="rest"
                 whileHover="hover"
                 animate="rest"
-                className={`relative overflow-hidden ${
-                  isScrolled ? "text-white" : "text-gray-800"
-                }`}
+                className={`relative overflow-hidden ${isScrolled ? "text-white" : "text-gray-800"
+                  }`}
               >
                 <motion.span
                   className="flex space-x-0.5"
@@ -184,9 +163,8 @@ const Header = () => {
 
           {/* Overlay Trigger */}
           <motion.button
-            className={`hidden md:block transition-colors ${
-              isScrolled ? "text-white" : "text-gray-800"
-            }`}
+            className={`hidden md:block transition-colors ${isScrolled ? "text-white" : "text-gray-800"
+              }`}
             onClick={() => setIsOverlayOpen(true)}
             whileTap={{ scale: 0.9 }}
             whileHover={{ scale: 1.1 }}
@@ -199,9 +177,8 @@ const Header = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className={`md:hidden transition-colors ${
-              isScrolled ? "text-white" : "text-gray-800"
-            }`}
+            className={`md:hidden transition-colors ${isScrolled ? "text-white" : "text-gray-800"
+              }`}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
@@ -225,7 +202,7 @@ const Header = () => {
             </nav>
           </div>
         )}
-      </div>
+      </motion.div>
 
       {/* Full Screen Overlay */}
       <AnimatePresence>

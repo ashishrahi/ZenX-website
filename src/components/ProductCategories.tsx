@@ -2,46 +2,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import TrunkImage from "../assets/trunk.webp";
-import GymImage from "../assets/gymwest.webp";
-import KidsImage from "../assets/kids.webp";
-import WinterImage from "../assets/winter.webp";
+import {categories} from '../api/categoryData'
 
 const ProductCategories = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const navigate = useNavigate();
 
-  const categories = [
-    {
-      title: "Trunks",
-      slug: "trunks",
-      description:
-        "Plumber Bathware's new sanitaryware features a range of designs, including world-class wash basins and smart water closets. Discover the perfection from the best bathroom fittings manufacturers in India.",
-      image: TrunkImage,
-    },
-    {
-      title: "Gyms Vests",
-      slug: "gyms-vests",
-      description:
-        "Plumber Bathware, a leading faucet manufacturer in India, offers an exclusive range of single lever, quarter turn, and half turn faucets. Experience modern beauty, flawless performance, and efficient water-saving designs for every bathroom style.",
-      image: GymImage,
-    },
-    {
-      title: "Kids Wear",
-      slug: "kids-wear",
-      description:
-        "Plumber Bathware offers a range of overhead and hand showers, blending water and air for a relaxing experience. Choose from various designs and finishes to complement your bathroom.",
-      image: KidsImage,
-    },
-    {
-      title: "Winter Wear",
-      slug: "winter-wear",
-      description:
-        "Plumber Bathware offers a range of overhead and hand showers, blending water and air for a relaxing experience. Choose from various designs and finishes to complement your bathroom.",
-      image: WinterImage,
-    },
-  ];
+  
 
   // Overlay animation
   const overlayVariants = {
