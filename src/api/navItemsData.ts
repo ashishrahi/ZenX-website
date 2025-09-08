@@ -1,8 +1,7 @@
 export const navItems = [
-
-  { name: "Home", path: "/home" },
-  { name: "About Us", path: "/about" },
-  { name: "TRUNKS", path: "/trunks" },
+  { name: "Home", path: "/" },
+  { name: "About Us", href: "#about" },
+  { name: "TRUNKS", path: "category/trunks" },
   { name: "GYM VESTS", path: "/gym-vests" },
   { name: "KIDS WEAR", path: "/kids-wear" },
   { name: "WINTER WEAR", path: "/winter-wear" },
@@ -13,10 +12,9 @@ export const navItems = [
   { name: "Contact Us", path: "/contact" },
 ];
 
-
 export const navItemsScreen = [
-  { name: "TRUNKS", href: "#home" },
-  { name: "GYM VESTS", href: "#about" },
-  { name: "KIDS WEAR", href: "#kidswear" },
-  { name: "WINTER WEAR", href: "#winter-wear" },
+  { name: "TRUNKS", path: "category/trunks" },
+  { name: "GYM VESTS", path: "category/gym-vests" },
+  { name: "KIDS WEAR", path: "category/kids-wear" },
+  { name: "WINTER WEAR", path: "category/winter-wear" },
 ];

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
   Menu,
   X,
@@ -14,7 +15,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Logo from "../assets/Zen-X-Logo-300x139-removebg-preview.webp";
-import { topBarMessages } from '../api/headerData'
+import { topBarMessages } from '../api/headerData';
 import { navItems, navItemsScreen } from "@/api/navItemsData";
 
 // Overlay nav animation
@@ -61,17 +62,16 @@ const Header = () => {
 
   return (
     <header className="fixed w-full top-0 z-50">
-      {/* Main Header Container with smooth transformation */}
+      {/* Main Header Container */}
       <motion.div
-        className={`w-full transition-all duration-300 ${isScrolled ? "bg-black shadow-md" : "bg-transparent"
-          }`}
+        className={`w-full transition-all duration-300 ${isScrolled ? "bg-black shadow-md" : "bg-transparent"}`}
         initial={false}
         animate={{
           height: isScrolled ? "80px" : "auto",
         }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
-        {/* Top Bar - now part of the main header container */}
+        {/* Top Bar */}
         <AnimatePresence>
           {!isScrolled && (
             <motion.div
@@ -103,8 +103,7 @@ const Header = () => {
                     <button
                       key={index}
                       onClick={() => setActiveIndex(index)}
-                      className={`h-1.5 w-1.5 rounded-full transition-colors duration-300 ${index === activeIndex ? "bg-red-500" : "bg-gray-400"
-                        }`}
+                      className={`h-1.5 w-1.5 rounded-full transition-colors duration-300 ${index === activeIndex ? "bg-red-500" : "bg-gray-400"}`}
                     />
                   ))}
                 </div>
@@ -115,11 +114,11 @@ const Header = () => {
 
         {/* Navigation Section */}
         <div className="max-w-7xl mx-auto flex items-center justify-between p-4 md:p-6">
+          {/* Logo */}
           <motion.img
             src={Logo}
             alt="Logo"
-            className={`h-10 md:h-12 transition-all duration-300 ${isScrolled ? "invert brightness-0" : ""
-              }`}
+            className={`h-10 md:h-12 transition-all duration-300 ${isScrolled ? "invert brightness-0" : ""}`}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
@@ -128,43 +127,44 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8 font-extralight">
             {navItemsScreen.map((item, index) => (
-              <motion.a
+              <motion.div
                 key={item.name}
-                href={item.href}
                 initial="rest"
                 whileHover="hover"
                 animate="rest"
-                className={`relative overflow-hidden ${isScrolled ? "text-white" : "text-gray-800"
-                  }`}
               >
-                <motion.span
-                  className="flex space-x-0.5"
-                  variants={{
-                    rest: { transition: { staggerChildren: 0 } },
-                    hover: { transition: { staggerChildren: 0.05 } },
-                  }}
+                <Link
+                  to={item.path}
+                  className={`relative overflow-hidden ${isScrolled ? "text-white" : "text-gray-800"}`}
                 >
-                  {item.name.split("").map((char, idx) => (
-                    <motion.span
-                      key={idx}
-                      variants={{
-                        rest: { color: isScrolled ? "#fff" : "#1f2937" },
-                        hover: { color: "#ef4444" },
-                      }}
-                      transition={{ duration: 0.15 }}
-                    >
-                      {char}
-                    </motion.span>
-                  ))}
-                </motion.span>
-              </motion.a>
+                  <motion.span
+                    className="flex space-x-0.5"
+                    variants={{
+                      rest: { transition: { staggerChildren: 0 } },
+                      hover: { transition: { staggerChildren: 0.05 } },
+                    }}
+                  >
+                    {item.name.split("").map((char, idx) => (
+                      <motion.span
+                        key={idx}
+                        variants={{
+                          rest: { color: isScrolled ? "#fff" : "#1f2937" },
+                          hover: { color: "#ef4444" },
+                        }}
+                        transition={{ duration: 0.15 }}
+                      >
+                        {char}
+                      </motion.span>
+                    ))}
+                  </motion.span>
+                </Link>
+              </motion.div>
             ))}
           </nav>
 
           {/* Overlay Trigger */}
           <motion.button
-            className={`hidden md:block transition-colors ${isScrolled ? "text-white" : "text-gray-800"
-              }`}
+            className={`hidden md:block transition-colors ${isScrolled ? "text-white" : "text-gray-800"}`}
             onClick={() => setIsOverlayOpen(true)}
             whileTap={{ scale: 0.9 }}
             whileHover={{ scale: 1.1 }}
@@ -177,8 +177,7 @@ const Header = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className={`md:hidden transition-colors ${isScrolled ? "text-white" : "text-gray-800"
-              }`}
+            className={`md:hidden transition-colors ${isScrolled ? "text-white" : "text-gray-800"}`}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
@@ -190,14 +189,14 @@ const Header = () => {
           <div className="md:hidden bg-black/90 backdrop-blur-md shadow-lg">
             <nav className="flex flex-col space-y-4 p-6">
               {navItems.map((item) => (
-                <a
+                <Link
                   key={item.name}
-                  href={item.href}
+                  to={item.path}
                   className="font-extralight text-white hover:text-red-600 transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}
-                </a>
+                </Link>
               ))}
             </nav>
           </div>
@@ -225,13 +224,13 @@ const Header = () => {
                     animate="visible"
                     variants={overlayNavVariants}
                   >
-                    <a
-                      href={item.href}
+                    <Link
+                      to={item.path}
                       className="block text-lg tracking-wider hover:text-red-600 transition-colors"
                       onClick={() => setIsOverlayOpen(false)}
                     >
                       {item.name.toUpperCase()}
-                    </a>
+                    </Link>
                     {index < navItems.length - 1 && (
                       <hr className="border-gray-700 my-3" />
                     )}
