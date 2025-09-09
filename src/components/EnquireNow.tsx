@@ -54,7 +54,7 @@ const EnquireNow = () => {
                   name="name"
                   placeholder="NAME *"
                   
-                  className="border-b border-gray-300 focus:outline-none focus:bg-yellow-600 py-2 text-sm tracking-widest placeholder-gray-700"
+                  className="border-b border-black focus:outline-none focus:bg-white py-2 text-sm tracking-widest placeholder-gray-700"
                 />
                 {errors.name && touched.name && (
                   <span className="text-red-500 text-xs mt-1">{errors.name}</span>
@@ -113,7 +113,7 @@ const EnquireNow = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 disabled={loading}
-                className="bg-yellow-600 text-white px-8 py-3 rounded-full tracking-widest font-light transition duration-300 disabled:opacity-50"
+                className="bg-red-700 text-white px-8 py-3 rounded-full tracking-widest font-light transition duration-300 disabled:opacity-50"
               >
                 {loading ? "SUBMITTING..." : "SUBMIT"}
               </motion.button>

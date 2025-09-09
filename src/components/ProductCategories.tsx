@@ -89,14 +89,14 @@ const ProductCategories = () => {
         <div className="w-full max-w-7xl mx-auto relative">
           {/* Navigation Buttons */}
           <Button
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-50 border bg-red-500 shadow-md hover:bg-red-700 w-12 h-12 rounded-full"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-30 border bg-red-500 shadow-md hover:bg-red-700 w-12 h-12 rounded-full"
             onClick={goToPrev}
           >
             <ChevronLeft className="h-6 w-6" />
           </Button>
 
           <Button
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-50 border bg-red-500 shadow-md hover:bg-red-700 w-12 h-12 rounded-full"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-30 border bg-red-500 shadow-md hover:bg-red-700 w-12 h-12 rounded-full"
             onClick={goToNext}
           >
             <ChevronRight className="h-6 w-6" />
