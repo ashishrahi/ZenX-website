@@ -8,14 +8,33 @@ import {
   DialogTrigger,
   DialogContent,
   DialogTitle,
-  DialogClose,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { IconButton } from "./IconButton";
+import React from "react";
+
+// Fixed IconButton with proper event handling for DialogTrigger
+export const IconButton = React.forwardRef<HTMLButtonElement, { 
+  children: React.ReactNode;
+  onClick?: () => void;
+}>(
+  ({ children, onClick }, ref) => (
+    <button
+      ref={ref}
+      type="button"
+      onClick={onClick}
+      className="p-2 m-0 w-auto h-auto flex items-center justify-center bg-transparent rounded-full hover:bg-gray-100 transition-colors"
+    >
+      {children}
+    </button>
+  )
+);
+
+IconButton.displayName = "IconButton";
 
 const Header = () => {
   const [cartCount] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const iconClass = "p-2 rounded-full hover:text-current focus:text-current !hover:bg-transparent";
   const iconSize = 40; // Medium size icons
@@ -43,8 +62,7 @@ const Header = () => {
                 key={link.name}
                 to={link.path}
                 className={({ isActive }) =>
-                  `uppercase text-sm font-medium tracking-wide transition-colors ${isActive ? "text-black" : "text-gray-400"
-                  }`
+                  `uppercase text-sm font-medium tracking-wide transition-colors ${isActive ? "text-black" : "text-gray-400"}`
                 }
               >
                 {link.name}
@@ -65,21 +83,15 @@ const Header = () => {
             </div>
 
             {/* Info Button - Modal */}
-            <Dialog>
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
               <DialogTrigger asChild>
                 <IconButton>
-                  <Info size={25} />  {/* 40px */}
+                  <Info size={25} />
                 </IconButton>
               </DialogTrigger>
 
               <DialogContent className="sm:max-w-[900px] max-h-[90vh] overflow-y-auto rounded-lg p-6 transition-transform duration-300 ease-in-out">
                 <DialogTitle className="text-2xl font-bold">Get in Touch</DialogTitle>
-
-                {/* <DialogClose asChild>
-                  <button className="absolute top-4 right-4 text-gray-500">
-                    <X size={iconSize} />
-                  </button>
-                </DialogClose> */}
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                   {/* Corporate Office */}
@@ -156,7 +168,7 @@ const Header = () => {
             </Dialog>
 
             {/* Wishlist */}
-             <IconButton>
+            <IconButton>
               <Heart size={25} />
             </IconButton>
 
@@ -199,8 +211,7 @@ const Header = () => {
                 to={link.path}
                 onClick={() => setMobileMenuOpen(false)}
                 className={({ isActive }) =>
-                  `uppercase text-sm font-medium tracking-wide transition-colors ${isActive ? "text-black" : "text-gray-400"
-                  }`
+                  `uppercase text-sm font-medium tracking-wide transition-colors ${isActive ? "text-black" : "text-gray-400"}`
                 }
               >
                 {link.name}
