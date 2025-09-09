@@ -12,7 +12,7 @@ export const navItems = [
   { name: "Contact Us", path: "/contact" },
 ];
 
-export const navItemsScreen = [
+export const navLinks = [
   { name: "TRUNKS", path: "category/trunks" },
   { name: "GYM VESTS", path: "category/gym-vests" },
   { name: "KIDS WEAR", path: "category/kids-wear" },

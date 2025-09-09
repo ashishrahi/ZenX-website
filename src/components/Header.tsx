@@ -1,267 +1,221 @@
-import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { useState } from "react";
+import { Link, NavLink } from "react-router-dom";
+import { Search, Info, Heart, ShoppingBag, User, Menu, X } from "lucide-react";
+import JockeyLogo from "../assets/Zen-X-Logo-300x139-removebg-preview.webp";
+import { navLinks } from "../api/navItemsData";
 import {
-  Menu,
-  X,
-  MoreVertical,
-  Phone,
-  Mail,
-  MapPin,
-  Factory,
-  Facebook,
-  Instagram,
-  Linkedin,
-  Youtube,
-} from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import Logo from "../assets/Zen-X-Logo-300x139-removebg-preview.webp";
-import { navItems, navItemsScreen } from "@/api/navItemsData";
-import TopBar from "./TopBar";
-
-const letterContainerVariants = {
-  rest: { transition: { staggerChildren: 0 } },
-  hover: { transition: { staggerChildren: 0.05 } },
-};
-
-const letterVariants = {
-  rest: { y: 0, opacity: 1 },
-  hover: { y: -4, opacity: 1 },
-};
-
-const overlayNavVariants = {
-  hidden: { opacity: 0, rotateY: 90 },
-  visible: (i: number) => ({
-    opacity: 1,
-    rotateY: 0,
-    transition: { delay: i * 0.1, duration: 0.5, ease: "easeOut" },
-  }),
-};
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+  DialogClose,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { IconButton } from "./IconButton";
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [cartCount] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Detect scroll
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const iconClass = "p-2 rounded-full hover:text-current focus:text-current !hover:bg-transparent";
+  const iconSize = 40; // Medium size icons
 
   return (
-    <header className="fixed w-full top-0 z-50">
-      <motion.div
-        className={`w-full transition-all duration-300 ${isScrolled ? "bg-white shadow-md" : "bg-white"}`}
-        initial={false}
-        animate={{ height: isScrolled ? "80px" : "auto" }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-      >
-        {/* TopBar */}
-        <AnimatePresence>
-          {!isScrolled && <TopBar isScrolled={isScrolled} />}
-        </AnimatePresence>
+    <header className="w-full fixed top-0 left-0 z-50 bg-white shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 lg:px-8">
+        <div className="flex items-center justify-between h-20">
+          {/* Left Section - Logo */}
+          <div className="flex items-center space-x-6">
+            <Link to="/">
+              <img src={JockeyLogo} alt="Jockey Logo" className="h-8 cursor-pointer" />
+            </Link>
+            <div className="relative flex items-center">
+              <span className="absolute -top-2 -right-5 text-[10px] bg-yellow-400 text-black font-bold px-1 rounded">
+                NEW
+              </span>
+            </div>
+          </div>
 
-        {/* Main Header */}
-        <div className="max-w-7xl mx-auto flex items-center justify-between p-4 md:p-6">
-          {/* Logo */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-          >
-            <NavLink to="/" end aria-label="Go to Home">
-              <motion.img
-                src={Logo}
-                alt="Logo"
-                className="h-10 md:h-12 cursor-pointer transition-all duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              />
-            </NavLink>
-          </motion.div>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8 font-extralight">
-            {navItemsScreen.map((item) => (
-              <motion.div key={item.name} initial="rest" whileHover="hover" animate="rest">
-                <NavLink
-                  to={item.path}
-                  end={item.path === "/"}
-                  className={({ isActive }) =>
-                    `relative overflow-hidden ${isActive ? "text-red-600 font-medium" : "text-gray-800"}`
-                  }
-                >
-                  <motion.span className="flex space-x-0.5" variants={letterContainerVariants}>
-                    {item.name.split("").map((char, idx) => (
-                      <motion.span
-                        key={idx}
-                        variants={letterVariants}
-                        transition={{ duration: 0.12 }}
-                        className="inline-block"
-                      >
-                        {char}
-                      </motion.span>
-                    ))}
-                  </motion.span>
-                </NavLink>
-              </motion.div>
+          {/* Center Section - Navigation */}
+          <nav className="hidden md:flex space-x-8">
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.name}
+                to={link.path}
+                className={({ isActive }) =>
+                  `uppercase text-sm font-medium tracking-wide transition-colors ${isActive ? "text-black" : "text-gray-400"
+                  }`
+                }
+              >
+                {link.name}
+              </NavLink>
             ))}
           </nav>
 
-          {/* More Options Icon (Desktop Overlay) */}
-          <motion.button
-            className="hidden md:block transition-colors text-gray-800"
-            onClick={() => setIsOverlayOpen(true)}
-            whileTap={{ scale: 0.9 }}
-            whileHover={{ scale: 1.1 }}
-            initial={{ rotate: 0 }}
-            animate={{ rotate: isOverlayOpen ? 90 : 0 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          >
-            <MoreVertical size={28} />
-          </motion.button>
-
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden transition-colors text-gray-800"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
-        </div>
-
-        {/* Mobile Dropdown Menu */}
-        {isMenuOpen && (
-          <div className="md:hidden bg-black/90 backdrop-blur-md shadow-lg">
-            <nav className="flex flex-col space-y-4 p-6">
-              {navItems.map((item) => (
-                <NavLink
-                  key={item.name}
-                  to={item.path}
-                  className={({ isActive }) =>
-                    `font-extralight text-white hover:text-red-600 transition-colors px-4 py-2 rounded-md ${
-                      isActive ? "bg-red-600 text-white" : ""
-                    }`
-                  }
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.name}
-                </NavLink>
-              ))}
-            </nav>
-          </div>
-        )}
-      </motion.div>
-
-      {/* Full Screen Overlay */}
-      <AnimatePresence>
-        {isOverlayOpen && (
-          <motion.div
-            className="fixed inset-0 bg-black/95 text-white flex z-50"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            {/* Left: Navigation */}
-            <div className="w-1/2 p-8 flex flex-col justify-center space-y-6 border-r border-gray-700">
-              <img src={Logo} alt="Logo" className="h-10 w-3/12 md:h-12 mb-6" />
-              <div className="space-y-4">
-                {navItems.map((item, index) => (
-                  <motion.div
-                    key={item.name}
-                    custom={index}
-                    initial="hidden"
-                    animate="visible"
-                    variants={overlayNavVariants}
-                  >
-                    <NavLink
-                      to={item.path}
-                      className={({ isActive }) =>
-                        `block text-lg tracking-wider px-4 py-2 rounded-md transition-colors ${
-                          isActive
-                            ? "bg-red-600 text-white"
-                            : "bg-white/10 hover:bg-white/20 text-white"
-                        }`
-                      }
-                      onClick={() => setIsOverlayOpen(false)}
-                    >
-                      {item.name.toUpperCase()}
-                    </NavLink>
-                    {index < navItems.length - 1 && <hr className="border-gray-700 my-3" />}
-                  </motion.div>
-                ))}
-              </div>
+          {/* Right Section - Icons */}
+          <div className="flex items-center space-x-5">
+            {/* Search Bar */}
+            <div className="relative hidden md:block">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+              <input
+                type="text"
+                placeholder="Search"
+                className="bg-gray-100 pl-10 pr-24 py-2 h-12 rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-gray-300 transition"
+              />
             </div>
 
-            {/* Right: Contact Info */}
-            <div className="w-1/2 p-10 flex flex-col justify-between">
-              <div>
-                <h2 className="text-lg tracking-wider mb-6 font-extralight">CONTACT US</h2>
+            {/* Info Button - Modal */}
+            <Dialog>
+              <DialogTrigger asChild>
+                <IconButton>
+                  <Info size={25} />  {/* 40px */}
+                </IconButton>
+              </DialogTrigger>
 
-                <div className="mb-6 space-y-2">
-                  <p className="flex items-center space-x-2">
-                    <Phone size={20} className="text-red-600" />
-                    <span>+91 94127 27706, +91 94127 27707</span>
-                  </p>
-                </div>
+              <DialogContent className="sm:max-w-[900px] max-h-[90vh] overflow-y-auto rounded-lg p-6 transition-transform duration-300 ease-in-out">
+                <DialogTitle className="text-2xl font-bold">Get in Touch</DialogTitle>
 
-                <div className="mb-6">
-                  <p className="flex items-center space-x-2">
-                    <Mail size={20} className="text-red-600" />
-                    <span>info@zenx.com</span>
-                  </p>
-                </div>
+                {/* <DialogClose asChild>
+                  <button className="absolute top-4 right-4 text-gray-500">
+                    <X size={iconSize} />
+                  </button>
+                </DialogClose> */}
 
-                <div className="mb-6 flex flex-col gap-2">
-                  <h3 className="font-extralight flex items-center space-x-2">
-                    <MapPin size={20} className="text-red-600" />
-                    <span>Corporate Office</span>
-                  </h3>
-                  <p className="ml-6 font-extralight">
-                    Zen-X PVT. LTD.<br />
-                    Mig-1/4 Mahabalipuram<br />
-                    Kalyanpur, Kanpur Nagar, 208017<br />
-                    26B/2k Dadanagar 208001, Kanpur, India
-                  </p>
-                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                  {/* Corporate Office */}
+                  <div className="border rounded-lg p-4 shadow-sm hover:shadow-md transition">
+                    <h3 className="font-semibold text-lg mb-2">Corporate Office</h3>
+                    <p className="text-sm text-gray-700">
+                      ZenX Industries Limited, Cessna Business Park, Umiya Business Bay-Tower-1,
+                      7th Floor, Kanpur, Uttar Pradesh, India, 560103.
+                    </p>
+                    <p className="text-sm mt-2 font-medium">CIN: L18101KA1994PLC016554</p>
+                    <p className="mt-2">
+                      📧{" "}
+                      <a href="mailto:wecare@ZenX.com" className="text-blue-600 hover:underline">
+                        wecare@ZenX.com
+                      </a>
+                    </p>
+                    <p className="mt-1">📞 1800-572-1299 / 1860-425-3333</p>
+                    <p className="text-xs text-gray-500">(Mon-Sun, 10:00 AM - 7:00 PM)</p>
+                  </div>
 
-                <div>
-                  <h3 className="font-extralight flex items-center space-x-2">
-                    <Factory size={20} className="text-red-600" />
-                    <span>Manufacturing Unit</span>
-                  </h3>
-                  <p className="ml-6 font-extralight">
-                    Zen-X PVT. LTD.<br />
-                    Mig-1/4 Mahabalipuram<br />
-                    Kalyanpur, Kanpur Nagar, 208017<br />
-                    26B/2k Dadanagar 208001, Kanpur, India
-                  </p>
-                </div>
-              </div>
+                  {/* Purchase Queries */}
+                  <div className="border rounded-lg p-4 shadow-sm hover:shadow-md transition">
+                    <h3 className="font-semibold text-lg mb-2">For Purchase Related Queries</h3>
+                    <p className="text-sm text-gray-700">
+                      ZenX Industries Limited, Cessna Business Park, Umiya Business Bay-Tower-1,
+                      3rd Floor, Kanpur, Uttar Pradesh, India, 560103.
+                    </p>
+                    <p className="text-sm mt-2 font-medium">CIN: L18101KA1994PLC016554</p>
+                    <p className="mt-2">
+                      📧{" "}
+                      <a href="mailto:wecare@jockeyindia.com" className="text-blue-600 hover:underline">
+                        wecare@jockeyindia.com
+                      </a>
+                    </p>
+                    <p className="mt-1">📞 1800-572-1299 / 1860-425-3333</p>
+                    <p className="text-xs text-gray-500">(Mon-Sun, 10:00 AM - 7:00 PM)</p>
+                  </div>
 
-              {/* Social Links */}
-              <div>
-                <h2 className="text-lg tracking-wider mb-4 font-extralight">FOLLOW US</h2>
-                <div className="flex space-x-6">
-                  <a href="#" className="hover:text-red-600 transition-colors"><Facebook size={28} /></a>
-                  <a href="#" className="hover:text-red-600 transition-colors"><Instagram size={28} /></a>
-                  <a href="#" className="hover:text-red-600 transition-colors"><Linkedin size={28} /></a>
-                  <a href="#" className="hover:text-red-600 transition-colors"><Youtube size={28} /></a>
+                  {/* Franchisee */}
+                  <div className="border rounded-lg p-4 shadow-sm hover:shadow-md transition">
+                    <h3 className="font-semibold text-lg mb-2">To Apply for: Franchisee (Exclusive Outlet)</h3>
+                    <p className="mt-2">
+                      📧{" "}
+                      <a href="mailto:franchisee@ZenX.com" className="text-blue-600 hover:underline">
+                        franchisee@ZenX.com
+                      </a>
+                    </p>
+                    <p className="mt-1">📞 1800-572-1299</p>
+                  </div>
+
+                  {/* Distributorship */}
+                  <div className="border rounded-lg p-4 shadow-sm hover:shadow-md transition">
+                    <h3 className="font-semibold text-lg mb-2">To Apply for: Distributorship</h3>
+                    <p className="mt-2">
+                      📧{" "}
+                      <a href="mailto:wecare@jockeyindia.com" className="text-blue-600 hover:underline">
+                        wecare@ZenXindia.com
+                      </a>
+                    </p>
+                    <p className="mt-1">📞 1800-572-1299</p>
+                  </div>
+
+                  {/* Grievance Officer */}
+                  <div className="border rounded-lg p-4 shadow-sm hover:shadow-md transition md:col-span-2">
+                    <h3 className="font-semibold text-lg mb-2">Grievance Officer</h3>
+                    <p className="font-semibold">Ms. Meena Patel</p>
+                    <p className="text-sm text-gray-700 mt-2">
+                      Zen-X Industries Limited, Cessna Business Park, Umiya Business Bay-Tower-1,
+                      3rd Floor, Kanpur, Uttar Pradesh, India, 560103.
+                    </p>
+                  </div>
                 </div>
-              </div>
+              </DialogContent>
+            </Dialog>
+
+            {/* Wishlist */}
+             <IconButton>
+              <Heart size={25} />
+            </IconButton>
+
+            {/* Cart */}
+            <div className="relative">
+              <IconButton>
+                <ShoppingBag size={25} />
+              </IconButton>
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-black text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                  {cartCount}
+                </span>
+              )}
             </div>
 
-            {/* Close Button */}
-            <button
-              onClick={() => setIsOverlayOpen(false)}
-              className="absolute top-6 right-6"
+            {/* User */}
+            <IconButton>
+              <User size={25} />
+            </IconButton>
+
+            {/* Mobile Menu Toggle */}
+            <Button
+              variant="ghost"
+              className={iconClass + " md:hidden"}
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
-              <X size={32} className="text-white" />
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              {mobileMenuOpen ? <X size={iconSize} /> : <Menu size={iconSize} />}
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-white shadow-md">
+          <nav className="flex flex-col space-y-2 px-4 py-4">
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.name}
+                to={link.path}
+                onClick={() => setMobileMenuOpen(false)}
+                className={({ isActive }) =>
+                  `uppercase text-sm font-medium tracking-wide transition-colors ${isActive ? "text-black" : "text-gray-400"
+                  }`
+                }
+              >
+                {link.name}
+              </NavLink>
+            ))}
+          </nav>
+          <div className="flex flex-col space-y-2 px-4 py-2">
+            <input
+              type="text"
+              placeholder="Search"
+              className="bg-gray-100 pl-3 pr-4 py-2 h-12 rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-gray-300 transition"
+            />
+          </div>
+        </div>
+      )}
     </header>
   );
 };

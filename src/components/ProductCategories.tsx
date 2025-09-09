@@ -15,6 +15,7 @@ const ProductCategories = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const autoplayRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const resumeTimeoutRef = useRef<number | null>(null);
 
   /** Navigate to category page */
   const handleCardClick = (slug: string) => {
@@ -24,50 +25,89 @@ const ProductCategories = () => {
   /** Start autoplay on mount */
   useEffect(() => {
     startAutoplay();
-    return () => stopAutoplay();
+    return () => {
+      stopAutoplay();
+      if (resumeTimeoutRef.current) {
+        clearTimeout(resumeTimeoutRef.current);
+        resumeTimeoutRef.current = null;
+      }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /** Autoplay controls */
   const startAutoplay = () => {
     stopAutoplay();
-    autoplayRef.current = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % categories.length);
+    autoplayRef.current = window.setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % Math.max(1, categories.length));
     }, AUTOPLAY_INTERVAL);
   };
 
   const stopAutoplay = () => {
-    if (autoplayRef.current) clearInterval(autoplayRef.current);
+    if (autoplayRef.current) {
+      clearInterval(autoplayRef.current as unknown as number);
+      autoplayRef.current = null;
+    }
+  };
+
+  /** Pause autoplay and restart after a short delay when user manually navigates */
+  const pauseAndMaybeResume = (fn: () => void) => {
+    // quick debug
+    // console.debug('pauseAndMaybeResume called');
+    stopAutoplay();
+    if (resumeTimeoutRef.current) {
+      clearTimeout(resumeTimeoutRef.current);
+      resumeTimeoutRef.current = null;
+    }
+
+    fn();
+
+    // Restart autoplay after a short delay so user's interaction feels responsive
+    resumeTimeoutRef.current = window.setTimeout(() => {
+      startAutoplay();
+      resumeTimeoutRef.current = null;
+    }, AUTOPLAY_INTERVAL * 2);
   };
 
   /** Manual navigation */
-  const goToNext = () => setActiveIndex((prev) => (prev + 1) % categories.length);
+  const goToNext = () =>
+    pauseAndMaybeResume(() => {
+      // console.debug('Next clicked');
+      setActiveIndex((prev) => (prev + 1) % Math.max(1, categories.length));
+    });
+
   const goToPrev = () =>
-    setActiveIndex((prev) => (prev - 1 + categories.length) % categories.length);
+    pauseAndMaybeResume(() => {
+      // console.debug('Prev clicked');
+      setActiveIndex((prev) => (prev - 1 + categories.length) % Math.max(1, categories.length));
+    });
 
   /** Calculate card position for 3D effect */
   const calculateCardTransform = (index: number) => {
-    const totalItems = categories.length;
-    const position = (index - activeIndex + totalItems) % totalItems;
-
-    let adjustedPosition = position;
-    if (position > totalItems / 2) adjustedPosition = position - totalItems;
-
+    const totalItems = categories.length || 1;
     const offset = CARD_WIDTH * 0.7 + CARD_GAP; // Add spacing between cards
 
-    if (adjustedPosition === 0) {
+    // Position relative to activeIndex
+    let position = index - activeIndex;
+
+    // Normalize position to the shortest rotation (wrap around)
+    const half = Math.floor(totalItems / 2);
+    if (position > half) position -= totalItems;
+    if (position < -half) position += totalItems;
+
+    if (position === 0) {
       return { scale: 1.1, rotateY: 0, zIndex: 30, x: 0, opacity: 1 };
-    } else if (adjustedPosition === -1 || adjustedPosition === totalItems - 1) {
-      return { scale: 0.9, rotateY: 25, zIndex: 20, x: -offset, opacity: 0.8 };
-    } else if (adjustedPosition === 1 || adjustedPosition === -(totalItems - 1)) {
-      return { scale: 0.9, rotateY: -25, zIndex: 20, x: offset, opacity: 0.8 };
+    } else if (position === -1) {
+      return { scale: 0.9, rotateY: 25, zIndex: 20, x: -offset, opacity: 0.85 };
+    } else if (position === 1) {
+      return { scale: 0.9, rotateY: -25, zIndex: 20, x: offset, opacity: 0.85 };
     } else {
       return {
         scale: 0.8,
         rotateY: 0,
         zIndex: 10,
-        x: adjustedPosition * offset,
-        opacity: 0.5
+        x: position * offset,
+        opacity: 0.5,
       };
     }
   };
@@ -87,17 +127,21 @@ const ProductCategories = () => {
 
         {/* Carousel Wrapper */}
         <div className="w-full max-w-7xl mx-auto relative">
-          {/* Navigation Buttons */}
+          {/* Navigation Buttons - moved up in stacking context and made clearly interactive */}
           <Button
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-30 border bg-red-500 shadow-md hover:bg-red-700 w-12 h-12 rounded-full"
+            className="absolute left-0 top-1/2 -translate-y-1/2 border bg-red-500 shadow-md hover:bg-red-700 w-12 h-12 rounded-full"
             onClick={goToPrev}
+            style={{ zIndex: 100, pointerEvents: 'auto' }}
+            aria-label="Previous category"
           >
             <ChevronLeft className="h-6 w-6" />
           </Button>
 
           <Button
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-30 border bg-red-500 shadow-md hover:bg-red-700 w-12 h-12 rounded-full"
+            className="absolute right-0 top-1/2 -translate-y-1/2 border bg-red-500 shadow-md hover:bg-red-700 w-12 h-12 rounded-full"
             onClick={goToNext}
+            style={{ zIndex: 100, pointerEvents: 'auto' }}
+            aria-label="Next category"
           >
             <ChevronRight className="h-6 w-6" />
           </Button>
@@ -109,7 +153,8 @@ const ProductCategories = () => {
               return (
                 <motion.div
                   key={index}
-                  className="absolute flex justify-center w-full"
+                  // Make the wrapper itself ignore pointer events so it won't block the nav buttons
+                  className="absolute flex justify-center w-full pointer-events-none"
                   onMouseEnter={() => {
                     setHoveredIndex(index);
                     stopAutoplay();
@@ -123,25 +168,25 @@ const ProductCategories = () => {
                     rotateY: transform.rotateY,
                     x: transform.x,
                     opacity: transform.opacity,
-                    zIndex: hoveredIndex === index ? 40 : transform.zIndex
                   }}
                   style={{
                     perspective: 1000,
-                    transformStyle: "preserve-3d"
+                    transformStyle: "preserve-3d",
+                    zIndex: hoveredIndex === index ? 40 : transform.zIndex,
                   }}
                   transition={{
                     type: "spring",
-                    stiffness: 300,
-                    damping: 30,
-                    duration: 0.5
+                    stiffness: 260,
+                    damping: 25,
+                    duration: 0.5,
                   }}
                   whileHover={{
                     scale: transform.scale === 1.1 ? 1.15 : 0.95,
-                    zIndex: 40
                   }}
                 >
                   <Card
-                    className="group cursor-pointer border hover:border-primary shadow-lg hover:shadow-2xl overflow-hidden transition-all duration-500 w-80 h-[340px] rounded-2xl relative bg-white"
+                    // ensure the card itself receives pointer events (so cards remain clickable)
+                    className="group cursor-pointer border hover:border-primary shadow-lg hover:shadow-2xl overflow-hidden transition-all duration-500 w-80 h-[340px] rounded-2xl relative bg-white pointer-events-auto"
                     onClick={() => handleCardClick(category.slug)}
                   >
                     <CardHeader className="text-center z-10 relative p-5">
@@ -170,7 +215,7 @@ const ProductCategories = () => {
 
                     {/* Hover Overlay */}
                     <motion.div
-                      className="absolute inset-0 bg-black/0 group-hover:bg-black/60 transition-colors duration-300 flex flex-col items-center justify-center p-6"
+                      className="absolute inset-0 bg-black/0 group-hover:bg-black/60 transition-colors duration-300 flex flex-col items-center justify-center p-6 pointer-events-none"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: hoveredIndex === index ? 1 : 0 }}
                       transition={{ duration: 0.3 }}
@@ -180,7 +225,7 @@ const ProductCategories = () => {
                       </p>
                       <Button
                         variant="secondary"
-                        className="bg-white text-black hover:bg-gray-100 rounded-lg px-5 py-2 flex items-center gap-2"
+                        className="bg-white text-black hover:bg-gray-100 rounded-lg px-5 py-2 flex items-center gap-2 pointer-events-auto"
                       >
                         View Products <ArrowRight className="h-4 w-4" />
                       </Button>
@@ -196,7 +241,7 @@ const ProductCategories = () => {
             {categories.map((_, index) => (
               <motion.div
                 key={index}
-                onClick={() => setActiveIndex(index)}
+                onClick={() => pauseAndMaybeResume(() => setActiveIndex(index))}
                 className={`w-3 h-3 rounded-full cursor-pointer ${
                   activeIndex === index ? "bg-primary" : "bg-gray-300"
                 }`}
