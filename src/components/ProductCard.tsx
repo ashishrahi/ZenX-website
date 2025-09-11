@@ -1,4 +1,4 @@
-import { FC } from "react";
+import React, { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { Heart } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
@@ -23,10 +23,11 @@ interface ProductCardProps {
 
 const ProductCard: FC<ProductCardProps> = ({ product, onWishlistToggle }) => {
   const navigate = useNavigate();
-  const { addToCart } = useCart();
-  console.log('addToCart', addToCart)
+  const { addToCart, cart } = useCart();
 
   const handleViewDetails = () => navigate(`/product/${product.id}`);
+
+  const isInCart = cart.some((item) => item.id === product.id);
 
   return (
     <Card className="group relative rounded-2xl border shadow-sm hover:shadow-lg transition-all duration-300">
@@ -89,10 +90,10 @@ const ProductCard: FC<ProductCardProps> = ({ product, onWishlistToggle }) => {
           </span>
         </div>
         <Button
-          className="w-full py-3 bg-black text-white rounded-xl font-medium hover:bg-gray-800 transition-colors duration-300 shadow-md hover:shadow-lg"
-          onClick={() => addToCart(product)}
+          className={`w-full py-3 rounded-xl font-medium ${isInCart ? "bg-gray-400 cursor-not-allowed" : "bg-black text-white hover:bg-gray-800"} transition-colors duration-300 shadow-md hover:shadow-lg`}
+          onClick={() => !isInCart && addToCart(product)}
         >
-          ADD TO BAG
+          {isInCart ? "Added" : "ADD TO BAG"}
         </Button>
       </CardFooter>
     </Card>
