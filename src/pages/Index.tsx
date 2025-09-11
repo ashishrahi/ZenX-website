@@ -8,6 +8,7 @@ import About from "@/components/About";
 import EnquireNow from "@/components/EnquireNow";
 import Chatbot from "@/components/Chatbot";
 import TrendingProducts from "@/components/TrendingProducts";
+import ZenxAbout from "@/components/ZenxAbout";
 
 const Index = () => {
   return (
@@ -23,6 +24,9 @@ const Index = () => {
 
       {/* Enquire Now Section */}
       <EnquireNow />
+
+      <ZenxAbout/>
+
 
       {/* Footer */}
       <Footer />

@@ -1,11 +1,18 @@
-import React from "react";
-import { X, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+import { Button } from "./ui/button";
+import { Trash2, X } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
+// Inside your CartModal component
 const CartModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
   const { cart, removeItem } = useCart();
+  const navigate = useNavigate();
   const total = cart.reduce((acc, i) => acc + i.price * i.quantity, 0);
+
+  const handlePlaceOrder = () => {
+    onClose(); // Close the cart modal
+    navigate("/checkout"); // Redirect to checkout page
+  };
 
   return (
     <div
@@ -13,6 +20,7 @@ const CartModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen,
         isOpen ? "translate-x-0" : "translate-x-full"
       }`}
     >
+      {/* Header */}
       <div className="flex items-center justify-between p-5 border-b bg-gray-50">
         <h2 className="text-lg font-semibold text-gray-800">Items in my bag</h2>
         <Button variant="ghost" size="icon" onClick={onClose}>
@@ -20,6 +28,7 @@ const CartModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen,
         </Button>
       </div>
 
+      {/* Cart Items */}
       <div className="flex-1 overflow-y-auto p-5 space-y-5">
         {cart.length === 0 ? (
           <p className="text-gray-400 text-center mt-20">Your cart is empty.</p>
@@ -55,6 +64,7 @@ const CartModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen,
         )}
       </div>
 
+      {/* Footer */}
       {cart.length > 0 && (
         <div className="p-5 border-t bg-gray-50">
           <div className="flex justify-between text-lg font-semibold text-gray-900 mb-3">
@@ -62,7 +72,12 @@ const CartModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen,
             <span>₹{total}</span>
           </div>
           <p className="text-sm text-gray-500 mb-2">(Incl. of all taxes)</p>
-          <Button className="w-full py-3 rounded-lg bg-black text-white hover:bg-gray-900">Place Order</Button>
+          <Button
+            className="w-full py-3 rounded-lg bg-black text-white hover:bg-gray-900"
+            onClick={handlePlaceOrder}
+          >
+            Place Order
+          </Button>
         </div>
       )}
     </div>

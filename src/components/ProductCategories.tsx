@@ -131,7 +131,7 @@ const ProductCategories = () => {
           <Button
             className="absolute left-0 top-1/2 -translate-y-1/2 border bg-red-500 shadow-md hover:bg-red-700 w-12 h-12 rounded-full"
             onClick={goToPrev}
-            style={{ zIndex: 100, pointerEvents: 'auto' }}
+            style={{ zIndex: 50, pointerEvents: 'auto' }}
             aria-label="Previous category"
           >
             <ChevronLeft className="h-6 w-6" />
@@ -140,7 +140,7 @@ const ProductCategories = () => {
           <Button
             className="absolute right-0 top-1/2 -translate-y-1/2 border bg-red-500 shadow-md hover:bg-red-700 w-12 h-12 rounded-full"
             onClick={goToNext}
-            style={{ zIndex: 100, pointerEvents: 'auto' }}
+            style={{ zIndex: 20, pointerEvents: 'auto' }}
             aria-label="Next category"
           >
             <ChevronRight className="h-6 w-6" />

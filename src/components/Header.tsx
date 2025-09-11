@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Search, Info, Heart, ShoppingBag, User, Menu, X } from "lucide-react";
 import JockeyLogo from "../assets/Zen-X-Logo-300x139-removebg-preview.webp";
 import { navLinks } from "../api/navItemsData";
@@ -10,21 +10,21 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import React from "react";
-import CartModal from "./CartModal"; // added CartModal import
-import { useCart } from "../context/CartContext"; // added CartContext import
+import CartModal from "./CartModal";
+import { useCart } from "../context/CartContext";
 
 // Fixed IconButton with proper event handling for DialogTrigger
-export const IconButton = React.forwardRef<HTMLButtonElement, { 
+export const IconButton = React.forwardRef<HTMLButtonElement, {
   children: React.ReactNode;
   onClick?: () => void;
+  className?: string;
 }>(
-  ({ children, onClick }, ref) => (
+  ({ children, onClick, className }, ref) => (
     <button
       ref={ref}
       type="button"
       onClick={onClick}
-      className="p-2 m-0 w-auto h-auto flex items-center justify-center bg-transparent rounded-full hover:bg-gray-100 transition-colors"
+      className={`p-2 m-0 w-auto h-auto flex items-center justify-center bg-transparent rounded-full hover:bg-gray-100 transition-colors ${className ?? ""}`}
     >
       {children}
     </button>
@@ -41,15 +41,16 @@ interface CartItem {
   image?: string;
 }
 
-const Header = () => {
+const Header: React.FC = () => {
   const [cartCount] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-
   const [cartOpen, setCartOpen] = useState(false); // new state for CartModal
 
+  const navigate = useNavigate();
+
   // Using CartContext
-  const { cart, removeFromCart } = useCart(); // added CartContext usage
+  const { cart, removeFromCart } = useCart();
 
   const iconClass = "p-2 rounded-full hover:text-current focus:text-current !hover:bg-transparent";
   const iconSize = 40; // Medium size icons
@@ -61,7 +62,7 @@ const Header = () => {
           {/* Left Section - Logo */}
           <div className="flex items-center space-x-6">
             <Link to="/">
-              <img src={JockeyLogo} alt="Jockey Logo" className="h-8 cursor-pointer" />
+              <img src={JockeyLogo} alt="ZenX Logo" className="h-14 cursor-pointer" />
             </Link>
             <div className="relative flex items-center">
               <span className="absolute -top-2 -right-5 text-[10px] bg-yellow-400 text-black font-bold px-1 rounded">
@@ -192,15 +193,15 @@ const Header = () => {
               <IconButton onClick={() => setCartOpen(true)}>
                 <ShoppingBag size={25} />
               </IconButton>
-              {cart.length > 0 && ( // modified to use CartContext
+              {cart.length > 0 && (
                 <span className="absolute -top-2 -right-2 bg-black text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
                   {cart.reduce((acc, i) => acc + (i.quantity || 1), 0)}
                 </span>
               )}
             </div>
 
-            {/* User */}
-            <IconButton>
+            {/* User - navigate to /account page */}
+            <IconButton onClick={() => navigate("/account")}>
               <User size={25} />
             </IconButton>
 
@@ -247,8 +248,8 @@ const Header = () => {
       <CartModal
         isOpen={cartOpen}
         onClose={() => setCartOpen(false)}
-        cartItems={cart} // changed to use CartContext
-        removeItem={removeFromCart} // changed to use CartContext
+        cartItems={cart}
+        removeItem={removeFromCart}
       />
     </header>
   );
