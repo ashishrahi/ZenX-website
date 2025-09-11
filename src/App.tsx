@@ -6,15 +6,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Header from "./components/Header";
-import Footer from "./components/Footer";
 import Products from "./components/Products";
 import ProductDetailsPage from "./pages/ProductDetailPage/ProductDetailPage";
 import CheckoutPage from "../src/pages/CheckoutPage/CheckoutPage";
 import AccountPage from "./pages/Account/AccountPage";
-import OrdersWishlist from "./components/OrdersWishlist";
-import ProfileSection from "./components/ProfileSection";
-import AccountProfile from "./components/AccountProfile";
-import Orders from "./components/Orders";
+import MenPage from "./pages/Men/MenPage";
 
 const queryClient = new QueryClient();
 
@@ -28,8 +24,13 @@ const App = () => (
         <Header />
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/mens" element={<MenPage />} />
+          <Route path="/kids" element={<Index />} />
+          <Route path="/faq" element={<Index />} />
+
+
           <Route path="/category/:slug" element={<Products />} />
-          <Route path="product/:id" element={<ProductDetailsPage />} />
+          <Route path="/product/:id" element={<ProductDetailsPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/account" element={<AccountPage />} />
 

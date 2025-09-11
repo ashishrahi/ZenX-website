@@ -13,8 +13,8 @@ export const navItems = [
 ];
 
 export const navLinks = [
-  { name: "TRUNKS", path: "category/trunks" },
-  { name: "GYM VESTS", path: "category/gym-vests" },
-  { name: "KIDS WEAR", path: "category/kids-wear" },
+  { name: "MEN WEAR", path: "/mens" },
+  { name: "", path: "category/gym-vests" },
+  { name: "KIDS WEAR", path: "category/kids" },
   { name: "WINTER WEAR", path: "category/winter-wear" },
 ];

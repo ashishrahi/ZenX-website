@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useMemo } from "react";
-import { allProducts } from "../api/productsData";
+import { menInnerwear } from "../api/men/menProductsData";
 import { Button } from "./ui/button";
 import EmptyState from "./EmptyState";
 import ProductCard from "./ProductCard";
@@ -18,7 +18,7 @@ const Products = () => {
   const loadMoreStep = 8; // Number of products to load per click
 
   // Filter products by category slug
-  const categoryProducts = allProducts.filter(
+  const categoryProducts = menInnerwear?.filter(
     (product) => product.category === slug
   );
 

@@ -3,19 +3,19 @@ import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { slides } from "../api/slidesData";
 
-const HeroSection = () => {
+
+const HeroSection = ({slides}) => {
   let sliderRef: Slider | null = null;
 
   const settings = {
     dots: true,
     infinite: true,
-    speed: 1200,
+    speed: 200,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 6000,
+    autoplaySpeed: 2000,
     fade: true,
     pauseOnHover: true,
     arrows: false, // hide default arrows

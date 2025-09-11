@@ -3,9 +3,21 @@ import { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ProductCard from "./ProductCard";
 import Sweater from "../assets/swater.avif";
-import { trendingProducts as productsData } from "../api/productsData";
 
-const TrendingProducts = () => {
+interface Product {
+  id: number;
+  name: string;
+  images: { [key: string]: string };
+  tag?: string[];
+}
+
+interface TrendingProductsProps {
+  productsData: Product[];
+  title: string;
+  description: string;
+}
+
+const TrendingProducts = ({ productsData, title, description }: TrendingProductsProps) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slidesToShow, setSlidesToShow] = useState(1);
@@ -35,7 +47,7 @@ const TrendingProducts = () => {
   };
 
   const nextSlide = () => {
-    if (currentIndex < productsData.length - slidesToShow) {
+    if (currentIndex < productsData?.length - slidesToShow) {
       setCurrentIndex((prev) => prev + 1);
     }
   };
@@ -51,12 +63,23 @@ const TrendingProducts = () => {
       <div className="container mx-auto px-4">
         {/* Section Heading */}
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold tracking-wide uppercase text-foreground">
-            Trending Products
+          <h2 className="text-3xl font-bold tracking-wide uppercase">
+            {title?.split(" ").map((word, index) => (
+              <span
+                key={index}
+                className={
+                  index === 0
+                    ? "text-black"
+                    : index === 1
+                    ? "text-red-500"
+                    : "text-foreground"
+                }
+              >
+                {word}{" "}
+              </span>
+            ))}
           </h2>
-          <p className="text-muted-foreground text-sm mt-2">
-            Discover our bestselling innerwear, kids' wear & winter essentials.
-          </p>
+          <p className="text-muted-foreground text-sm mt-2">{description}</p>
         </div>
 
         {/* Carousel */}
@@ -65,10 +88,8 @@ const TrendingProducts = () => {
           <button
             onClick={prevSlide}
             disabled={currentIndex === 0}
-            className={`absolute left-0 top-1/2 -translate-y-1/2 p-2 rounded-full bg-red-800  z-20 transition ${
-              currentIndex === 0
-                ? "opacity-50 cursor-not-allowed"
-                : "hover: bg-red-800"
+            className={`absolute left-0 top-1/2 -translate-y-1/2 p-2 rounded-full bg-red-800 z-20 transition ${
+              currentIndex === 0 ? "opacity-50 cursor-not-allowed" : "hover:bg-red-900"
             }`}
           >
             <ChevronLeft className="h-6 w-6 text-white" />
@@ -82,13 +103,13 @@ const TrendingProducts = () => {
               animate={{ x: `-${currentIndex * (100 / slidesToShow)}%` }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
             >
-              {productsData.map((product, index) => (
+              {productsData?.map((product, index) => (
                 <div
                   key={product.id}
                   className="flex-shrink-0"
                   style={{ width: slideWidth }}
                 >
-                  <div className="p-2">
+                  <div className="p-2 relative">
                     <motion.div
                       initial={{ opacity: 0, y: 40 }}
                       whileInView={{ opacity: 1, y: 0 }}
@@ -97,6 +118,7 @@ const TrendingProducts = () => {
                       onMouseEnter={() => setHoveredIndex(index)}
                       onMouseLeave={() => setHoveredIndex(null)}
                     >
+                      {/* Product Card */}
                       <ProductCard
                         product={product}
                         primaryImage={product.images.Burgundy || Sweater}
@@ -105,6 +127,37 @@ const TrendingProducts = () => {
                         onWishlistToggle={handleWishlistToggle}
                         hovered={hoveredIndex === index}
                       />
+
+                      {/* Floating Badge */}
+                      {product.tag && product.tag.length > 0 && (
+                        <div className="absolute top-2 left-2 flex flex-col items-start space-y-2 z-20">
+                          {product.tag.map((badge, index) => (
+                            <motion.div
+                              key={index}
+                              initial={{ y: 0, opacity: 0 }}
+                              animate={{
+                                y: [0, -3, 0], // subtle floating effect
+                                opacity: 1,
+                              }}
+                              transition={{
+                                duration: 3,           // slow and smooth
+                                ease: "easeInOut",     // natural easing
+                                repeat: Infinity,       // continuous loop
+                                repeatType: "mirror",   // smooth reverse instead of restart
+                              }}
+                              className={`px-2 py-1 text-[10px] font-bold shadow-md rounded ${
+                                badge === "Best Seller"
+                                  ? "bg-yellow-500 text-black"
+                                  : badge === "Premium"
+                                  ? "bg-purple-600 text-white"
+                                  : "bg-gray-300 text-black"
+                              }`}
+                            >
+                              {badge.toUpperCase()}
+                            </motion.div>
+                          ))}
+                        </div>
+                      )}
                     </motion.div>
                   </div>
                 </div>
@@ -115,11 +168,11 @@ const TrendingProducts = () => {
           {/* Right Arrow */}
           <button
             onClick={nextSlide}
-            disabled={currentIndex >= productsData.length - slidesToShow}
+            disabled={currentIndex >= productsData?.length - slidesToShow}
             className={`absolute right-0 top-1/2 -translate-y-1/2 p-2 rounded-full bg-red-700 z-20 transition ${
-              currentIndex >= productsData.length - slidesToShow
+              currentIndex >= productsData?.length - slidesToShow
                 ? "opacity-50 cursor-not-allowed"
-                : "hover:bg-red-700"
+                : "hover:bg-red-900"
             }`}
           >
             <ChevronRight className="h-6 w-6 text-white" />

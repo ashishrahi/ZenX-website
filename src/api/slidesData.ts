@@ -1,5 +1,7 @@
-import Trunk1 from '../assets/trunkbanner2.avif'
-import Trunk3 from '../assets/trunk3.avif'
+import Trunk1 from '../assets/1banner.webp'
+import Trunk2 from '../assets/2banner.webp'
+import Trunk3 from '../assets/3banner.webp'
+
 
 export const slides = [
   {
@@ -11,8 +13,14 @@ export const slides = [
  
    {
     id: 2,
-    image: Trunk3,
+    image: Trunk2,
     title: "Stylish Vests",
+    description: "Stay cool and stylish with our modern vest collection.",
+  },
+  {
+    id: 3,
+    image: Trunk3,
+    title: "Stylish Winter",
     description: "Stay cool and stylish with our modern vest collection.",
   },
 ];
