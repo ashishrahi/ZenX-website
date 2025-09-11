@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import React from "react";
+import CartModal from "./CartModal"; // added CartModal import
+import { useCart } from "../context/CartContext"; // added CartContext import
 
 // Fixed IconButton with proper event handling for DialogTrigger
 export const IconButton = React.forwardRef<HTMLButtonElement, { 
@@ -31,10 +33,23 @@ export const IconButton = React.forwardRef<HTMLButtonElement, {
 
 IconButton.displayName = "IconButton";
 
+interface CartItem {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+  image?: string;
+}
+
 const Header = () => {
   const [cartCount] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+
+  const [cartOpen, setCartOpen] = useState(false); // new state for CartModal
+
+  // Using CartContext
+  const { cart, removeFromCart } = useCart(); // added CartContext usage
 
   const iconClass = "p-2 rounded-full hover:text-current focus:text-current !hover:bg-transparent";
   const iconSize = 40; // Medium size icons
@@ -174,12 +189,12 @@ const Header = () => {
 
             {/* Cart */}
             <div className="relative">
-              <IconButton>
+              <IconButton onClick={() => setCartOpen(true)}>
                 <ShoppingBag size={25} />
               </IconButton>
-              {cartCount > 0 && (
+              {cart.length > 0 && ( // modified to use CartContext
                 <span className="absolute -top-2 -right-2 bg-black text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                  {cartCount}
+                  {cart.reduce((acc, i) => acc + (i.quantity || 1), 0)}
                 </span>
               )}
             </div>
@@ -227,6 +242,14 @@ const Header = () => {
           </div>
         </div>
       )}
+
+      {/* Cart Modal */}
+      <CartModal
+        isOpen={cartOpen}
+        onClose={() => setCartOpen(false)}
+        cartItems={cart} // changed to use CartContext
+        removeItem={removeFromCart} // changed to use CartContext
+      />
     </header>
   );
 };

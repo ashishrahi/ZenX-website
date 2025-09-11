@@ -6,5 +6,11 @@ import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import { CartProvider } from "./context/CartContext.tsx";
 
-createRoot(document.getElementById("root")!).render(<App />);
+createRoot(document.getElementById("root")!).render(
+    <CartProvider>
+        <App />
+    </CartProvider>
+
+);

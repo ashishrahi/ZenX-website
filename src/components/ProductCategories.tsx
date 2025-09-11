@@ -113,7 +113,7 @@ const ProductCategories = () => {
   };
 
   return (
-    <section className="py-20 bg-background" id="products">
+    <section className="py-12 bg-background" id="products">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-14">

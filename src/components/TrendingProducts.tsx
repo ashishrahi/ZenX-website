@@ -47,7 +47,7 @@ const TrendingProducts = () => {
   const slideWidth = `${100 / slidesToShow}%`;
 
   return (
-    <section className="py-16 bg-background" id="trending-products">
+    <section className="py-2 bg-background" id="trending-products">
       <div className="container mx-auto px-4">
         {/* Section Heading */}
         <div className="text-center mb-10">
