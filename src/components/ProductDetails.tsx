@@ -1,12 +1,14 @@
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { allProducts, sizeGuide, sizes } from "../api/productsData";
 import Magnifier from "@/utilis/Magnifier";
-import PurchaseAssistantModal from "../components/PurchaseAssistantModal"; // Make sure path is correct
+import PurchaseAssistantModal from "../components/PurchaseAssistantModal";
+import { useCart, CartItem } from "../context/CartContext";
 
-const ProductDetailsPage = () => {
+const ProductDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const { cart, addToCart } = useCart();
 
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [showSizeChart, setShowSizeChart] = useState(false);
@@ -30,6 +32,29 @@ const ProductDetailsPage = () => {
 
   useEffect(() => setCurrentImage(0), [selectedColor]);
 
+  // Check if this product variant is already in the cart
+  const existingCartItem = cart.find(
+    (item) =>
+      item.id === product.id &&
+      item.size === selectedSize &&
+      Object.keys(item.images)[0] === selectedColor
+  );
+
+  // Add to Cart handler
+  const handleAddToCart = () => {
+    if (!selectedSize) {
+      alert("Please select a size before adding to cart.");
+      return;
+    }
+    const cartItem: CartItem = {
+      ...product,
+      quantity: 1,
+      size: selectedSize,
+      images: { [selectedColor]: product.images[selectedColor] },
+    };
+    addToCart(cartItem);
+  };
+
   return (
     <>
       <div className="flex flex-col lg:flex-row gap-8">
@@ -41,8 +66,8 @@ const ProductDetailsPage = () => {
             width={500}
             height={500}
             zoomLevel={2}
-            showLens={true}
-            showZoomBox={true}
+            showLens
+            showZoomBox
           />
           <div className="flex gap-2">
             {product.images[selectedColor].map((img, idx) => (
@@ -72,7 +97,7 @@ const ProductDetailsPage = () => {
           <div className="space-y-2">
             <p className="font-semibold">Colour: {selectedColor}</p>
             <div className="flex gap-3 flex-wrap">
-              {product.colors.map((color) => (
+              {product.colors?.map((color) => (
                 <button
                   key={color}
                   onClick={() => setSelectedColor(color)}
@@ -121,9 +146,22 @@ const ProductDetailsPage = () => {
 
           {/* Action buttons */}
           <div className="flex gap-4">
-            <button className="flex-1 py-2 bg-red-500 text-white rounded font-medium hover:bg-red-700 transition">
-              ADD
-            </button>
+            {existingCartItem ? (
+              <button
+                className="flex-1 py-2 bg-green-500 text-white rounded font-medium cursor-not-allowed"
+                disabled
+              >
+                Added to Cart
+              </button>
+            ) : (
+              <button
+                className="flex-1 py-2 bg-red-500 text-white rounded font-medium hover:bg-red-700 transition"
+                onClick={handleAddToCart}
+              >
+                ADD TO CART
+              </button>
+            )}
+
             <button
               className="flex-1 py-2 border rounded hover:bg-gray-200 font-medium"
               onClick={() => setShowPurchaseModal(true)}
@@ -131,6 +169,7 @@ const ProductDetailsPage = () => {
               PURCHASE ASSISTANT
             </button>
           </div>
+
           <button className="text-blue-600 hover:underline text-sm">Check availability</button>
 
           {/* Collapsible sections */}
@@ -143,10 +182,10 @@ const ProductDetailsPage = () => {
                 delivery: "Delivery and Payment",
               };
               const content: Record<string, string> = {
-                description: product.description,
-                materials: product.material,
-                care: product.care,
-                delivery: product.delivery,
+                description: product.description ?? "",
+                materials: product.material ?? "",
+                care: product.care ?? "",
+                delivery: product.delivery ?? "",
               };
               return (
                 <div key={sectionKey} className="border rounded">
