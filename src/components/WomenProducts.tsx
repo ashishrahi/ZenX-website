@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import ProductCard from "./ProductCard";
+import WomenProductCard from "./WomenProductCard";
 import Sweater from "../assets/swater.avif";
 
 interface Product {
@@ -17,7 +17,7 @@ interface TrendingProductsProps {
   description: string;
 }
 
-const TrendingProducts = ({ productsData, title, description }: TrendingProductsProps) => {
+const WomenProducts = ({ productsData, title, description }: TrendingProductsProps) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slidesToShow, setSlidesToShow] = useState(1);
@@ -119,7 +119,7 @@ const TrendingProducts = ({ productsData, title, description }: TrendingProducts
                       onMouseLeave={() => setHoveredIndex(null)}
                     >
                       {/* Product Card */}
-                      <ProductCard
+                      <WomenProductCard
                         product={product}
                         primaryImage={product.images.Burgundy || Sweater}
                         secondaryImage={product.images.Black || Sweater}
@@ -183,4 +183,4 @@ const TrendingProducts = ({ productsData, title, description }: TrendingProducts
   );
 };
 
-export default TrendingProducts;
+export default WomenProducts;

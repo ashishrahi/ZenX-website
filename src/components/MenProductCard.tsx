@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
-import { useWishlist } from "@/context/WishlistContext"; // Wishlist context import
+import { useWishlist } from "../context/wishListContext";
 
 interface ProductCardProps {
   product: {
@@ -20,7 +20,7 @@ interface ProductCardProps {
     description?: string;
     price: number;
     discountPrice?: number;
-    images: { [key: string]: string[] };
+    images?: { [key: string]: string[] };
     colors?: string[];
     category?: string;
     trending?: boolean;
@@ -29,23 +29,23 @@ interface ProductCardProps {
   };
 }
 
-const ProductCard: FC<ProductCardProps> = ({ product }) => {
+const MenProductCard: FC<ProductCardProps> = ({ product }) => {
   const navigate = useNavigate();
   const { addToCart, cart } = useCart();
-  const { wishlist, toggleWishlist, isInWishlist } = useWishlist(); // Wishlist context usage
+  const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
   const [imageError, setImageError] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
 
-  const handleViewDetails = () => navigate(`/product/${product?.id}`);
-  const isInCart = cart.some((item) => item?.id === product?.id);
-  const inWishlist = isInWishlist(product.id);
+  const handleViewDetails = () => navigate(`/mens/product/${product?.id}`);
+  const isInCart = cart?.some((item) => item?.id === product?.id);
+  const inWishlist = isInWishlist?.(product?.id);
 
   const getPrimaryImage = () => {
-    if (!product.images || Object.keys(product.images).length === 0) return "";
-    const firstColor = Object.keys(product.images)[0];
-    if (product.images[firstColor]?.length) return product.images[firstColor][0];
+    if (!product?.images || Object.keys(product.images)?.length === 0) return "";
+    const firstColor = Object.keys(product.images)?.[0];
+    if (product.images[firstColor]?.length) return product.images[firstColor]?.[0];
     for (const color in product.images) {
-      if (product.images[color]?.length) return product.images[color][0];
+      if (product.images[color]?.length) return product.images[color]?.[0];
     }
     return "";
   };
@@ -55,11 +55,8 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
     setImageLoading(false);
   };
 
-  const handleImageLoad = () => {
-    setImageLoading(false);
-  };
+  const handleImageLoad = () => setImageLoading(false);
 
-  // Render stars based on rating
   const renderStars = (rating: number = 0) => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
@@ -91,7 +88,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
       {/* Wishlist Button */}
       <button
         className="absolute top-3 right-3 z-20 bg-white p-2 rounded-full shadow hover:bg-red-50 transition"
-        onClick={() => toggleWishlist(product)}
+        onClick={() => toggleWishlist?.(product)}
       >
         <Heart
           className={`h-5 w-5 transition ${
@@ -128,9 +125,9 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
 
       {/* Product Details */}
       <CardHeader className="p-5 pb-2">
-        {product?.colors?.length && (
+        {product?.colors?.length > 0 && (
           <div className="flex items-center gap-2 mb-3">
-            {product.colors.map((color, idx) => (
+            {product.colors?.map((color, idx) => (
               <div
                 key={idx}
                 className="w-5 h-5 rounded-full border border-gray-300 hover:scale-110 transition-transform cursor-pointer shadow-sm"
@@ -142,9 +139,9 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
         <CardTitle className="text-lg font-semibold text-gray-800 line-clamp-1 group-hover:text-black transition">
           {product?.name}
         </CardTitle>
-        <div className="flex items-center gap-1 mb-2">{renderStars(product.rating)}</div>
+        <div className="flex items-center gap-1 mb-2">{renderStars(product?.rating)}</div>
         <CardDescription className="line-clamp-2 text-gray-500">
-          {product?.description || "Premium quality product, designed for everyday comfort."}
+          {product?.description ?? "Premium quality product, designed for everyday comfort."}
         </CardDescription>
       </CardHeader>
 
@@ -152,14 +149,14 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
       <CardFooter className="flex flex-col gap-4 p-5 pt-0 mt-auto">
         <div className="flex items-center gap-2">
           {product?.discountPrice && (
-            <span className="text-lg font-bold text-primary">₹{product.discountPrice}</span>
+            <span className="text-lg font-bold text-primary">₹{product?.discountPrice}</span>
           )}
           <span
             className={`text-xl font-bold text-gray-900 ${
               product?.discountPrice ? "line-through text-gray-400" : ""
             }`}
           >
-            ₹{product.price}
+            ₹{product?.price}
           </span>
         </div>
 
@@ -167,7 +164,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
           className={`w-full py-3 rounded-xl font-medium ${
             isInCart ? "bg-gray-400 cursor-not-allowed" : "bg-black text-white hover:bg-gray-800"
           } transition-colors duration-300 shadow-md hover:shadow-lg`}
-          onClick={() => !isInCart && addToCart(product)}
+          onClick={() => !isInCart && addToCart?.(product)}
         >
           {isInCart ? "Added" : "ADD TO BAG"}
         </Button>
@@ -176,4 +173,4 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
   );
 };
 
-export default ProductCard;
+export default MenProductCard;

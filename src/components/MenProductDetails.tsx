@@ -6,7 +6,7 @@ import Magnifier from "@/utilis/Magnifier";
 import PurchaseAssistantModal from "../components/PurchaseAssistantModal";
 import { useCart, CartItem } from "../context/CartContext";
 
-const ProductDetails: React.FC = () => {
+const MenProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { cart, addToCart } = useCart();
 
@@ -370,4 +370,4 @@ const ProductDetails: React.FC = () => {
   );
 };
 
-export default ProductDetails;
+export default MenProductDetails;

@@ -19,6 +19,16 @@ import children from '../../assets/children.webp'
 import Matching from '../../assets/matching.webp'
 import wellBeing from '../../assets/Well-Being.avif'
 import wash from '../../assets/wash.webp'
+import braletteWhite from '../../assets/braletteWhite.webp'
+import  braletteBlack from '../../assets/braletteBlack.webp'
+import braletteBeige from '../../assets/braletteBeige.webp'
+import pantyBlack from '../../assets/pantyBlack.webp'
+import thermalGreyWomen from '../../assets/thermalGreywomen.jpg'
+import thermalBlackWomen from '../../assets/thermalBlack.avif'
+import sportsBraBlack from '../../assets/sportsBraBlack.webp'
+import sportsBraGrey from '../../assets/sportsBraGrey.jpeg'
+import sportsBraPink from '../../assets/sportsBraPink.webp'
+import womenBanner from '../../assets/women/banner.webp'
 
 
 export default {
@@ -42,6 +52,16 @@ export default {
   children,
   Matching,
   wellBeing,
-  wash
+  wash,
+  braletteWhite,
+braletteBlack,
+braletteBeige,
+pantyBlack,
+thermalGreyWomen,
+thermalBlackWomen,
+sportsBraBlack,
+sportsBraGrey,
+sportsBraPink,
+womenBanner
 
 };

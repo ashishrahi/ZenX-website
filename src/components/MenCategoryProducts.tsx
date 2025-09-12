@@ -3,9 +3,9 @@ import { useState, useMemo } from "react";
 import { menInnerwear } from "../api/men/menProductsData";
 import { Button } from "./ui/button";
 import EmptyState from "./EmptyState";
-import ProductCard from "./ProductCard";
+import ProductCard from "./MenProductCard";
 
-const Products = () => {
+const MenCategoryProducts = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
 
@@ -62,7 +62,7 @@ const Products = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 pt-32 pb-16">
+    <div className="container mx-auto px-4 pt-12 pb-16">
       {/* Hero Section */}
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-extrabold capitalize text-gray-900 tracking-tight mb-4">
@@ -98,9 +98,9 @@ const Products = () => {
             className="border rounded px-2 py-1"
           >
             <option value="all">All</option>
-            <option value="under50">Under $50</option>
-            <option value="50to100">$50 - $100</option>
-            <option value="above100">Above $100</option>
+            <option value="under50">Under 50</option>
+            <option value="50to100">150 - 500</option>
+            <option value="above100">Above 1000</option>
           </select>
         </div>
       </div>
@@ -147,4 +147,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default MenCategoryProducts;

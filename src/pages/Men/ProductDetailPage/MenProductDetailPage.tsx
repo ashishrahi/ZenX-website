@@ -1,8 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import ProductDetails from "../../components/ProductDetails";
-import RelatedProducts from "../../components/RelatedProduct";
-import { menInnerwear } from "../../api/men/menProductsData";
+import MenProductDetails from "../../../components/MenProductDetails";
+import MenProductCard from "@/components/MenProductCard";
+import Comments, { Comment } from "@/components/Comments"; // Import Comments component
+import { menInnerwear } from "../../../api/men/menProductsData";
 
 interface Product {
   id: number;
@@ -21,28 +22,26 @@ const ProductDetailPage = () => {
   const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
 
+  // Sample initial comments
+  const [initialComments, setInitialComments] = useState<Comment[]>([
+    { id: 1, author: "John Doe", content: "Amazing product!" },
+    { id: 2, author: "Jane Smith", content: "Loved it, highly recommend." },
+  ]);
+
   useEffect(() => {
     if (!id) return;
 
-    // Find current product
     const selectedProduct =
       menInnerwear.find((product) => product.id === Number(id)) || null;
     setCurrentProduct(selectedProduct);
 
-    // Find related products
     if (selectedProduct) {
       const related = menInnerwear.filter(
         (product) =>
-          product.id !== selectedProduct.id &&
-          (product.category === selectedProduct.category ||
-           product.brand === selectedProduct.brand ||
-           product.tags?.some((tag) =>
-             selectedProduct.tags?.includes(tag)
-           ))
+          product.category === selectedProduct.category &&
+          product.id !== selectedProduct.id
       );
       setRelatedProducts(related);
-    } else {
-      setRelatedProducts([]);
     }
   }, [id]);
 
@@ -57,32 +56,28 @@ const ProductDetailPage = () => {
               className="flex flex-col lg:flex-row gap-10 lg:gap-16 mb-16"
             >
               <div className="flex-1 min-w-0 rounded-2xl shadow-md p-6">
-                <ProductDetails product={currentProduct} />
+                <MenProductDetails product={currentProduct} />
               </div>
             </section>
 
             {/* Related Products */}
             {relatedProducts.length > 0 && (
-              <section aria-labelledby="related-products" className="mt-12">
-                <div className="flex items-center justify-between mb-6">
-                  <h2
-                    id="related-products"
-                    className="text-2xl md:text-3xl font-bold text-gray-800"
-                  >
-                    Related Products
-                  </h2>
-                  <span className="text-gray-500 text-sm">
-                    {relatedProducts.length} items
-                  </span>
+              <section aria-labelledby="related-products" className="mb-16">
+                <h2 className="text-2xl font-bold mb-6">Related Products</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                  {relatedProducts.map((product) => (
+                    <MenProductCard key={product.id} product={product} />
+                  ))}
                 </div>
-
-                {/* Render all related products in one component */}
-                <RelatedProducts products={relatedProducts} />
               </section>
             )}
+
+            {/* Comments Section */}
+            <section aria-labelledby="product-comments" className="mb-16">
+              <Comments initialComments={initialComments} />
+            </section>
           </>
         ) : (
-          /* Product Not Found */
           <div className="text-center py-28">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
               Product Not Found

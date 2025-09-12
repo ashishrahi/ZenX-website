@@ -1,17 +1,28 @@
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
 import Header from "./components/Header";
-import Products from "./components/Products";
-import ProductDetailsPage from "./pages/ProductDetailPage/ProductDetailPage";
-import CheckoutPage from "../src/pages/CheckoutPage/CheckoutPage";
-import AccountPage from "./pages/Account/AccountPage";
-import MenPage from "./pages/Men/MenPage";
-import BlogPage from "./pages/BlogPage/BlogPage";
+import Footer from "./components/Footer";
+import Chatbot from "./components/Chatbot";
+import MenCategoryProducts from "./components/MenCategoryProducts";
+
+// ✅ Lazy loading for better performance
+const Index = lazy(() => import("./pages/Index"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const ProductDetailsPage = lazy(() =>
+  import("./pages/Men/ProductDetailPage/MenProductDetailPage")
+);
+const CheckoutPage = lazy(() => import("./pages/CheckoutPage/CheckoutPage"));
+const AccountPage = lazy(() => import("./pages/Account/AccountPage"));
+const MenPage = lazy(() => import("./pages/Men/MenPage"));
+const WomenProductDetailsPage = lazy(() =>
+  import("./pages/Women/WomenProductDetailPage/WomenProductDetailPage")
+);
+const WomenPage = lazy(() => import("./pages/Women/WomenPage"));
+const BlogPage = lazy(() => import("./pages/BlogPage/BlogPage"));
 
 const queryClient = new QueryClient();
 
@@ -21,25 +32,44 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-
+        {/* Global Header */}
         <Header />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/mens" element={<MenPage />} />
-          <Route path="/kids" element={<Index />} />
-          <Route path="/blog" element={<BlogPage />} />
-          <Route path="/faq" element={<Index />} />
 
+        {/* Suspense ensures that while components are loading, fallback UI is shown */}
+        <Suspense fallback={<div className="text-center p-8">Loading...</div>}>
+          <Routes>
+            {/* Home and Static Pages */}
+            <Route path="/" element={<Index />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/faq" element={<Index />} />
+            <Route path="/kids" element={<Index />} />
 
-          <Route path="/category/:slug" element={<Products />} />
-          <Route path="/product/:id" element={<ProductDetailsPage />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/account" element={<AccountPage />} />
+            {/* ✅ MEN Nested Routes */}
+            <Route path="/mens" element={<MenPage />}>
+              {/* Default men category page */}
+              <Route path="category/:slug" element={<MenCategoryProducts/>}/>
+          {/* Men product details page */}
+              <Route path="product/:id" element={<ProductDetailsPage />} />
+            </Route>
 
+            {/* ✅ WOMEN Nested Routes */}
+            <Route path="/womens" element={<WomenPage />}>
+              {/* Default women category page */}
+              {/* <Route index element={<Products />} /> */}
 
+              <Route path="product/:id" element={<WomenProductDetailsPage />} />
+            </Route>
 
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+            {/* Checkout and Account */}
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/account" element={<AccountPage />} />
+
+            {/* 404 Page */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
+        <Footer/>
+      <Chatbot />
 
       </BrowserRouter>
     </TooltipProvider>

@@ -4,12 +4,14 @@ import Footer from "@/components/Footer";
 import Sidebar from "@/components/Sidebar";
 import EnquireNow from "@/components/EnquireNow";
 import Chatbot from "@/components/Chatbot";
-import TrendingProducts from "@/components/TrendingProducts";
+import MainProducts from "@/components/MainProduct";
 import ZenxAbout from "@/components/ZenxAbout";
 import { slides } from "../api/slidesData";
 import { categories } from "@/api/main/categories";
 import { menInnerwear } from '../api/men/menProductsData';
 import { motion } from "framer-motion";
+import WomenProducts from "@/components/WomenProducts";
+import { womenInnerwear } from "@/api/women/womenProductsData";
 
 const Index = () => {
   return (
@@ -26,7 +28,7 @@ const Index = () => {
       />
 
       {/* Trending Products */}
-      <TrendingProducts
+      <MainProducts
         productsData={menInnerwear.filter(innerwear =>
           innerwear.tag?.includes("HotPick")
         )}
@@ -35,12 +37,10 @@ const Index = () => {
       />
 
       {/* Best Seller */}
-      <TrendingProducts
-        productsData={menInnerwear.filter(innerwear =>
-          innerwear.tag?.includes("Best Seller")
-        )}
-        title="🏆 Best Seller"
-        description="Our top-rated and most-loved innerwear collection"
+      <WomenProducts
+        productsData={womenInnerwear}
+        title="Women’s Choice"
+        description="Explore our curated collection of premium innerwear, designed for comfort, style, and lasting quality"
       />
 
       {/* New Arrivals Section */}
@@ -80,7 +80,7 @@ const Index = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <TrendingProducts
+          <MainProducts
             productsData={menInnerwear.filter(innerwear =>
               innerwear.tag?.includes("New Arrivals")
             )}
@@ -99,13 +99,11 @@ const Index = () => {
       <ZenxAbout />
 
       {/* Footer */}
-      <Footer />
 
       {/* Sidebar */}
       <Sidebar />
 
       {/* Floating Chatbot */}
-      <Chatbot />
     </div>
   );
 };
