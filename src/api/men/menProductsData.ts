@@ -17,7 +17,7 @@ export const menInnerwear = [
     material: "Cotton 100%",
     care: "Machine wash at 30°C",
     delivery: "Free delivery on orders over Rs. 500. Standard delivery: Rs. 50.",
-    tag: ["Premium"],
+    tag: ["Premium", "New Arrivals"],
   },
   {
     id: 2,
@@ -35,7 +35,7 @@ export const menInnerwear = [
     material: "Cotton 95%, Elastane 5%",
     care: "Machine wash at 30°C",
     delivery: "Free delivery on orders over Rs. 500. Standard delivery: Rs. 50.",
-   tag: ["Best Seller"],
+   tag: ["Best Seller", "New Arrivals"],
   },
   {
     id: 3,

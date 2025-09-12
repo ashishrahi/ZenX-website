@@ -1,13 +1,9 @@
+// Container.jsx
 import React from "react";
 
-interface ContainerProps {
-  children: React.ReactNode;
-  className?: string;
-}
-
-const Container: React.FC<ContainerProps> = ({ children, className = "" }) => {
+const Container = ({ children }) => {
   return (
-    <div className={`container mx-auto px-4 pt-48 pb-12 ${className}`}>
+    <div className="max-w-7xl mx-auto px-6 bg-background mt-16">
       {children}
     </div>
   );

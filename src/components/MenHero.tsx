@@ -1,7 +1,5 @@
 import React from "react";
-import images from "@/assets/men/images";
-
-const MenHero = () => {
+const MenHero = ({images}) => {
   return (
     <div className="px-4 md:px-8 lg:px-12 py-6"> {/* Top margin */}
       <div className="relative w-full h-[300px] sm:h-[350px] md:h-[400px] lg:h-[450px] rounded-xl overflow-hidden flex justify-end items-center">

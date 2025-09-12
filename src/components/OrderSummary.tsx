@@ -1,18 +1,18 @@
-const OrderSummary = ({ cart }: { cart: any[] }) => {
-  const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+const OrderSummary = ({ cart }: { cart?: any[] }) => {
+  const subtotal = cart?.reduce((acc, item) => acc + (item?.price ?? 0) * (item?.quantity ?? 0), 0) ?? 0;
 
   return (
     <div className="bg-gray-50 border rounded-lg p-6">
       <h3 className="text-xl font-semibold text-gray-900 mb-6">Order Summary</h3>
 
       <div className="space-y-4">
-        {cart.map((item) => (
-          <div key={item.id} className="flex justify-between">
+        {cart?.map((item) => (
+          <div key={item?.id} className="flex justify-between">
             <div>
-              <p className="font-medium text-gray-900">{item.name}</p>
-              <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
+              <p className="font-medium text-gray-900">{item?.name}</p>
+              <p className="text-sm text-gray-500">Qty: {item?.quantity}</p>
             </div>
-            <p className="font-semibold text-gray-900">₹{item.price * item.quantity}</p>
+            <p className="font-semibold text-gray-900">₹{(item?.price ?? 0) * (item?.quantity ?? 0)}</p>
           </div>
         ))}
       </div>
@@ -49,4 +49,4 @@ const OrderSummary = ({ cart }: { cart: any[] }) => {
   );
 };
 
-export default OrderSummary
+export default OrderSummary;

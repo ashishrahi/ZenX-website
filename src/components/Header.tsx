@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import CartModal from "./CartModal";
 import { useCart } from "../context/CartContext";
+import { useWishlist } from "@/context/WishlistContext";
 
 // Fixed IconButton with proper event handling for DialogTrigger
 export const IconButton = React.forwardRef<HTMLButtonElement, {
@@ -51,6 +52,7 @@ const Header: React.FC = () => {
 
   // Using CartContext
   const { cart, removeFromCart } = useCart();
+  const{wishlist} = useWishlist()
 
   const iconClass = "p-2 rounded-full hover:text-current focus:text-current !hover:bg-transparent";
   const iconSize = 40; // Medium size icons
@@ -183,10 +185,19 @@ const Header: React.FC = () => {
               </DialogContent>
             </Dialog>
 
-            {/* Wishlist */}
-            <IconButton>
-              <Heart size={25} />
-            </IconButton>
+          {/* Wishlist */}
+<div className="relative">
+  <IconButton onClick={() => navigate("/account?tab=wishlist")}>
+    <Heart size={25} />
+  </IconButton>
+  {wishlist.length > 0 && (
+    <span className="absolute -top-2 -right-2 bg-red-700 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+      {wishlist.length}
+    </span>
+  )}
+</div>
+
+            
 
             {/* Cart */}
             <div className="relative">

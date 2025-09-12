@@ -7,10 +7,13 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { CartProvider } from "./context/CartContext.tsx";
+import { WishlistProvider } from "./context/wishListContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
+   <WishlistProvider>
     <CartProvider>
         <App />
     </CartProvider>
+    </WishlistProvider>
 
 );

@@ -11,6 +11,7 @@ import ProductDetailsPage from "./pages/ProductDetailPage/ProductDetailPage";
 import CheckoutPage from "../src/pages/CheckoutPage/CheckoutPage";
 import AccountPage from "./pages/Account/AccountPage";
 import MenPage from "./pages/Men/MenPage";
+import BlogPage from "./pages/BlogPage/BlogPage";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/mens" element={<MenPage />} />
           <Route path="/kids" element={<Index />} />
+          <Route path="/blog" element={<BlogPage />} />
           <Route path="/faq" element={<Index />} />
 
 

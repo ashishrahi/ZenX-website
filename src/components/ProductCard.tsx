@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Heart, ImageOff } from "lucide-react";
+import { Heart, ImageOff, Star, StarHalf, Star as StarOutline } from "lucide-react";
 import {
   Card,
   CardHeader,
@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
+import { useWishlist } from "@/context/WishlistContext"; // Wishlist context import
 
 interface ProductCardProps {
   product: {
@@ -24,36 +25,28 @@ interface ProductCardProps {
     category?: string;
     trending?: boolean;
     bestSeller?: boolean;
+    rating?: number; // 0-5
   };
-  onWishlistToggle?: (productId: number) => void;
 }
 
-const ProductCard: FC<ProductCardProps> = ({ product, onWishlistToggle }) => {
+const ProductCard: FC<ProductCardProps> = ({ product }) => {
   const navigate = useNavigate();
   const { addToCart, cart } = useCart();
+  const { wishlist, toggleWishlist, isInWishlist } = useWishlist(); // Wishlist context usage
   const [imageError, setImageError] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
 
   const handleViewDetails = () => navigate(`/product/${product?.id}`);
   const isInCart = cart.some((item) => item?.id === product?.id);
+  const inWishlist = isInWishlist(product.id);
 
-  // Get the first available image from any color
   const getPrimaryImage = () => {
     if (!product.images || Object.keys(product.images).length === 0) return "";
-    
-    // Try to get the first color's first image
     const firstColor = Object.keys(product.images)[0];
-    if (product.images[firstColor] && product.images[firstColor].length > 0) {
-      return product.images[firstColor][0];
-    }
-    
-    // Fallback: try to find any image in any color
+    if (product.images[firstColor]?.length) return product.images[firstColor][0];
     for (const color in product.images) {
-      if (product.images[color].length > 0) {
-        return product.images[color][0];
-      }
+      if (product.images[color]?.length) return product.images[color][0];
     }
-    
     return "";
   };
 
@@ -66,9 +59,20 @@ const ProductCard: FC<ProductCardProps> = ({ product, onWishlistToggle }) => {
     setImageLoading(false);
   };
 
+  // Render stars based on rating
+  const renderStars = (rating: number = 0) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      if (i <= Math.floor(rating)) stars.push(<Star key={i} className="w-4 h-4 text-yellow-400" />);
+      else if (i - rating < 1) stars.push(<StarHalf key={i} className="w-4 h-4 text-yellow-400" />);
+      else stars.push(<StarOutline key={i} className="w-4 h-4 text-gray-300" />);
+    }
+    return stars;
+  };
+
   return (
     <Card className="group relative rounded-2xl border shadow-sm hover:shadow-lg transition-all duration-300 h-full flex flex-col">
-      {/* Trending Badge */}
+      {/* Trending & Best Seller Badges */}
       {product?.trending && !product?.bestSeller && (
         <div className="absolute top-3 left-0 z-20 overflow-visible">
           <div className="bg-red-500 text-white text-xs font-bold px-3 py-1 transform -rotate-45 shadow-lg">
@@ -76,8 +80,6 @@ const ProductCard: FC<ProductCardProps> = ({ product, onWishlistToggle }) => {
           </div>
         </div>
       )}
-
-      {/* Best Seller Badge */}
       {product?.bestSeller && (
         <div className="absolute top-3 left-0 z-30 overflow-visible">
           <div className="bg-yellow-500 text-white text-xs font-bold px-3 py-1 transform -rotate-45 shadow-lg">
@@ -89,9 +91,13 @@ const ProductCard: FC<ProductCardProps> = ({ product, onWishlistToggle }) => {
       {/* Wishlist Button */}
       <button
         className="absolute top-3 right-3 z-20 bg-white p-2 rounded-full shadow hover:bg-red-50 transition"
-        onClick={() => onWishlistToggle?.(product?.id)}
+        onClick={() => toggleWishlist(product)}
       >
-        <Heart className="h-5 w-5 text-gray-500 group-hover:text-red-500 transition" />
+        <Heart
+          className={`h-5 w-5 transition ${
+            inWishlist ? "text-red-500" : "text-gray-500 group-hover:text-red-500"
+          }`}
+        />
       </button>
 
       {/* Product Image */}
@@ -104,7 +110,6 @@ const ProductCard: FC<ProductCardProps> = ({ product, onWishlistToggle }) => {
             <div className="animate-pulse bg-gray-200 h-full w-full"></div>
           </div>
         )}
-        
         {!imageError ? (
           <img
             src={getPrimaryImage()}
@@ -123,9 +128,9 @@ const ProductCard: FC<ProductCardProps> = ({ product, onWishlistToggle }) => {
 
       {/* Product Details */}
       <CardHeader className="p-5 pb-2">
-        {product?.colors?.length ? (
+        {product?.colors?.length && (
           <div className="flex items-center gap-2 mb-3">
-            {product?.colors?.map((color, idx) => (
+            {product.colors.map((color, idx) => (
               <div
                 key={idx}
                 className="w-5 h-5 rounded-full border border-gray-300 hover:scale-110 transition-transform cursor-pointer shadow-sm"
@@ -133,15 +138,13 @@ const ProductCard: FC<ProductCardProps> = ({ product, onWishlistToggle }) => {
               />
             ))}
           </div>
-        ) : null}
-
+        )}
         <CardTitle className="text-lg font-semibold text-gray-800 line-clamp-1 group-hover:text-black transition">
           {product?.name}
         </CardTitle>
-
+        <div className="flex items-center gap-1 mb-2">{renderStars(product.rating)}</div>
         <CardDescription className="line-clamp-2 text-gray-500">
-          {product?.description ||
-            "Premium quality product, designed for everyday comfort."}
+          {product?.description || "Premium quality product, designed for everyday comfort."}
         </CardDescription>
       </CardHeader>
 
@@ -149,24 +152,20 @@ const ProductCard: FC<ProductCardProps> = ({ product, onWishlistToggle }) => {
       <CardFooter className="flex flex-col gap-4 p-5 pt-0 mt-auto">
         <div className="flex items-center gap-2">
           {product?.discountPrice && (
-            <span className="text-lg font-bold text-primary">
-              ₹{product?.discountPrice}
-            </span>
+            <span className="text-lg font-bold text-primary">₹{product.discountPrice}</span>
           )}
           <span
             className={`text-xl font-bold text-gray-900 ${
               product?.discountPrice ? "line-through text-gray-400" : ""
             }`}
           >
-            ₹{product?.price}
+            ₹{product.price}
           </span>
         </div>
 
         <Button
           className={`w-full py-3 rounded-xl font-medium ${
-            isInCart
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-black text-white hover:bg-gray-800"
+            isInCart ? "bg-gray-400 cursor-not-allowed" : "bg-black text-white hover:bg-gray-800"
           } transition-colors duration-300 shadow-md hover:shadow-lg`}
           onClick={() => !isInCart && addToCart(product)}
         >

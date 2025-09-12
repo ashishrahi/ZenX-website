@@ -4,6 +4,7 @@ import KidsImage from '../assets/kids.webp'
 import WinterImage from '../assets/winter.webp'
 
 
+
 export const categories = [
   {
     title: "Men Trunks",

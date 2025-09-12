@@ -16,6 +16,9 @@ import bannerTwo from '../../assets/2banner.webp'
 import bannerThree from '../../assets/3banner.webp'
 import Women from '../../assets/women.avif'
 import children from '../../assets/children.webp'
+import Matching from '../../assets/matching.webp'
+import wellBeing from '../../assets/Well-Being.avif'
+import wash from '../../assets/wash.webp'
 
 
 export default {
@@ -36,5 +39,9 @@ export default {
   bannerTwo,
   bannerThree,
   Women,
-  children
+  children,
+  Matching,
+  wellBeing,
+  wash
+
 };

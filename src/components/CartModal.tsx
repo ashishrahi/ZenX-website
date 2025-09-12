@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
-import { Trash2, X } from "lucide-react";
+import { ShoppingCart, Trash2, X } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
 // Inside your CartModal component
@@ -31,7 +31,10 @@ const CartModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen,
       {/* Cart Items */}
       <div className="flex-1 overflow-y-auto p-5 space-y-5">
         {cart.length === 0 ? (
-          <p className="text-gray-400 text-center mt-20">Your cart is empty.</p>
+           <p className="text-gray-400 text-center mt-20 flex flex-col items-center">
+  <ShoppingCart className="w-12 h-12 mb-2 text-gray-400" />
+  Your cart is empty.
+</p>
         ) : (
           cart.map((item) => (
             <div key={item.id} className="flex items-start gap-4 border rounded-xl p-3 bg-white shadow-sm">

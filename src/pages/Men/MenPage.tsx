@@ -1,5 +1,3 @@
-import Header from "@/components/Header";
-import HeroSection from "@/components/HeroSection";
 import ProductCategories from "@/components/ProductCategories";
 import Footer from "@/components/Footer";
 import Sidebar from "@/components/Sidebar";
@@ -7,16 +5,18 @@ import Chatbot from "@/components/Chatbot";
 import TrendingProducts from "@/components/TrendingProducts";
 import { categories } from "../../api/men/menCateogryData";
 import { menInnerwear as productsData } from "../../api/men/menProductsData";
-import { slides } from "../../api/slidesData";
 import MenHero from "@/components/MenHero";
+import Container from "@/components/Container";
+import images from "@/assets/men/images";
 
 
 const Men = () => {
   return (
-    <div className="max-h-screen bg-background mt-10">
-      adfadsf
+    <Container>
+
       {/* Top Section */}
       <MenHero
+      images = {images}
       />
 
       {/* product categories */}
@@ -39,7 +39,7 @@ const Men = () => {
 
       <TrendingProducts
         productsData={productsData.filter(product => product.tag?.includes("Premium"))}
-        title="Premium Choices"
+        title="👑 Premium Choices"
         description="High-quality picks crafted for your ultimate satisfaction"
       />
 
@@ -63,7 +63,7 @@ const Men = () => {
 
       {/* Floating Chatbot */}
       <Chatbot />
-    </div>
+    </Container>
   );
 };
 
