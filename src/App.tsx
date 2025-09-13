@@ -13,6 +13,8 @@ import KidsPage from "./pages/Kids/KidsPage";
 import KidsCategoryProducts from "./components/KidsCategoryProducts";
 import KidsProductDetailPage from "./pages/Kids/KidsProductDetails/KidsProductDetailsPage";
 import WomenCategoryProducts from "./components/WomenCategoryProducts";
+import LoadingPage from "./components/LoadingPage";
+import Sidebar from "./components/Sidebar";
 
 // ✅ Lazy loading for better performance
 const Index = lazy(() => import("./pages/Index"));
@@ -41,7 +43,7 @@ const App = () => (
         <Header />
 
         {/* Suspense ensures that while components are loading, fallback UI is shown */}
-        <Suspense fallback={<div className="text-center p-8">Loading...</div>}>
+        <Suspense fallback={<LoadingPage/>}>
           <Routes>
             {/* Home and Static Pages */}
             <Route path="/" element={<Index />} />
@@ -92,6 +94,8 @@ const App = () => (
         </Suspense>
         <Footer />
         <Chatbot />
+      <Sidebar />
+
 
       </BrowserRouter>
     </TooltipProvider>

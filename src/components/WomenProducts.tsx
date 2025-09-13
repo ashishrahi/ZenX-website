@@ -9,6 +9,7 @@ interface Product {
   name: string;
   images: { [key: string]: string };
   tag?: string[];
+  price: number
 }
 
 interface TrendingProductsProps {

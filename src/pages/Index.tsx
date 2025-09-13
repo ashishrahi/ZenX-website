@@ -83,7 +83,7 @@ const Index = () => {
       <h2 className="text-4xl md:text-5xl font-bold text-red-600 drop-shadow-2xl mb-2">
         New Arrivals
       </h2>
-      <p className="text-base md:text-lg max-w-3xl px-4 py-2 rounded-md text-black shadow-sm bg-white/80">
+      <p className="text-base md:text-lg max-w-3xl px-4 py-2 rounded-md text-black shadow-sm">
         Explore our globally loved, premium innerwear collection crafted for
         style and unmatched comfort.
       </p>

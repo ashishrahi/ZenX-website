@@ -23,7 +23,7 @@ const CartModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen,
       {/* Header */}
       <div className="flex items-center justify-between p-5 border-b bg-gray-50">
         <h2 className="text-lg font-semibold text-gray-800">Items in my bag</h2>
-        <Button variant="ghost" size="icon" onClick={onClose}>
+        <Button  size="icon" onClick={onClose}>
           <X size={20} />
         </Button>
       </div>
@@ -55,9 +55,8 @@ const CartModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen,
                 <p className="font-semibold text-gray-900 mt-1">₹{item.price * item.quantity}</p>
               </div>
               <Button
-                variant="ghost"
                 size="icon"
-                className="text-red-500 hover:bg-red-50"
+                className="text-white hover:bg-red-700"
                 onClick={() => removeItem(item.id)}
               >
                 <Trash2 size={18} />

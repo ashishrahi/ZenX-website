@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ProductDetails from "../../../components/WomenProductDetails";
+import WomenProductCard from "@/components/WomenProductCard"; // Assuming you have a card component
 import { womenInnerwear } from "../../../api/women/womenProductsData";
 
 interface Product {
@@ -15,9 +16,10 @@ interface Product {
   images?: Record<string, string[]>;
 }
 
-const WomemDetailPage = () => {
+const WomenDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     if (!id) return;
@@ -26,7 +28,21 @@ const WomemDetailPage = () => {
     const selectedProduct =
       womenInnerwear.find((product) => product.id === Number(id)) || null;
     setCurrentProduct(selectedProduct);
+
+    // Find related products
+    if (selectedProduct) {
+  console.log("Selected product:", selectedProduct);
+
+      const related = womenInnerwear.filter(
+        (product) =>
+          product.category === selectedProduct.category &&
+          product.id !== selectedProduct.id
+      );
+      setRelatedProducts(related);
+    }
   }, [id]);
+
+console.log("Related products:", relatedProducts);
 
   return (
     <div className="min-h-screen">
@@ -42,9 +58,20 @@ const WomemDetailPage = () => {
                 <ProductDetails product={currentProduct} />
               </div>
             </section>
+
+            {/* Related Products */}
+            {relatedProducts.length > 0 && (
+              <section aria-labelledby="related-products" className="mb-16">
+                <h2 className="text-2xl font-bold mb-6">Related Products</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                  {relatedProducts.map((product) => (
+                    <WomenProductCard key={product.id} product={product} />
+                  ))}
+                </div>
+              </section>
+            )}
           </>
         ) : (
-          /* Product Not Found */
           <div className="text-center py-28">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
               Product Not Found
@@ -60,4 +87,4 @@ const WomemDetailPage = () => {
   );
 };
 
-export default WomemDetailPage;
+export default WomenDetailPage;

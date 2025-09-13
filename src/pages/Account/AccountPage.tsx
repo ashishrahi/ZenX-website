@@ -36,7 +36,7 @@ const AccountPage: React.FC = () => {
     <div className="min-h-screen bg-white pt-24">
       <div className="max-w-7xl mx-auto px-4 lg:px-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
         <aside className="col-span-1">
-          <AccountSidebar onLogout={handleLogout} onSelectTab={setActiveTab} />
+          <AccountSidebar onLogout={handleLogout} onSelectTab={setActiveTab} selectedTab={activeTab}  />
         </aside>
 
         <main className="col-span-2 flex flex-col items-center justify-start">

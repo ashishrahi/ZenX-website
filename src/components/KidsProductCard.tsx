@@ -36,7 +36,7 @@ const KidsProductCard: FC<ProductCardProps> = ({ product }) => {
   const [imageError, setImageError] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
 
-  const handleViewDetails = () => navigate(`/mens/product/${product?.id}`);
+  const handleViewDetails = () => navigate(`/kids/product/${product?.id}`);
   const isInCart = cart?.some((item) => item?.id === product?.id);
   const inWishlist = isInWishlist?.(product?.id);
 

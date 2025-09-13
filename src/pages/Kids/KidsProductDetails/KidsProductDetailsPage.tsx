@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import MenProductDetails from "../../../components/MenProductDetails";
+import KidsProductDetails from "../../../components/KidsProductDetails";
 import MenProductCard from "@/components/MenProductCard";
 import Comments, { Comment } from "@/components/Comments"; // Import Comments component
-import { menInnerwear } from "../../../api/men/menProductsData";
+import { kidsInnerwear } from "../../../api/kids/kidsProductsData";
 
 interface Product {
   id: number;
@@ -32,11 +32,11 @@ const KidsProductDetailPage = () => {
     if (!id) return;
 
     const selectedProduct =
-      menInnerwear.find((product) => product.id === Number(id)) || null;
+      kidsInnerwear.find((product) => product.id === Number(id)) || null;
     setCurrentProduct(selectedProduct);
 
     if (selectedProduct) {
-      const related = menInnerwear.filter(
+      const related = kidsInnerwear.filter(
         (product) =>
           product.category === selectedProduct.category &&
           product.id !== selectedProduct.id
@@ -56,7 +56,7 @@ const KidsProductDetailPage = () => {
               className="flex flex-col lg:flex-row gap-10 lg:gap-16 mb-16"
             >
               <div className="flex-1 min-w-0 rounded-2xl shadow-md p-6">
-                <MenProductDetails product={currentProduct} />
+                <KidsProductDetails product={currentProduct} />
               </div>
             </section>
 

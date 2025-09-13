@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { kidsWear, sizeGuide, sizes } from "../api/kids/kidsProductsData";
+import { kidsInnerwear, sizeGuide, sizes } from "../api/kids/kidsProductsData";
 import Magnifier from "@/utilis/Magnifier";
 import PurchaseAssistantModal from "../components/PurchaseAssistantModal";
 import { useCart, CartItem } from "../context/CartContext";
@@ -25,7 +25,7 @@ const KidsProductDetails: React.FC = () => {
 
   // Find the product using useMemo to prevent unnecessary recalculations
   const product = useMemo(() => {
-    return kidsWear?.find((p) => p?.id === Number(id));
+    return kidsInnerwear?.find((p) => p?.id === Number(id));
   }, [id]);
 
   // Set initial color when product is available
