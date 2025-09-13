@@ -7,7 +7,7 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { CartProvider } from "./context/CartContext.tsx";
-import { WishlistProvider } from "./context/wishListContext.tsx";
+import { WishlistProvider } from "./context/WishlistContext.tsx";
 import { BreadcrumbsProvider } from "./context/BreadcrumbsContext.tsx";
 import GlobalBreadcrumbs from "./components/GlobalBreadcrumbs.tsx";
 
