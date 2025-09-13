@@ -4,33 +4,25 @@ import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { kidsCategories } from "@/api/kids/kidsCateogryData";
 
 const AUTOPLAY_INTERVAL = 2500;
 const CARD_WIDTH = 320;
 const CARD_GAP = 30;
 
-const ProductCategories = ({ title, categories = [], description }) => {
+const KidsProductCategories = ({ title, description, categories }) => {
   const navigate = useNavigate();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const autoplayRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const resumeTimeoutRef = useRef<number | null>(null);
 
-  // Flatten all subCategories for carousel
-  const allSubCategories = categories
-    .filter((v, i, a) => a.findIndex(cat => cat.slug === v.slug) === i) 
-    .flatMap(cat => cat.subCategories || []);
-
-  const handleCardClick = (slug?: string) => {
-    if (slug) navigate(`/category/${slug}`);
-  };
-
   const startAutoplay = () => {
     stopAutoplay();
-    if (!allSubCategories?.length) return;
+    if (!categories.length) return;
 
     autoplayRef.current = window.setInterval(() => {
-      setActiveIndex(prev => (prev + 1) % allSubCategories.length);
+      setActiveIndex(prev => (prev + 1) % categories.length);
     }, AUTOPLAY_INTERVAL);
   };
 
@@ -51,13 +43,13 @@ const ProductCategories = ({ title, categories = [], description }) => {
   };
 
   const goToNext = () =>
-    pauseAndMaybeResume(() => setActiveIndex(prev => (prev + 1) % allSubCategories.length));
+    pauseAndMaybeResume(() => setActiveIndex(prev => (prev + 1) % categories.length));
 
   const goToPrev = () =>
-    pauseAndMaybeResume(() => setActiveIndex(prev => (prev - 1 + allSubCategories.length) % allSubCategories.length));
+    pauseAndMaybeResume(() => setActiveIndex(prev => (prev - 1 + categories.length) % categories.length));
 
   const calculateCardTransform = (index: number) => {
-    const totalItems = allSubCategories.length;
+    const totalItems = categories.length;
     const offset = CARD_WIDTH * 0.7 + CARD_GAP;
     let position = index - activeIndex;
     const half = Math.floor(totalItems / 2);
@@ -88,7 +80,11 @@ const ProductCategories = ({ title, categories = [], description }) => {
       stopAutoplay();
       if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
     };
-  }, [categories]);
+  }, []);
+
+  const handleCardClick = (slug: string) => {
+    navigate(`/kids/category/${slug}`);
+  };
 
   return (
     <section className="py-12 bg-background" id="products">
@@ -110,11 +106,10 @@ const ProductCategories = ({ title, categories = [], description }) => {
 
         {/* Carousel */}
         <div className="w-full max-w-7xl mx-auto relative">
-          {/* Navigation Buttons */}
           <Button
             className="absolute left-0 top-1/2 -translate-y-1/2 border bg-red-500 shadow-md hover:bg-red-700 w-12 h-12 rounded-full"
             onClick={goToPrev}
-            style={{ zIndex: 45, pointerEvents: "auto" }}
+            style={{ zIndex: 45 }}
             aria-label="Previous category"
           >
             <ChevronLeft className="h-6 w-6" />
@@ -123,19 +118,19 @@ const ProductCategories = ({ title, categories = [], description }) => {
           <Button
             className="absolute right-0 top-1/2 -translate-y-1/2 border bg-red-500 shadow-md hover:bg-red-700 w-12 h-12 rounded-full"
             onClick={goToNext}
-            style={{ zIndex: 45, pointerEvents: "auto" }}
+            style={{ zIndex: 45 }}
             aria-label="Next category"
           >
             <ChevronRight className="h-6 w-6" />
           </Button>
 
           <div className="flex items-center justify-center relative h-[400px] overflow-hidden">
-            {allSubCategories?.map((category, index) => {
+            {categories.map((category, index) => {
               const transform = calculateCardTransform(index);
 
               return (
                 <motion.div
-                  key={index}
+                  key={category.slug}
                   className="absolute flex justify-center w-full pointer-events-none"
                   onMouseEnter={() => {
                     setHoveredIndex(index);
@@ -161,26 +156,26 @@ const ProductCategories = ({ title, categories = [], description }) => {
                 >
                   <Card
                     className="group cursor-pointer border shadow-lg hover:shadow-2xl overflow-hidden transition-all duration-500 w-80 h-[340px] rounded-2xl relative bg-white pointer-events-auto"
-                    onClick={() => handleCardClick(category?.slug)}
+                    onClick={() => handleCardClick(category.slug)}
                   >
                     <CardContent className="h-full relative rounded-2xl p-0">
                       <motion.img
-                        src={getFirstImage(category?.images)}
-                        alt={category?.name || "Category"}
+                        src={getFirstImage(category.images)}
+                        alt={category.name}
                         className="absolute top-0 left-0 w-full h-full object-cover"
                         animate={{ opacity: hoveredIndex === index ? 0.9 : 1 }}
                         transition={{ duration: 0.5 }}
                       />
                       <motion.img
-                        src={hoveredIndex === index ? getHoverImage(category?.images) : getFirstImage(category?.images)}
-                        alt={category?.name || "Category"}
+                        src={hoveredIndex === index ? getHoverImage(category.images) : getFirstImage(category.images)}
+                        alt={category.name}
                         className="absolute top-0 left-0 w-full h-full object-cover"
                         animate={{ opacity: hoveredIndex === index ? 1 : 0 }}
                         transition={{ duration: 0.5 }}
                       />
                       <div className="absolute inset-0 flex flex-col justify-end p-6 bg-black/30 text-white">
-                        <h3 className="text-xl font-bold uppercase">{category?.name}</h3>
-                        <p className="text-sm mt-2">{category?.description}</p>
+                        <h3 className="text-xl font-bold uppercase">{category.name}</h3>
+                        <p className="text-sm mt-2">{category.description}</p>
                         <Button
                           variant="secondary"
                           className="bg-white text-black hover:bg-gray-100 rounded-lg px-5 py-2 mt-4 self-start"
@@ -197,7 +192,7 @@ const ProductCategories = ({ title, categories = [], description }) => {
 
           {/* Dots Pagination */}
           <div className="flex justify-center mt-6 gap-2">
-            {allSubCategories?.map((_, index) => (
+            {categories.map((_, index) => (
               <motion.div
                 key={index}
                 onClick={() => pauseAndMaybeResume(() => setActiveIndex(index))}
@@ -213,4 +208,4 @@ const ProductCategories = ({ title, categories = [], description }) => {
   );
 };
 
-export default ProductCategories;
+export default KidsProductCategories;

@@ -19,16 +19,29 @@ import children from '../../assets/children.webp'
 import Matching from '../../assets/matching.webp'
 import wellBeing from '../../assets/Well-Being.avif'
 import wash from '../../assets/wash.webp'
-import braletteWhite from '../../assets/braletteWhite.webp'
-import  braletteBlack from '../../assets/braletteBlack.webp'
+import braletteWhite from '../../assets/women/braletteWhite-removebg-preview.png'
+import  braletteBlack from '../../assets/women/braletteBlack-removebg-preview.png'
 import braletteBeige from '../../assets/braletteBeige.webp'
-import pantyBlack from '../../assets/pantyBlack.webp'
-import thermalGreyWomen from '../../assets/thermalGreywomen.jpg'
-import thermalBlackWomen from '../../assets/thermalBlack.avif'
-import sportsBraBlack from '../../assets/sportsBraBlack.webp'
+import pantyBlack from '../../assets/women/pantyBlack-removebg-preview.png'
+import thermalGreyWomen from '../../assets/women/thermalGreywomen-removebg-preview.png'
+import thermalBlackWomen from '../../assets/women/thermalGreywomen-removebg-preview.png'
+import sportsBraBlack from '../../assets/women/sportsBraBlack-removebg-preview.png'
 import sportsBraGrey from '../../assets/sportsBraGrey.jpeg'
-import sportsBraPink from '../../assets/sportsBraPink.webp'
+import sportsBraPink from '../../assets/women/sportsBraPink-removebg-preview.png'
 import womenBanner from '../../assets/women/banner.webp'
+import kidsTshirtWhite from '../../assets/kids/kidsTshirtWhite-removebg-preview.png'
+import kidsTshirtBlack from '../../assets/kids/kidsTshirtBlack-removebg-preview.png'
+import kidsTshirtBlue from '../../assets/kids/kidsTshirtBlue-removebg-preview.png'
+import kidsShortsBlack from '../../assets/kids/kidsShortsBlack-removebg-preview.png'
+import kidsShortsGrey from '../../assets/kids/kidsShortsGrey-removebg-preview.png'
+import kidsWinterRed from '../../assets/kids/kidsWinterRed-removebg-preview.png'
+import kidsWinterBlue from '../../assets/kids/kidsWinterBlue-removebg-preview.png'
+import kidsSportsGreen from '../../assets/kids/kidsSportsGreen-removebg-preview.png'
+import kidsSportsBlack from '../../assets/kids/kidsSportsBlack-removebg-preview.png'
+import kidsSportsYellow from '../../assets/kids/kidsSportsYellow-removebg-preview.png'
+import kidsCapBlack from '../../assets/kids/kidsCapWhite-removebg-preview.png'
+import kidsCapWhite from '../../assets/kids/kidsCapWhite-removebg-preview.png'
+import kidsBanner from '../../assets/kids/bannerKids.jpg'
 
 
 export default {
@@ -62,6 +75,21 @@ thermalBlackWomen,
 sportsBraBlack,
 sportsBraGrey,
 sportsBraPink,
-womenBanner
+womenBanner,
+kidsTshirtWhite,
+kidsTshirtBlack,
+kidsTshirtBlue,
+kidsShortsBlack,
+kidsShortsGrey,
+kidsWinterRed,
+kidsWinterBlue,
+kidsSportsGreen,
+kidsSportsBlack,
+kidsSportsYellow,
+kidsCapBlack,
+kidsCapWhite,
+kidsBanner
+
+
 
 };

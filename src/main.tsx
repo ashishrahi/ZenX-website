@@ -8,12 +8,17 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { CartProvider } from "./context/CartContext.tsx";
 import { WishlistProvider } from "./context/wishListContext.tsx";
+import { BreadcrumbsProvider } from "./context/BreadcrumbsContext.tsx";
+import GlobalBreadcrumbs from "./components/GlobalBreadcrumbs.tsx";
 
 createRoot(document.getElementById("root")!).render(
    <WishlistProvider>
+    <BreadcrumbsProvider>
+     <GlobalBreadcrumbs />
     <CartProvider>
         <App />
     </CartProvider>
+    </BreadcrumbsProvider>
     </WishlistProvider>
 
 );

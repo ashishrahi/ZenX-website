@@ -1,63 +1,63 @@
 import images from '@/assets/men/images'
 import Container from '@/components/Container'
-import ProductCategories from '@/components/ProductCategories'
+import WomenProductCategories from '@/components/WomenProductCategories'
 import WomenProducts from '@/components/WomenProducts'
 import WomenHero from '@/components/WomenHero'
 import { WomenCategories } from '../../api/women/womenCateogryData'
 import { womenInnerwear } from '../../api/women/womenProductsData'
 import Sidebar from '@/components/Sidebar'
-import { Outlet } from 'react-router-dom'
+import ShadowContainer from '@/components/ShadowContainer'
 
 const WomenPage = () => {
   return (
     <Container>
-      <Outlet />
+      {/* Hero Section */}
+      <WomenHero images={images} />
 
-      {/* Top Section */}
-      <WomenHero
-        images={images}
-      />
-
-      {/* product categories */}
-      <ProductCategories
-        title="Effortless Comfort, Perfect Fit"
-        description="Modern, product-focused tagline"
+      {/* Product Categories */}
+      <ShadowContainer>
+      <WomenProductCategories
+        title="Discover Timeless Comfort"
+        description="Explore versatile styles crafted for modern women, combining comfort and elegance."
         categories={WomenCategories}
       />
-      {/* TrendingProducts */}
+      </ShadowContainer>
+
+      {/* Trending Products */}
+      <ShadowContainer>
       <WomenProducts
-        productsData={womenInnerwear.filter(
-          (product) => product.tag !== "Premium"
-        )}
-        title="Handpicked For You"
-        description="Personalization ka touch, especially for logged-in users"
+        productsData={womenInnerwear.filter(product => product.tag !== "Premium")}
+        title="Top Picks for You"
+        description="Curated favorites designed to match your style and everyday needs."
       />
-
-      {/* Elite selection */}
-
+</ShadowContainer>
+      {/* Premium Collection */}
+      <ShadowContainer>
 
       <WomenProducts
         productsData={womenInnerwear.filter(product => product.tag?.includes("Premium"))}
-        title="👑 Premium Choices"
-        description="High-quality picks crafted for your ultimate satisfaction"
+        title="Exclusive Premium Collection"
+        description="Experience the best in quality, style, and lasting comfort."
       />
+      </ShadowContainer>
 
-      {/* Essential */}
+      {/* Everyday Essentials */}
+      <ShadowContainer>
+
       <WomenProducts
         productsData={womenInnerwear.filter(
-          (product) => product.category === "women-bralettes" || product.category === "women-panties"
+          product =>
+            product.category === "women-bralettes" ||
+            product.category === "women-panties"
         )}
-        title="Essentials Journal"
-        description="focuses on everyday wear elevated"
+        title="Essential Daily Wear"
+        description="Classic essentials created for everyday comfort and effortless style."
       />
-
-
-
+      </ShadowContainer>
 
 
       {/* Sidebar for Navigation */}
       <Sidebar />
-
     </Container>
   )
 }

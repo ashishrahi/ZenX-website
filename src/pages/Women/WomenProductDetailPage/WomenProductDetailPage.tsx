@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ProductDetails from "../../../components/WomenProductDetails";
-import RelatedProducts from "../../../components/RelatedProduct";
 import { womenInnerwear } from "../../../api/women/womenProductsData";
 
 interface Product {
@@ -19,7 +18,6 @@ interface Product {
 const WomemDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
-  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     if (!id) return;
@@ -28,22 +26,6 @@ const WomemDetailPage = () => {
     const selectedProduct =
       womenInnerwear.find((product) => product.id === Number(id)) || null;
     setCurrentProduct(selectedProduct);
-
-    // Find related products
-    if (selectedProduct) {
-      const related = womenInnerwear.filter(
-        (product) =>
-          product.id !== selectedProduct.id &&
-          (product.category === selectedProduct.category ||
-           product.brand === selectedProduct.brand ||
-           product.tags?.some((tag) =>
-             selectedProduct.tags?.includes(tag)
-           ))
-      );
-      setRelatedProducts(related);
-    } else {
-      setRelatedProducts([]);
-    }
   }, [id]);
 
   return (
@@ -60,26 +42,6 @@ const WomemDetailPage = () => {
                 <ProductDetails product={currentProduct} />
               </div>
             </section>
-
-            {/* Related Products */}
-            {relatedProducts.length > 0 && (
-              <section aria-labelledby="related-products" className="mt-12">
-                <div className="flex items-center justify-between mb-6">
-                  <h2
-                    id="related-products"
-                    className="text-2xl md:text-3xl font-bold text-gray-800"
-                  >
-                    Related Products
-                  </h2>
-                  <span className="text-gray-500 text-sm">
-                    {relatedProducts.length} items
-                  </span>
-                </div>
-
-                {/* Render all related products in one component */}
-                <RelatedProducts products={relatedProducts} />
-              </section>
-            )}
           </>
         ) : (
           /* Product Not Found */

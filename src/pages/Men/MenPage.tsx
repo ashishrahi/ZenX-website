@@ -7,62 +7,63 @@ import MenHero from "@/components/MenHero";
 import Container from "@/components/Container";
 import images from "@/assets/men/images";
 import MenProductCategories from "@/components/MenProductCategories";
+import Shadow from "@/components/Shadow";
+import ShadowContainer from "@/components/ShadowContainer";
 
 const MenPage = () => {
-  const location = useLocation();
 
-  // Render default sections only if we're on the main /mens page
-  const isDefaultPage = location.pathname === "/mens";
 
   return (
     <Container>
-      {/* Nested route content will render here */}
-      <Outlet />
 
-      {/* Default content for /mens */}
-      {isDefaultPage && (
-        <>
-          {/* Hero Section */}
-          <MenHero images={images} />
 
-          {/* Product Categories */}
-          <MenProductCategories
-            title="Effortless Comfort, Perfect Fit"
-            description="Modern, product-focused tagline"
-            categories={categories}
-          />
 
-          {/* Trending Products */}
-          <MenProducts
-            productsData={productsData.filter(
-              (product) => product.tag !== "Premium"
-            )}
-            title="Handpicked For You"
-            description="Personalization ka touch, especially for logged-in users"
-          />
+        {/* Hero Section */}
+        <MenHero images={images} />
 
-          {/* Premium Products */}
-          <MenProducts
-            productsData={productsData.filter((product) =>
+        {/* Product Categories */}
+         <ShadowContainer>
+        <MenProductCategories
+          title="Effortless Comfort, Perfect Fit"
+          description="Modern, product-focused tagline"
+          categories={categories}
+        />
+        </ShadowContainer>
+        {/* Trending Products */}
+        <ShadowContainer>
+        <MenProducts
+          productsData={productsData.filter(
+            (product) => product.tag !== "Premium"
+          )}
+          title="Handpicked For You"
+          description="Personalization ka touch, especially for logged-in users"
+        />
+        </ShadowContainer>
+
+        {/* Premium Products */}
+           <ShadowContainer>
+        <MenProducts
+          productsData={productsData.filter((product) =>
+            product.tag?.includes("Premium")
+          )}
+          title="👑 Premium Choices"
+          description="High-quality picks crafted for your ultimate satisfaction"
+        />
+        </ShadowContainer>
+
+        {/* Essential Products */}
+        <ShadowContainer>
+        <MenProducts
+          productsData={productsData.filter(
+            (product) =>
+              (product.category === "men-trunks" ||
+                product.category === "men-briefs") &&
               product.tag?.includes("Premium")
-            )}
-            title="👑 Premium Choices"
-            description="High-quality picks crafted for your ultimate satisfaction"
-          />
-
-          {/* Essential Products */}
-          <MenProducts
-            productsData={productsData.filter(
-              (product) =>
-                (product.category === "men-trunks" ||
-                  product.category === "men-briefs") &&
-                product.tag?.includes("Premium")
-            )}
-            title="Essentials Journal"
-            description="Focuses on everyday wear elevated"
-          />
-        </>
-      )}
+          )}
+          title="Essentials Journal"
+          description="Focuses on everyday wear elevated"
+        />
+        </ShadowContainer>
 
       {/* Sidebar (always visible) */}
       <Sidebar />

@@ -109,7 +109,7 @@ const MenProductCategories = ({ title, description }) => {
           <Button
             className="absolute left-0 top-1/2 -translate-y-1/2 border bg-red-500 shadow-md hover:bg-red-700 w-12 h-12 rounded-full"
             onClick={goToPrev}
-            style={{ zIndex: 40 }}
+            style={{ zIndex: 45 }}
             aria-label="Previous category"
           >
             <ChevronLeft className="h-6 w-6" />
@@ -118,7 +118,7 @@ const MenProductCategories = ({ title, description }) => {
           <Button
             className="absolute right-0 top-1/2 -translate-y-1/2 border bg-red-500 shadow-md hover:bg-red-700 w-12 h-12 rounded-full"
             onClick={goToNext}
-            style={{ zIndex: 40 }}
+            style={{ zIndex: 45 }}
             aria-label="Next category"
           >
             <ChevronRight className="h-6 w-6" />

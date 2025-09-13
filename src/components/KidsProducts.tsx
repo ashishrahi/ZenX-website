@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import WomenProductCard from "./WomenProductCard";
+import KidsProductCard from "./KidsProductCard";
 import Sweater from "../assets/swater.avif";
 
 interface Product {
@@ -17,7 +17,7 @@ interface TrendingProductsProps {
   description: string;
 }
 
-const WomenProducts = ({ productsData, title, description }: TrendingProductsProps) => {
+const KidsProducts = ({ productsData, title, description }: TrendingProductsProps) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slidesToShow, setSlidesToShow] = useState(1);
@@ -59,7 +59,7 @@ const WomenProducts = ({ productsData, title, description }: TrendingProductsPro
   const slideWidth = `${100 / slidesToShow}%`;
 
   return (
-    <section className="py-2 bg-background rounded" id="trending-products">
+    <section className="py-2 bg-background" id="trending-products">
       <div className="container mx-auto px-4">
         {/* Section Heading */}
         <div className="text-center mb-10">
@@ -119,7 +119,7 @@ const WomenProducts = ({ productsData, title, description }: TrendingProductsPro
                       onMouseLeave={() => setHoveredIndex(null)}
                     >
                       {/* Product Card */}
-                      <WomenProductCard
+                      <KidsProductCard
                         product={product}
                         primaryImage={product.images.Burgundy || Sweater}
                         secondaryImage={product.images.Black || Sweater}
@@ -183,4 +183,4 @@ const WomenProducts = ({ productsData, title, description }: TrendingProductsPro
   );
 };
 
-export default WomenProducts;
+export default KidsProducts;
