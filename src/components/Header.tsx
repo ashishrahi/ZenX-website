@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Search, Info, Heart, ShoppingBag, User, Menu, X } from "lucide-react";
+import { Search, Info, Heart, ShoppingBag, User, Menu, X, ChevronDown } from "lucide-react";
 import JockeyLogo from "../assets/Zen-X-Logo-300x139-removebg-preview.webp";
 import { navLinks } from "../api/navItemsData";
 import {
@@ -44,6 +44,7 @@ const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
 
   const navigate = useNavigate();
   const { cart } = useCart();
@@ -52,6 +53,14 @@ const Header: React.FC = () => {
   const iconClass =
     "p-2 rounded-full hover:text-current focus:text-current !hover:bg-transparent";
   const iconSize = 40;
+
+  const toggleMobileSubmenu = (name: string) => {
+    if (activeSubmenu === name) {
+      setActiveSubmenu(null);
+    } else {
+      setActiveSubmenu(name);
+    }
+  };
 
   return (
     <header className="w-full fixed top-0 left-0 z-50 bg-white shadow-sm">
@@ -76,24 +85,36 @@ const Header: React.FC = () => {
           {/* Center Section - Navigation */}
           <nav className="hidden md:flex space-x-8 relative">
             {navLinks.map((link) => (
-              <div key={link.name} className="group relative">
+              <div key={link.name} className="group relative py-6">
                 <NavLink
                   to={link.path}
                   className={({ isActive }) =>
-                    `uppercase text-sm font-medium tracking-wide transition-colors ${
+                    `uppercase text-sm font-medium tracking-wide transition-colors flex items-center ${
                       isActive ? "text-black" : "text-gray-400"
                     }`
                   }
+                  onMouseEnter={() => setActiveSubmenu(link.name)}
+                  onMouseLeave={() => setActiveSubmenu(null)}
                 >
                   {link.name}
+                  {link.subcategories && <ChevronDown size={16} className="ml-1" />}
                 </NavLink>
+
+                {/* Invisible hover area to prevent dropdown from disappearing */}
+                {link.subcategories && (
+                  <div className="absolute left-0 right-0 h-4 bg-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                )}
 
                 {/* Subcategory Dropdown */}
                 {link.subcategories && (
-                  <div
-                    className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2
-                               w-[800px] z-50 opacity-0 invisible group-hover:opacity-100
-                               group-hover:visible transition-opacity duration-200 bg-white shadow-lg border-t p-6"
+                  <div 
+                    className={`absolute left-0 top-full bg-white shadow-lg border-t mt-0 p-6 w-[800px] z-50 transition-all duration-300 ease-in-out ${
+                      activeSubmenu === link.name 
+                        ? "opacity-100 visible translate-y-0" 
+                        : "opacity-0 invisible -translate-y-2"
+                    }`}
+                    onMouseEnter={() => setActiveSubmenu(link.name)}
+                    onMouseLeave={() => setActiveSubmenu(null)}
                   >
                     <div className="grid grid-cols-4 gap-6">
                       {link.subcategories.map((sub, idx) => (
@@ -103,8 +124,11 @@ const Header: React.FC = () => {
                             {sub.items.map((item, i) => (
                               <li key={i}>
                                 <Link
-                                  to={`${link.path}/${item.toLowerCase().replace(/\s+/g, "-")}`}
+                                  to={`${link.path}/${item
+                                    .toLowerCase()
+                                    .replace(/\s+/g, "-")}`}
                                   className="text-gray-600 text-sm hover:text-black transition"
+                                  onClick={() => setActiveSubmenu(null)}
                                 >
                                   {item}
                                 </Link>
@@ -146,9 +170,72 @@ const Header: React.FC = () => {
               <DialogContent className="sm:max-w-[900px] max-h-[90vh] overflow-y-auto rounded-lg p-6 transition-transform duration-300 ease-in-out">
                 <DialogTitle className="text-2xl font-bold">Get in Touch</DialogTitle>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                  {/* Info Cards */}
-                  {/* Corporate Office, Purchase, Franchisee, Distributorship, Grievance */}
-                  {/* Keep your existing cards here */}
+                  {/* Corporate Office */}
+                  <div className="border rounded-lg p-4 shadow-sm hover:shadow-md transition">
+                    <h3 className="font-semibold text-lg mb-2">Corporate Office</h3>
+                    <p className="text-sm text-gray-700">
+                      ZenX Industries Limited, Cessna Business Park, Umiya Business Bay-Tower-1, 7th Floor, Kanpur, Uttar Pradesh, India, 560103.
+                    </p>
+                    <p className="text-sm mt-2 font-medium">CIN: L18101KA1994PLC016554</p>
+                    <p className="mt-2">
+                      📧{" "}
+                      <a href="mailto:wecare@ZenX.com" className="text-blue-600 hover:underline">
+                        wecare@ZenX.com
+                      </a>
+                    </p>
+                    <p className="mt-1">📞 1800-572-1299 / 1860-425-3333</p>
+                    <p className="text-xs text-gray-500">(Mon-Sun, 10:00 AM - 7:00 PM)</p>
+                  </div>
+
+                  {/* Purchase Queries */}
+                  <div className="border rounded-lg p-4 shadow-sm hover:shadow-md transition">
+                    <h3 className="font-semibold text-lg mb-2">For Purchase Related Queries</h3>
+                    <p className="text-sm text-gray-700">
+                      ZenX Industries Limited, Cessna Business Park, Umiya Business Bay-Tower-1, 3rd Floor, Kanpur, Uttar Pradesh, India, 560103.
+                    </p>
+                    <p className="text-sm mt-2 font-medium">CIN: L18101KA1994PLC016554</p>
+                    <p className="mt-2">
+                      📧{" "}
+                      <a href="mailto:wecare@jockeyindia.com" className="text-blue-600 hover:underline">
+                        wecare@jockeyindia.com
+                      </a>
+                    </p>
+                    <p className="mt-1">📞 1800-572-1299 / 1860-425-3333</p>
+                    <p className="text-xs text-gray-500">(Mon-Sun, 10:00 AM - 7:00 PM)</p>
+                  </div>
+
+                  {/* Franchisee */}
+                  <div className="border rounded-lg p-4 shadow-sm hover:shadow-md transition">
+                    <h3 className="font-semibold text-lg mb-2">To Apply for: Franchisee (Exclusive Outlet)</h3>
+                    <p className="mt-2">
+                      📧{" "}
+                      <a href="mailto:franchisee@ZenX.com" className="text-blue-600 hover:underline">
+                        franchisee@ZenX.com
+                      </a>
+                    </p>
+                    <p className="mt-1">📞 1800-572-1299</p>
+                  </div>
+
+                  {/* Distributorship */}
+                  <div className="border rounded-lg p-4 shadow-sm hover:shadow-md transition">
+                    <h3 className="font-semibold text-lg mb-2">To Apply for: Distributorship</h3>
+                    <p className="mt-2">
+                      📧{" "}
+                      <a href="mailto:wecare@jockeyindia.com" className="text-blue-600 hover:underline">
+                        wecare@ZenXindia.com
+                      </a>
+                    </p>
+                    <p className="mt-1">📞 1800-572-1299</p>
+                  </div>
+
+                  {/* Grievance Officer */}
+                  <div className="border rounded-lg p-4 shadow-sm hover:shadow-md transition md:col-span-2">
+                    <h3 className="font-semibold text-lg mb-2">Grievance Officer</h3>
+                    <p className="font-semibold">Ms. Meena Patel</p>
+                    <p className="text-sm text-gray-700 mt-2">
+                      Zen-X Industries Limited, Cessna Business Park, Umiya Business Bay-Tower-1, 3rd Floor, Kanpur, Uttar Pradesh, India, 560103.
+                    </p>
+                  </div>
                 </div>
               </DialogContent>
             </Dialog>
@@ -196,28 +283,71 @@ const Header: React.FC = () => {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-white shadow-md">
-          <nav className="flex flex-col space-y-2 px-4 py-4">
+          <nav className="flex flex-col space-y-0 px-4 py-4">
             {navLinks.map((link) => (
-              <NavLink
-                key={link.name}
-                to={link.path}
-                onClick={() => setMobileMenuOpen(false)}
-                className={({ isActive }) =>
-                  `uppercase text-sm font-medium tracking-wide transition-colors ${
-                    isActive ? "text-black" : "text-gray-400"
-                  }`
-                }
-              >
-                {link.name}
-              </NavLink>
+              <div key={link.name}>
+                <div 
+                  className="flex items-center justify-between py-3"
+                  onClick={() => {
+                    if (link.subcategories) {
+                      toggleMobileSubmenu(link.name);
+                    } else {
+                      navigate(link.path);
+                      setMobileMenuOpen(false);
+                    }
+                  }}
+                >
+                  <span className="uppercase text-sm font-medium tracking-wide text-gray-400">
+                    {link.name}
+                  </span>
+                  {link.subcategories && (
+                    <ChevronDown 
+                      size={16} 
+                      className={`transform transition-transform ${activeSubmenu === link.name ? 'rotate-180' : ''}`}
+                    />
+                  )}
+                </div>
+                
+                {/* Mobile Subcategories */}
+                {link.subcategories && activeSubmenu === link.name && (
+                  <div className="pl-4 pb-3">
+                    {link.subcategories.map((sub, idx) => (
+                      <div key={idx} className="mb-4">
+                        <h3 className="font-semibold mb-2 text-sm">{sub.title}</h3>
+                        <ul className="space-y-2">
+                          {sub.items.map((item, i) => (
+                            <li key={i}>
+                              <Link
+                                to={`${link.path}/${item
+                                  .toLowerCase()
+                                  .replace(/\s+/g, "-")}`}
+                                className="text-gray-600 text-sm block py-1"
+                                onClick={() => setMobileMenuOpen(false)}
+                              >
+                                {item}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
           </nav>
-          <div className="flex flex-col space-y-2 px-4 py-2">
-            <input
-              type="text"
-              placeholder="Search"
-              className="bg-gray-100 pl-3 pr-4 py-2 h-12 rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-gray-300 transition"
-            />
+          <div className="flex flex-col space-y-2 px-4 py-2 border-t">
+            <div className="relative">
+              <Search
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
+                size={18}
+              />
+              <input
+                type="text"
+                placeholder="Search"
+                className="bg-gray-100 pl-10 pr-4 py-2 h-12 rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-gray-300 transition w-full"
+              />
+            </div>
           </div>
         </div>
       )}
@@ -228,4 +358,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header;
+export default Header;  

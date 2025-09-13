@@ -195,7 +195,7 @@ const Index = () => {
     <h2 className="text-4xl md:text-5xl font-extrabold text-white drop-shadow-2xl mb-4">
       Users’ Choice
     </h2>
-    <p className="text-white text-lg md:text-xl max-w-3xl px-4 py-2 rounded-md shadow-lg bg-red-800/40">
+    <p className="text-black text-lg md:text-xl max-w-3xl px-4 py-2 rounded-md ">
       Discover the products loved by our users worldwide! Handpicked favorites for style, comfort, and premium appeal.
     </p>
   </motion.div>

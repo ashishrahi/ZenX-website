@@ -6,8 +6,13 @@ export interface Product {
   discountPrice?: number;
   images: { [key: string]: string[] };
   colors?: string[];
+  category?: string;
   trending?: boolean;
   bestSeller?: boolean;
-  category?: string;
 }
 
+export interface WishlistContextType {
+  wishlist: Product[];
+  toggleWishlist: (product: Product) => void;
+  isInWishlist: (id: number) => boolean;
+}
