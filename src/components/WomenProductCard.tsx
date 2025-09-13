@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
-import { useWishlist } from "../context/wishListContext"; // Wishlist context import
+import { useWishlist } from "../context/WishlistContext"; // Wishlist context import
 
 interface ProductCardProps {
   product: {
