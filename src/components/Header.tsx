@@ -55,7 +55,7 @@ const Header: React.FC = () => {
   const{wishlist} = useWishlist()
 
   const iconClass = "p-2 rounded-full hover:text-current focus:text-current !hover:bg-transparent";
-  const iconSize = 40; // Medium size icons
+  const iconSize = 40;
 
   return (
     <header className="w-full fixed top-0 left-0 z-50 bg-white shadow-sm">
