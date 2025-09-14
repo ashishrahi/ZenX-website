@@ -24,7 +24,7 @@ interface BlogProps {
 
 const Blog: React.FC<BlogProps> = ({ blogPosts = [] }) => {
   return (
-    <div className="max-w-7xl mx-auto px-4 mt-12 md:mt-16 lg:mt-20">
+    <div className="max-w-7xl mx-auto px-4 mt-12 md:mt-16 lg:mt-10">
       <section
         className="font-sans bg-cover bg-center bg-no-repeat"
         style={{

@@ -43,55 +43,47 @@ const App = () => (
         <Header />
 
         {/* Suspense ensures that while components are loading, fallback UI is shown */}
-        <Suspense fallback={<LoadingPage/>}>
-          <Routes>
-            {/* Home and Static Pages */}
-            <Route path="/" element={<Index />} />
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/faq" element={<Index />} />
-            <Route path="/kids" element={<Index />} />
+       <Suspense fallback={<LoadingPage />}>
+  <Routes>
+    {/* ✅ Wrap all pages under MainLayout */}
+    <Route element={<MainLayout />}>
+      {/* Home */}
+      <Route path="/" element={<Index />} />
 
-            {/* MEN Nested Routes */}
-            <Route path="/mens" element={<MainLayout />}>
-              <Route index element={<MenPage />} />
-              {/* Default men category page */}
-              <Route path="category/:slug" element={<MenCategoryProducts />} />
-              {/* Men product details page */}
-              <Route path="product/:id" element={<ProductDetailsPage />} />
-            </Route>
+      {/* Blog */}
+      <Route path="/blog" element={<BlogPage />} />
 
-            {/* WOMEN Nested Routes */}
-            <Route path="/womens" element={<MainLayout />}>
-              {/* Default women category page */}
-              <Route index element={<WomenPage />} />
-              {/* Default men category page */}
-              <Route path="category/:slug" element={<WomenCategoryProducts />} />
-              {/*Women product details page  */}
-              <Route path="product/:id" element={<WomenProductDetailsPage />} />
-            </Route>
+      {/* MEN */}
+      <Route path="/mens">
+        <Route index element={<MenPage />} />
+        <Route path="category/:slug" element={<MenCategoryProducts />} />
+        <Route path="product/:id" element={<ProductDetailsPage />} />
+      </Route>
 
-            {/* KIDS Nested Routes */}
+      {/* WOMEN */}
+      <Route path="/womens">
+        <Route index element={<WomenPage />} />
+        <Route path="category/:slug" element={<WomenCategoryProducts />} />
+        <Route path="product/:id" element={<WomenProductDetailsPage />} />
+      </Route>
 
-            <Route path="/kids" element={<MainLayout />}>
-              {/* Default kids category page */}
-              <Route index element={<KidsPage />} />
+      {/* KIDS */}
+      <Route path="/kids">
+        <Route index element={<KidsPage />} />
+        <Route path="category/:slug" element={<KidsCategoryProducts />} />
+        <Route path="product/:id" element={<KidsProductDetailPage />} />
+      </Route>
 
-              {/* Kids category products page */}
-              <Route path="category/:slug" element={<KidsCategoryProducts />} />
+      {/* Checkout and Account */}
+      <Route path="/checkout" element={<CheckoutPage />} />
+      <Route path="/account" element={<AccountPage />} />
 
-              {/* Kids product details page */}
-              <Route path="product/:id" element={<KidsProductDetailPage />} />
-            </Route>
+      {/* 404 Page */}
+      <Route path="*" element={<NotFound />} />
+    </Route>
+  </Routes>
+</Suspense>
 
-
-            {/* Checkout and Account */}
-            <Route path="/checkout" element={<CheckoutPage />} />
-            <Route path="/account" element={<AccountPage />} />
-
-            {/* 404 Page */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
         <Footer />
         <Chatbot />
       <Sidebar />
