@@ -5,6 +5,7 @@ import { womenInnerwear, sizeGuide, sizes } from "../api/women/womenProductsData
 import Magnifier from "@/utilis/Magnifier";
 import PurchaseAssistantModal from "../components/PurchaseAssistantModal";
 import { useCart, CartItem } from "../context/CartContext";
+import AppButton from "./AppButton"; // Make a global button component
 
 const WomenProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -23,12 +24,10 @@ const WomenProductDetails: React.FC = () => {
   });
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
 
-  // Find the product using useMemo to prevent unnecessary recalculations
   const product = useMemo(() => {
     return womenInnerwear?.find((p) => p?.id === Number(id));
   }, [id]);
 
-  // Set initial color when product is available
   useEffect(() => {
     if (product && product.colors && product.colors.length > 0) {
       setSelectedColor(product.colors[0]);
@@ -40,18 +39,15 @@ const WomenProductDetails: React.FC = () => {
   };
 
   if (!product) {
-    return <p className="text-center mt-20 text-lg">Product not found.</p>;
+    return <p className="text-center mt-20 text-lg text-foreground">Product not found.</p>;
   }
 
-  // Reset image when color changes
   useEffect(() => {
     setCurrentImage(0);
   }, [selectedColor]);
 
-  // Get available images for selected color
   const colorImages = product.images[selectedColor] || [];
 
-  // Check if the selected product variant is already in the cart
   const isInCart = useMemo(() => {
     return cart?.some(
       (item) =>
@@ -78,32 +74,25 @@ const WomenProductDetails: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen py-1">
+    <div className="min-h-screen py-1 bg-background">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex flex-col lg:flex-row gap-4 md:gap-8">
-          {/* Images with Card Background */}
+          {/* Images */}
           <div className="lg:w-1/2">
             <div className="flex flex-col gap-4">
               {colorImages.length > 0 && (
                 <>
-                  <div className="rounded-lg p-2 md:p-4">
-                    <div className="w-full h-auto max-w-full mx-auto">
-                      <Magnifier
-                        key={`${selectedColor}-${currentImage}`}
-                        src={colorImages[currentImage]}
-                        width={500}
-                        height={500}
-                        zoomLevel={2}
-                        showLens
-                        showZoomBox
-                        style={{
-                          borderRadius: '8px',
-                          overflow: 'hidden',
-                          maxWidth: '100%',
-                          height: 'auto'
-                        }}
-                      />
-                    </div>
+                  <div className="rounded-lg p-2 md:p-4 bg-card">
+                    <Magnifier
+                      key={`${selectedColor}-${currentImage}`}
+                      src={colorImages[currentImage]}
+                      width={500}
+                      height={500}
+                      zoomLevel={2}
+                      showLens
+                      showZoomBox
+                      className="rounded-lg overflow-hidden w-full h-auto"
+                    />
                   </div>
                   <div className="flex gap-2 overflow-x-auto py-2">
                     {colorImages.map((img, idx) => (
@@ -111,7 +100,7 @@ const WomenProductDetails: React.FC = () => {
                         key={idx}
                         src={img}
                         alt={`${product.name} view ${idx + 1}`}
-                        className={`w-16 h-16 md:w-20 md:h-20 object-center rounded-lg cursor-pointer border-2 ${currentImage === idx ? "border-red-600" : "border-gray-300"
+                        className={`w-16 h-16 md:w-20 md:h-20 object-cover rounded-lg cursor-pointer border-2 ${currentImage === idx ? "border-destructive" : "border-muted"
                           }`}
                         onMouseEnter={() => setCurrentImage(idx)}
                         onClick={() => setCurrentImage(idx)}
@@ -125,35 +114,36 @@ const WomenProductDetails: React.FC = () => {
             </div>
           </div>
 
-          {/* Details with Card Background */}
+          {/* Details */}
           <div className="lg:w-1/2">
-            <div className="rounded-xl shadow-md p-4 md:p-6 h-full">
+            <div className="rounded-xl shadow-md p-4 md:p-6 h-full bg-card">
               <div className="flex flex-col gap-4 md:gap-6">
-                <h1 className="text-2xl md:text-3xl font-bold">{product.name}</h1>
-                <p className="text-gray-500 text-sm">Save to favourites</p>
-                <p className="text-red-600 text-xl md:text-2xl font-bold">Rs. {product.price}.00</p>
-                <p className="text-gray-500 text-xs md:text-sm">MRP inclusive of all taxes</p>
+                <h1 className="text-2xl md:text-3xl font-bold text-foreground">{product.name}</h1>
+                <p className="text-muted-foreground text-sm">Save to favourites</p>
+                <p className="text-destructive text-xl md:text-2xl font-bold">Rs. {product.price}.00</p>
+                <p className="text-muted-foreground text-xs md:text-sm">MRP inclusive of all taxes</p>
 
-                {/* Colour selection */}
+                {/* Colors */}
                 <div className="space-y-2">
-                  <p className="font-semibold">Colour: {selectedColor}</p>
+                  <p className="font-semibold text-foreground">Colour: {selectedColor}</p>
                   <div className="flex gap-2 md:gap-3 flex-wrap">
                     {product.colors?.map((color) => (
                       <button
                         key={color}
                         onClick={() => setSelectedColor(color)}
-                        className={`flex items-center gap-1 md:gap-2 px-2 py-1 md:px-3 md:py-2 rounded-lg border font-medium transition ${selectedColor === color
-                            ? "border-red-600 bg-red-50"
-                            : "border-gray-300 hover:border-red-600 hover:bg-red-50"
+                        className={`flex items-center gap-1 md:gap-2 px-2 py-1 md:px-3 md:py-2 rounded-lg border font-medium transition
+                          ${selectedColor === color
+                            ? "border-destructive bg-destructive/10 text-destructive"
+                            : "border-muted hover:border-destructive hover:bg-destructive/10 text-foreground"
                           }`}
                         aria-label={`Select color: ${color}`}
                         aria-pressed={selectedColor === color}
                       >
-                        {product.images[color] && product.images[color][0] && (
+                        {product.images[color]?.[0] && (
                           <img
                             src={product.images[color][0]}
                             alt={`${color} preview`}
-                            className="w-12 h-12 md:w-16 md:h-16 rounded object-cover border"
+                            className="w-12 h-12 md:w-16 md:h-16 rounded object-cover border border-muted"
                           />
                         )}
                         <span className="text-sm md:text-base">{color}</span>
@@ -162,12 +152,12 @@ const WomenProductDetails: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Size selection */}
+                {/* Sizes */}
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <p className="font-semibold">Selected size: {selectedSize ?? "None"}</p>
+                    <p className="font-semibold text-foreground">Selected size: {selectedSize ?? "None"}</p>
                     <button
-                      className="text-red-600 hover:underline text-xs md:text-sm"
+                      className="text-destructive hover:underline text-xs md:text-sm"
                       onClick={() => setShowSizeChart(true)}
                       aria-expanded={showSizeChart}
                     >
@@ -178,9 +168,10 @@ const WomenProductDetails: React.FC = () => {
                     {sizes.map((size) => (
                       <button
                         key={size}
-                        className={`px-2 py-1 md:px-3 md:py-1 rounded-lg border font-medium transition ${selectedSize === size
-                            ? "bg-red-600 text-white border-red-600"
-                            : "bg-white text-gray-700 border-gray-300 hover:bg-red-600 hover:text-white"
+                        className={`px-2 py-1 md:px-3 md:py-1 rounded-lg border font-medium transition
+                          ${selectedSize === size
+                            ? "bg-destructive text-white border-destructive"
+                            : "bg-card text-foreground border-muted hover:bg-destructive/10 hover:text-destructive"
                           }`}
                         onClick={() => setSelectedSize(size)}
                         aria-label={`Select size: ${size}`}
@@ -192,38 +183,23 @@ const WomenProductDetails: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Action buttons */}
+                {/* Buttons */}
                 <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
                   {isInCart ? (
-                    <button
-                      className="flex-1 py-2 md:py-3 bg-green-500 text-white rounded-lg font-medium cursor-not-allowed"
-                      disabled
-                      aria-label="Item already in cart"
-                    >
+                    <AppButton disabled className="flex-1 py-2 md:py-3 cursor-not-allowed bg-green-500 text-white">
                       Added to Cart
-                    </button>
+                    </AppButton>
                   ) : (
-                    <button
-                      className="flex-1 py-2 md:py-3 bg-red-500 text-white rounded-lg font-medium hover:bg-red-700 transition"
-                      onClick={handleAddToCart}
-                      aria-label="Add to cart"
-                    >
+                    <AppButton onClick={handleAddToCart} className="flex-1 py-2 md:py-3 bg-destructive text-white hover:bg-destructive/80">
                       ADD TO CART
-                    </button>
+                    </AppButton>
                   )}
-
-                  <button
-                    className="flex-1 py-2 md:py-3 border border-gray-300 rounded-lg hover:bg-gray-100 font-medium"
-                    onClick={() => setShowPurchaseModal(true)}
-                    aria-label="Open purchase assistant"
-                  >
+                  <AppButton onClick={() => setShowPurchaseModal(true)} className="flex-1 py-2 md:py-3 border border-muted hover:bg-muted/10">
                     PURCHASE ASSISTANT
-                  </button>
+                  </AppButton>
                 </div>
 
-                <button className="text-blue-600 hover:underline text-xs md:text-sm">
-                  Check availability
-                </button>
+                <button className="text-primary hover:underline text-xs md:text-sm">Check availability</button>
 
                 {/* Collapsible sections */}
                 <div className="space-y-3 md:space-y-4">
@@ -234,18 +210,16 @@ const WomenProductDetails: React.FC = () => {
                       care: "Care Guide",
                       delivery: "Delivery and Payment",
                     };
-
                     const content: Record<string, string> = {
                       description: product.description ?? "",
                       materials: product.material ?? "",
                       care: product.care ?? "",
                       delivery: product.delivery ?? "",
                     };
-
                     return (
-                      <div key={sectionKey} className="border border-gray-200 rounded-lg">
+                      <div key={sectionKey} className="border border-muted rounded-lg">
                         <button
-                          className="w-full flex justify-between items-center p-3 md:p-4 font-semibold text-sm md:text-base"
+                          className="w-full flex justify-between items-center p-3 md:p-4 font-semibold text-sm md:text-base text-foreground"
                           onClick={() => toggleSection(sectionKey as keyof typeof openSections)}
                           aria-expanded={openSections[sectionKey as keyof typeof openSections]}
                           aria-controls={`${sectionKey}-content`}
@@ -262,7 +236,7 @@ const WomenProductDetails: React.FC = () => {
                               animate={{ opacity: 1, height: "auto" }}
                               exit={{ opacity: 0, height: 0 }}
                               transition={{ duration: 0.3 }}
-                              className="p-3 md:p-4 border-t border-gray-200 overflow-hidden text-sm md:text-base"
+                              className="p-3 md:p-4 border-t border-muted overflow-hidden text-sm md:text-base text-muted-foreground"
                             >
                               {content[sectionKey]}
                             </motion.div>
@@ -291,7 +265,7 @@ const WomenProductDetails: React.FC = () => {
                 aria-hidden="true"
               />
               <motion.div
-                className="fixed top-0 right-0 w-full max-w-md h-full bg-white shadow-lg z-50"
+                className="fixed top-0 right-0 w-full max-w-md h-full bg-background shadow-lg z-50"
                 initial={{ x: "100%" }}
                 animate={{ x: 0 }}
                 exit={{ x: "100%" }}
@@ -301,10 +275,10 @@ const WomenProductDetails: React.FC = () => {
                 aria-labelledby="size-guide-title"
               >
                 <div className="h-full flex flex-col overflow-y-auto">
-                  <div className="flex justify-between items-center p-4 border-b">
-                    <h2 id="size-guide-title" className="text-lg font-bold">Size Guide</h2>
+                  <div className="flex justify-between items-center p-4 border-b border-muted">
+                    <h2 id="size-guide-title" className="text-lg font-bold text-foreground">Size Guide</h2>
                     <button
-                      className="text-gray-500 hover:text-gray-700 text-2xl"
+                      className="text-muted-foreground hover:text-foreground text-2xl"
                       onClick={() => setShowSizeChart(false)}
                       aria-label="Close size guide"
                     >
@@ -316,9 +290,10 @@ const WomenProductDetails: React.FC = () => {
                       {["XXS-S", "M-XL", "XXL-3XL"].map((range) => (
                         <button
                           key={range}
-                          className={`px-3 py-1 rounded-lg border font-medium transition ${activeSizeRange === range
-                              ? "bg-red-600 text-white border-red-600"
-                              : "bg-white text-gray-700 border-gray-300 hover:bg-red-600 hover:text-white"
+                          className={`px-3 py-1 rounded-lg border font-medium transition
+                            ${activeSizeRange === range
+                              ? "bg-destructive text-white border-destructive"
+                              : "bg-card text-foreground border-muted hover:bg-destructive/10 hover:text-destructive"
                             }`}
                           onClick={() => setActiveSizeRange(range as any)}
                           aria-pressed={activeSizeRange === range}
@@ -331,9 +306,9 @@ const WomenProductDetails: React.FC = () => {
                       <table className="w-full border-collapse text-sm">
                         <thead>
                           <tr>
-                            <th className="border p-2">Measurement</th>
+                            <th className="border p-2 text-foreground">Measurement</th>
                             {sizeGuide[activeSizeRange]?.[0]?.values?.map((_, idx) => (
-                              <th key={idx} className="border p-2 text-center">
+                              <th key={idx} className="border p-2 text-center text-foreground">
                                 {sizes[idx]}
                               </th>
                             ))}
@@ -341,10 +316,10 @@ const WomenProductDetails: React.FC = () => {
                         </thead>
                         <tbody>
                           {sizeGuide[activeSizeRange]?.map((row, idx) => (
-                            <tr key={idx} className="border-t">
-                              <td className="border p-2 font-medium">{row?.label}</td>
+                            <tr key={idx} className="border-t border-muted">
+                              <td className="border p-2 font-medium text-foreground">{row?.label}</td>
                               {row?.values?.map((val, i) => (
-                                <td key={i} className="border p-2 text-center">
+                                <td key={i} className="border p-2 text-center text-foreground">
                                   {val}
                                 </td>
                               ))}
@@ -360,7 +335,6 @@ const WomenProductDetails: React.FC = () => {
           )}
         </AnimatePresence>
 
-        {/* Purchase Assistant Modal */}
         <PurchaseAssistantModal
           isOpen={showPurchaseModal}
           onClose={() => setShowPurchaseModal(false)}

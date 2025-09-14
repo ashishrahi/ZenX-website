@@ -37,7 +37,7 @@ const faqData = [
 
 const FAQSection = () => {
   return (
-    <section  className="w-full max-w-6xl mx-auto px-4 py-16 rounded-3xl shadow-sm">
+    <section className="w-full max-w-6xl mx-auto px-4 py-16 rounded-3xl shadow-sm bg-background">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
         {/* Left Side - Image with Overlay */}
         <div className="relative w-full h-[420px] rounded-2xl overflow-hidden shadow-lg">
@@ -47,23 +47,17 @@ const FAQSection = () => {
             className="w-full h-full object-cover rounded-2xl transition-transform duration-500 hover:scale-105"
           />
           <div className="absolute inset-0 bg-black/30 rounded-2xl"></div>
-          <div
-            className="absolute bottom-4 left-4 px-4 py-2 rounded-lg shadow text-sm font-semibold"
-            style={{ backgroundColor: "rgba(255,255,255,0.85)", color: "#111111" }}
-          >
+          <div className="absolute bottom-4 left-4 px-4 py-2 rounded-lg shadow text-sm font-semibold bg-white/90 text-foreground">
             Quality Innerwear You Can Trust
           </div>
         </div>
 
         {/* Right Side - FAQ Section */}
         <div>
-          <h2
-            className="text-4xl font-bold mb-3"
-            style={{ color: "#111111" }}
-          >
+          <h2 className="text-4xl font-bold mb-3 text-foreground">
             Frequently Asked Questions
           </h2>
-          <p className="mb-8" style={{ color: "#333333" }}>
+          <p className="mb-8 text-muted-foreground">
             Find answers to common questions about our innerwear products,
             sizing, and policies.
           </p>
@@ -74,19 +68,12 @@ const FAQSection = () => {
               <AccordionItem
                 key={index}
                 value={`item-${index}`}
-                className="border rounded-lg px-3 bg-white hover:shadow-md transition-all"
-                style={{ borderColor: "rgba(211, 47, 47, 0.2)" }}
+                className="border border-muted rounded-lg px-3 bg-card hover:shadow-md transition-all"
               >
-                <AccordionTrigger
-                  className="text-lg font-semibold transition-colors"
-                  style={{ color: "#111111" }}
-                >
+                <AccordionTrigger className="text-lg font-semibold text-foreground transition-colors">
                   {item.question}
                 </AccordionTrigger>
-                <AccordionContent
-                  className="text-base leading-relaxed"
-                  style={{ color: "#333333" }}
-                >
+                <AccordionContent className="text-base leading-relaxed text-muted-foreground">
                   {item.answer}
                 </AccordionContent>
               </AccordionItem>
@@ -94,36 +81,15 @@ const FAQSection = () => {
           </Accordion>
 
           {/* Contact Section */}
-          <div
-            className="mt-10 p-5 rounded-xl border"
-            style={{
-              backgroundColor: "rgba(211, 47, 47, 0.1)",
-              borderColor: "rgba(211, 47, 47, 0.2)",
-            }}
-          >
-            <h3
-              className="text-xl font-semibold mb-2"
-              style={{ color: "#111111" }}
-            >
+          <div className="mt-10 p-5 rounded-xl border border-destructive/20 bg-destructive/10">
+            <h3 className="text-xl font-semibold mb-2 text-foreground">
               Still have questions?
             </h3>
-            <p className="mb-4" style={{ color: "#333333" }}>
+            <p className="mb-4 text-muted-foreground">
               Can’t find the answer you’re looking for? Reach out to our
               customer care team for assistance.
             </p>
-            <Button
-              className="px-6 py-2 rounded-lg shadow transition-colors"
-              style={{
-                backgroundColor: "#D32F2F",
-                color: "#FFFFFF",
-              }}
-              onMouseOver={(e) =>
-                (e.currentTarget.style.backgroundColor = "#111111")
-              }
-              onMouseOut={(e) =>
-                (e.currentTarget.style.backgroundColor = "#D32F2F")
-              }
-            >
+            <Button className="px-6 py-2 rounded-lg shadow bg-destructive text-white hover:bg-primary transition-colors">
               Contact Us
             </Button>
           </div>

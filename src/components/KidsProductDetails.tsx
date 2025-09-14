@@ -5,6 +5,7 @@ import { kidsInnerwear, sizeGuide, sizes } from "../api/kids/kidsProductsData";
 import Magnifier from "@/utilis/Magnifier";
 import PurchaseAssistantModal from "../components/PurchaseAssistantModal";
 import { useCart, CartItem } from "../context/CartContext";
+import AppButton from "./AppButton";
 
 const KidsProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -195,30 +196,30 @@ const KidsProductDetails: React.FC = () => {
                 {/* Action buttons */}
                 <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
                   {isInCart ? (
-                    <button
+                    <AppButton
                       className="flex-1 py-2 md:py-3 bg-green-500 text-white rounded-lg font-medium cursor-not-allowed"
                       disabled
                       aria-label="Item already in cart"
                     >
                       Added to Cart
-                    </button>
+                    </AppButton>
                   ) : (
-                    <button
+                    <AppButton
                       className="flex-1 py-2 md:py-3 bg-red-500 text-white rounded-lg font-medium hover:bg-red-700 transition"
                       onClick={handleAddToCart}
                       aria-label="Add to cart"
                     >
                       ADD TO CART
-                    </button>
+                    </AppButton>
                   )}
 
-                  <button
+                  <AppButton
                     className="flex-1 py-2 md:py-3 border border-gray-300 rounded-lg hover:bg-gray-100 font-medium"
                     onClick={() => setShowPurchaseModal(true)}
                     aria-label="Open purchase assistant"
                   >
                     PURCHASE ASSISTANT
-                  </button>
+                  </AppButton>
                 </div>
 
                 <button className="text-blue-600 hover:underline text-xs md:text-sm">
