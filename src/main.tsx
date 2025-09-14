@@ -15,6 +15,7 @@ createRoot(document.getElementById("root")!).render(
    <WishlistProvider>
     <BreadcrumbsProvider>
      <GlobalBreadcrumbs />
+     
     <CartProvider>
         <App />
     </CartProvider>

@@ -79,5 +79,5 @@ export const navLinks = [
     },
   },
   { name: "BLOG", path: "/blog" },
-  { name: "FAQ", path: "/account?tab=help" },
+  { name: "FAQ", path: "#FAQSection" },
 ];

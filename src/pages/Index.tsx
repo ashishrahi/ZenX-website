@@ -1,9 +1,7 @@
 import HeroSection from "@/components/HeroSection";
 import ProductCategories from "@/components/ProductCategories";
-import Footer from "@/components/Footer";
 import Sidebar from "@/components/Sidebar";
 import EnquireNow from "@/components/EnquireNow";
-import Chatbot from "@/components/Chatbot";
 import MainProducts from "@/components/MainProduct";
 import ZenxAbout from "@/components/ZenxAbout";
 import { slides } from "../api/slidesData";
@@ -13,10 +11,10 @@ import { motion } from "framer-motion";
 import WomenProducts from "@/components/WomenProducts";
 import { womenInnerwear } from "@/api/women/womenProductsData";
 import MenProducts from "@/components/MenProducts";
-import KidsProductDetails from "@/components/KidsProductDetails";
 import KidsProducts from "@/components/KidsProducts";
 import { kidsInnerwear } from "@/api/kids/kidsProductsData";
 import ShadowContainer from "@/components/ShadowContainer";
+import FAQSection from "@/components/FAQ";
 
 const Index = () => {
   return (
@@ -224,11 +222,17 @@ const Index = () => {
       <ShadowContainer>
       <EnquireNow />
       </ShadowContainer>
-
+     
       {/* About Section */}
       <ShadowContainer>
       <ZenxAbout />
-        </ShadowContainer>
+      </ShadowContainer>
+     {/* FAQSection */}
+       <ShadowContainer>
+          <div id="FAQSection">
+      <FAQSection  />
+      </div>
+      </ShadowContainer>
       {/* Footer */}
 
       {/* Sidebar */}

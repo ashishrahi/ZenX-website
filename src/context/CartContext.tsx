@@ -13,6 +13,8 @@ export interface Product {
   bestSeller?: boolean;
 }
 
+
+
 export interface CartItem extends Product {
   quantity: number;
   size?: string;

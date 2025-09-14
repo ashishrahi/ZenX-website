@@ -42,7 +42,7 @@ import kidsSportsYellow from '../../assets/kids/kidsSportsYellow-removebg-previe
 import kidsCapBlack from '../../assets/kids/kidsCapWhite-removebg-preview.png'
 import kidsCapWhite from '../../assets/kids/kidsCapWhite-removebg-preview.png'
 import kidsBanner from '../../assets/kids/bannerKids.jpg'
-
+import fqQ from '../../assets/faq.jpg'
 
 export default {
   boxerBlack,
@@ -88,7 +88,8 @@ kidsSportsBlack,
 kidsSportsYellow,
 kidsCapBlack,
 kidsCapWhite,
-kidsBanner
+kidsBanner,
+fqQ
 
 
 
