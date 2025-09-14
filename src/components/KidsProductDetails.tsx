@@ -82,7 +82,7 @@ const KidsProductDetails: React.FC = () => {
     <div className="min-h-screen py-1">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex flex-col lg:flex-row gap-4 md:gap-8">
-          {/* Images with Card Background */}
+          {/* Images Section */}
           <div className="lg:w-1/2">
             <div className="flex flex-col gap-4">
               {colorImages.length > 0 && (
@@ -126,7 +126,7 @@ const KidsProductDetails: React.FC = () => {
             </div>
           </div>
 
-          {/* Details with Card Background */}
+          {/* Details Section */}
           <div className="lg:w-1/2">
             <div className="rounded-xl shadow-md p-4 md:p-6 h-full">
               <div className="flex flex-col gap-4 md:gap-6">
@@ -135,7 +135,7 @@ const KidsProductDetails: React.FC = () => {
                 <p className="text-red-600 text-xl md:text-2xl font-bold">Rs. {product.price}.00</p>
                 <p className="text-gray-500 text-xs md:text-sm">MRP inclusive of all taxes</p>
 
-                {/* Colour selection */}
+                {/* Colour Selection */}
                 <div className="space-y-2">
                   <p className="font-semibold">Colour: {selectedColor}</p>
                   <div className="flex gap-2 md:gap-3 flex-wrap">
@@ -163,7 +163,7 @@ const KidsProductDetails: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Size selection */}
+                {/* Size Selection */}
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
                     <p className="font-semibold">Selected size: {selectedSize ?? "None"}</p>
@@ -193,7 +193,7 @@ const KidsProductDetails: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Action buttons */}
+                {/* Action Buttons */}
                 <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
                   {isInCart ? (
                     <AppButton
@@ -226,7 +226,7 @@ const KidsProductDetails: React.FC = () => {
                   Check availability
                 </button>
 
-                {/* Collapsible sections */}
+                {/* Collapsible Sections */}
                 <div className="space-y-3 md:space-y-4">
                   {["description", "materials", "care", "delivery"].map((sectionKey) => {
                     const labels: Record<string, string> = {

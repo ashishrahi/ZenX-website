@@ -5,7 +5,8 @@ import { womenInnerwear, sizeGuide, sizes } from "../api/women/womenProductsData
 import Magnifier from "@/utilis/Magnifier";
 import PurchaseAssistantModal from "../components/PurchaseAssistantModal";
 import { useCart, CartItem } from "../context/CartContext";
-import AppButton from "./AppButton"; // Make a global button component
+import AppButton from "./AppButton";
+import CollapsibleSection from "./CollapsibleSection";
 
 const WomenProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -16,12 +17,6 @@ const WomenProductDetails: React.FC = () => {
   const [activeSizeRange, setActiveSizeRange] = useState<"XXS-S" | "M-XL" | "XXL-3XL">("XXS-S");
   const [selectedColor, setSelectedColor] = useState<string>("");
   const [currentImage, setCurrentImage] = useState(0);
-  const [openSections, setOpenSections] = useState({
-    description: false,
-    materials: false,
-    care: false,
-    delivery: false,
-  });
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
 
   const product = useMemo(() => {
@@ -34,17 +29,13 @@ const WomenProductDetails: React.FC = () => {
     }
   }, [product]);
 
-  const toggleSection = (section: keyof typeof openSections) => {
-    setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
-  };
+  useEffect(() => {
+    setCurrentImage(0);
+  }, [selectedColor]);
 
   if (!product) {
     return <p className="text-center mt-20 text-lg text-foreground">Product not found.</p>;
   }
-
-  useEffect(() => {
-    setCurrentImage(0);
-  }, [selectedColor]);
 
   const colorImages = product.images[selectedColor] || [];
 
@@ -100,8 +91,11 @@ const WomenProductDetails: React.FC = () => {
                         key={idx}
                         src={img}
                         alt={`${product.name} view ${idx + 1}`}
-                        className={`w-16 h-16 md:w-20 md:h-20 object-cover rounded-lg cursor-pointer border-2 ${currentImage === idx ? "border-destructive" : "border-muted"
-                          }`}
+                        className={`w-16 h-16 md:w-20 md:h-20 object-cover rounded-lg cursor-pointer border-2 ${
+                          currentImage === idx
+                            ? "border-destructive"
+                            : "border-muted"
+                        }`}
                         onMouseEnter={() => setCurrentImage(idx)}
                         onClick={() => setCurrentImage(idx)}
                         whileHover={{ scale: 1.05 }}
@@ -132,9 +126,10 @@ const WomenProductDetails: React.FC = () => {
                         key={color}
                         onClick={() => setSelectedColor(color)}
                         className={`flex items-center gap-1 md:gap-2 px-2 py-1 md:px-3 md:py-2 rounded-lg border font-medium transition
-                          ${selectedColor === color
-                            ? "border-destructive bg-destructive/10 text-destructive"
-                            : "border-muted hover:border-destructive hover:bg-destructive/10 text-foreground"
+                          ${
+                            selectedColor === color
+                              ? "border-destructive bg-destructive/10 text-destructive"
+                              : "border-muted hover:border-destructive hover:bg-destructive/10 text-foreground"
                           }`}
                         aria-label={`Select color: ${color}`}
                         aria-pressed={selectedColor === color}
@@ -155,7 +150,9 @@ const WomenProductDetails: React.FC = () => {
                 {/* Sizes */}
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <p className="font-semibold text-foreground">Selected size: {selectedSize ?? "None"}</p>
+                    <p className="font-semibold text-foreground">
+                      Selected size: {selectedSize ?? "None"}
+                    </p>
                     <button
                       className="text-destructive hover:underline text-xs md:text-sm"
                       onClick={() => setShowSizeChart(true)}
@@ -169,9 +166,10 @@ const WomenProductDetails: React.FC = () => {
                       <button
                         key={size}
                         className={`px-2 py-1 md:px-3 md:py-1 rounded-lg border font-medium transition
-                          ${selectedSize === size
-                            ? "bg-destructive text-white border-destructive"
-                            : "bg-card text-foreground border-muted hover:bg-destructive/10 hover:text-destructive"
+                          ${
+                            selectedSize === size
+                              ? "bg-destructive text-white border-destructive"
+                              : "bg-card text-foreground border-muted hover:bg-destructive/10 hover:text-destructive"
                           }`}
                         onClick={() => setSelectedSize(size)}
                         aria-label={`Select size: ${size}`}
@@ -186,65 +184,50 @@ const WomenProductDetails: React.FC = () => {
                 {/* Buttons */}
                 <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
                   {isInCart ? (
-                    <AppButton disabled className="flex-1 py-2 md:py-3 cursor-not-allowed bg-green-500 text-white">
+                    <AppButton
+                      disabled
+                      className="flex-1 py-2 md:py-3 cursor-not-allowed bg-green-500 text-white"
+                    >
                       Added to Cart
                     </AppButton>
                   ) : (
-                    <AppButton onClick={handleAddToCart} className="flex-1 py-2 md:py-3 bg-destructive text-white hover:bg-destructive/80">
+                    <AppButton
+                      onClick={handleAddToCart}
+                      className="flex-1 py-2 md:py-3 bg-destructive text-white hover:bg-destructive/80"
+                    >
                       ADD TO CART
                     </AppButton>
                   )}
-                  <AppButton onClick={() => setShowPurchaseModal(true)} className="flex-1 py-2 md:py-3 border border-muted hover:bg-muted/10">
+                  <AppButton
+                    onClick={() => setShowPurchaseModal(true)}
+                    className="flex-1 py-2 md:py-3 border border-muted hover:bg-muted/10"
+                  >
                     PURCHASE ASSISTANT
                   </AppButton>
                 </div>
 
-                <button className="text-primary hover:underline text-xs md:text-sm">Check availability</button>
+                <button className="text-primary hover:underline text-xs md:text-sm">
+                  Check availability
+                </button>
 
-                {/* Collapsible sections */}
+                {/* Collapsible Sections */}
                 <div className="space-y-3 md:space-y-4">
-                  {["description", "materials", "care", "delivery"].map((sectionKey) => {
-                    const labels: Record<string, string> = {
-                      description: "Description & Fit",
-                      materials: "Materials",
-                      care: "Care Guide",
-                      delivery: "Delivery and Payment",
-                    };
-                    const content: Record<string, string> = {
-                      description: product.description ?? "",
-                      materials: product.material ?? "",
-                      care: product.care ?? "",
-                      delivery: product.delivery ?? "",
-                    };
-                    return (
-                      <div key={sectionKey} className="border border-muted rounded-lg">
-                        <button
-                          className="w-full flex justify-between items-center p-3 md:p-4 font-semibold text-sm md:text-base text-foreground"
-                          onClick={() => toggleSection(sectionKey as keyof typeof openSections)}
-                          aria-expanded={openSections[sectionKey as keyof typeof openSections]}
-                          aria-controls={`${sectionKey}-content`}
-                        >
-                          {labels[sectionKey]}
-                          <span>{openSections[sectionKey as keyof typeof openSections] ? "−" : "+"}</span>
-                        </button>
-                        <AnimatePresence>
-                          {openSections[sectionKey as keyof typeof openSections] && (
-                            <motion.div
-                              id={`${sectionKey}-content`}
-                              layout
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: "auto" }}
-                              exit={{ opacity: 0, height: 0 }}
-                              transition={{ duration: 0.3 }}
-                              className="p-3 md:p-4 border-t border-muted overflow-hidden text-sm md:text-base text-muted-foreground"
-                            >
-                              {content[sectionKey]}
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    );
-                  })}
+                  <CollapsibleSection
+                    title="Description & Fit"
+                    content={product.description ?? ""}
+                  />
+                  <CollapsibleSection
+                    title="Materials"
+                    content={product.material ?? ""}
+                  />
+                  <CollapsibleSection
+                    title="Care Guide"
+                    content={product.care ?? ""}
+                  />
+                  <CollapsibleSection
+                    title="Delivery and Payment"
+                    content={product.delivery ?? ""}
+                  />
                 </div>
               </div>
             </div>
@@ -276,7 +259,9 @@ const WomenProductDetails: React.FC = () => {
               >
                 <div className="h-full flex flex-col overflow-y-auto">
                   <div className="flex justify-between items-center p-4 border-b border-muted">
-                    <h2 id="size-guide-title" className="text-lg font-bold text-foreground">Size Guide</h2>
+                    <h2 id="size-guide-title" className="text-lg font-bold text-foreground">
+                      Size Guide
+                    </h2>
                     <button
                       className="text-muted-foreground hover:text-foreground text-2xl"
                       onClick={() => setShowSizeChart(false)}
@@ -291,9 +276,10 @@ const WomenProductDetails: React.FC = () => {
                         <button
                           key={range}
                           className={`px-3 py-1 rounded-lg border font-medium transition
-                            ${activeSizeRange === range
-                              ? "bg-destructive text-white border-destructive"
-                              : "bg-card text-foreground border-muted hover:bg-destructive/10 hover:text-destructive"
+                            ${
+                              activeSizeRange === range
+                                ? "bg-destructive text-white border-destructive"
+                                : "bg-card text-foreground border-muted hover:bg-destructive/10 hover:text-destructive"
                             }`}
                           onClick={() => setActiveSizeRange(range as any)}
                           aria-pressed={activeSizeRange === range}
@@ -308,7 +294,10 @@ const WomenProductDetails: React.FC = () => {
                           <tr>
                             <th className="border p-2 text-foreground">Measurement</th>
                             {sizeGuide[activeSizeRange]?.[0]?.values?.map((_, idx) => (
-                              <th key={idx} className="border p-2 text-center text-foreground">
+                              <th
+                                key={idx}
+                                className="border p-2 text-center text-foreground"
+                              >
                                 {sizes[idx]}
                               </th>
                             ))}
@@ -317,9 +306,14 @@ const WomenProductDetails: React.FC = () => {
                         <tbody>
                           {sizeGuide[activeSizeRange]?.map((row, idx) => (
                             <tr key={idx} className="border-t border-muted">
-                              <td className="border p-2 font-medium text-foreground">{row?.label}</td>
+                              <td className="border p-2 font-medium text-foreground">
+                                {row?.label}
+                              </td>
                               {row?.values?.map((val, i) => (
-                                <td key={i} className="border p-2 text-center text-foreground">
+                                <td
+                                  key={i}
+                                  className="border p-2 text-center text-foreground"
+                                >
                                   {val}
                                 </td>
                               ))}

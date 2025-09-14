@@ -32,14 +32,14 @@ const Blog: React.FC<BlogProps> = ({ blogPosts = [] }) => {
             "url('https://source.unsplash.com/1600x900/?technology,blog')",
         }}
       >
-        {/* Overlay for readability */}
+        {/* Overlay for better readability */}
         <div className="bg-black/40 p-8 rounded-lg">
           <h1 className="text-4xl font-bold text-center mb-12 text-white">
             Our Blog
           </h1>
 
           {blogPosts.length === 0 ? (
-            <p className="text-center text-gray-200">
+            <p className="text-center text-muted-foreground">
               No blog posts available at the moment.
             </p>
           ) : (
@@ -47,7 +47,7 @@ const Blog: React.FC<BlogProps> = ({ blogPosts = [] }) => {
               {blogPosts.map((post, index) => (
                 <Card
                   key={index}
-                  className="hover:scale-105 transition-transform shadow-lg bg-white/90 backdrop-blur-sm"
+                  className="hover:scale-105 transition-transform shadow-lg bg-card backdrop-blur-sm"
                 >
                   <img
                     src={post.image}
@@ -55,22 +55,26 @@ const Blog: React.FC<BlogProps> = ({ blogPosts = [] }) => {
                     className="w-full h-48 object-cover rounded-t-lg"
                   />
                   <CardContent>
-                    <span className="text-red-600 font-semibold uppercase text-sm">
+                    {/* Category text using primary color */}
+                    <span className="text-primary font-semibold uppercase text-sm">
                       {post.category}
                     </span>
+
                     <CardHeader className="p-0 mt-1">
                       <CardTitle className="text-lg">{post.title}</CardTitle>
                     </CardHeader>
-                    <CardDescription className="text-gray-700 text-sm mt-1">
+
+                    <CardDescription className="text-muted-foreground text-sm mt-1">
                       {post.description}
                     </CardDescription>
 
+                    {/* Tags with accent color */}
                     {post.tags && post.tags.length > 0 && (
                       <div className="mt-3 flex flex-wrap gap-2">
                         {post.tags.map((tag, i) => (
                           <span
                             key={i}
-                            className="bg-red-100 text-red-700 text-xs font-medium px-2 py-1 rounded"
+                            className="bg-accent text-accent-foreground text-xs font-medium px-2 py-1 rounded"
                           >
                             {tag}
                           </span>
@@ -78,11 +82,12 @@ const Blog: React.FC<BlogProps> = ({ blogPosts = [] }) => {
                       </div>
                     )}
                   </CardContent>
+
                   <CardFooter>
                     <Button
                       variant="link"
                       asChild
-                      className="text-red-600 font-semibold"
+                      className="text-primary font-semibold"
                     >
                       <a href={post.link}>Read More</a>
                     </Button>

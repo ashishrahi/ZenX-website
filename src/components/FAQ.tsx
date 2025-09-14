@@ -1,10 +1,6 @@
-import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-} from "./ui/accordion";
+import React from "react";
 import { Button } from "./ui/button";
+import CollapsibleSection from "./CollapsibleSection";
 import images from "@/assets/men/images";
 
 const faqData = [
@@ -62,23 +58,16 @@ const FAQSection = () => {
             sizing, and policies.
           </p>
 
-          {/* Accordion */}
-          <Accordion type="single" collapsible className="w-full space-y-2">
+          {/* Collapsible Sections instead of Accordion */}
+          <div className="space-y-3">
             {faqData.map((item, index) => (
-              <AccordionItem
+              <CollapsibleSection
                 key={index}
-                value={`item-${index}`}
-                className="border border-muted rounded-lg px-3 bg-card hover:shadow-md transition-all"
-              >
-                <AccordionTrigger className="text-lg font-semibold text-foreground transition-colors">
-                  {item.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-base leading-relaxed text-muted-foreground">
-                  {item.answer}
-                </AccordionContent>
-              </AccordionItem>
+                title={item.question}
+                content={item.answer}
+              />
             ))}
-          </Accordion>
+          </div>
 
           {/* Contact Section */}
           <div className="mt-10 p-5 rounded-xl border border-destructive/20 bg-destructive/10">

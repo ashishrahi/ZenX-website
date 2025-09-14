@@ -18,6 +18,7 @@ export const womenInnerwear = [
     care: "Machine wash at 30°C",
     delivery: "Free delivery on orders over Rs. 500. Standard delivery: Rs. 50.",
     tag: ["New Arrivals"],
+       rating: 5
   },
   {
     id: 2,
@@ -36,6 +37,7 @@ export const womenInnerwear = [
     care: "Machine wash at 30°C",
     delivery: "Free delivery on orders over Rs. 500. Standard delivery: Rs. 50.",
     tag: ["Best Seller"],
+       rating: 4
   },
   {
     id: 3,
@@ -52,6 +54,7 @@ export const womenInnerwear = [
     material: "Cotton 60%, Polyester 40%",
     care: "Machine wash at 30°C",
     delivery: "Free delivery on orders over Rs. 500.",
+       rating: 5
   },
   {
     id: 4,
@@ -70,6 +73,7 @@ export const womenInnerwear = [
     care: "Machine wash cold",
     delivery: "Standard delivery: Rs. 50.",
     tag: ["Premium"],
+       rating: 4
   }
 ];
 

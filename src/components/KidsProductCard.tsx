@@ -12,6 +12,7 @@ import {
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
 import AppButton from "./AppButton";
+import { renderStars } from "../utilis/renderStars";
 
 interface ProductCardProps {
   product: {
@@ -54,15 +55,7 @@ const KidsProductCard: FC<ProductCardProps> = ({ product }) => {
 
   const handleImageLoad = () => setImageLoading(false);
 
-  const renderStars = (rating: number = 0) => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      if (i <= Math.floor(rating)) stars.push(<Star key={i} className="w-4 h-4 text-yellow-400" />);
-      else if (i - rating < 1) stars.push(<StarHalf key={i} className="w-4 h-4 text-yellow-400" />);
-      else stars.push(<StarOutline key={i} className="w-4 h-4 text-gray-300" />);
-    }
-    return stars;
-  };
+
 
   return (
     <Card className="group relative rounded-2xl border shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col h-[480px]">

@@ -18,6 +18,7 @@ export const kidsInnerwear = [
     care: "Machine wash at 30°C",
     delivery: "Free delivery on orders over Rs. 500. Standard delivery: Rs. 50.",
     tag: ["New Arrivals"],
+       rating: 4.5
   },
   {
     id: 2,
@@ -36,6 +37,7 @@ export const kidsInnerwear = [
     care: "Machine wash at 30°C",
     delivery: "Free delivery on orders over Rs. 500. Standard delivery: Rs. 50.",
     tag: ["Best Seller"],
+       rating: 4
   },
   {
     id: 3,
@@ -53,6 +55,7 @@ export const kidsInnerwear = [
     care: "Machine wash at 30°C",
     delivery: "Free delivery on orders over Rs. 500.",
     tag: ["Winter Collection"],
+       rating: 4
   },
   {
     id: 4,
@@ -71,6 +74,7 @@ export const kidsInnerwear = [
     care: "Machine wash cold",
     delivery: "Standard delivery: Rs. 50.",
     tag: ["Premium"],
+       rating: 5
   },
 ];
 

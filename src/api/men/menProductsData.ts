@@ -18,6 +18,7 @@ export const menInnerwear = [
     care: "Machine wash at 30°C",
     delivery: "Free delivery on orders over Rs. 500. Standard delivery: Rs. 50.",
     tag: ["Premium", "New Arrivals"],
+    rating: 5
   },
   {
     id: 2,
@@ -36,6 +37,7 @@ export const menInnerwear = [
     care: "Machine wash at 30°C",
     delivery: "Free delivery on orders over Rs. 500. Standard delivery: Rs. 50.",
    tag: ["Best Seller", "New Arrivals"],
+   rating: 4
   },
   {
     id: 3,
@@ -53,6 +55,7 @@ export const menInnerwear = [
     care: "Machine wash at 30°C",
     delivery: "Free delivery on orders over Rs. 500. Standard delivery: Rs. 50.", 
     tag: [ "Best Seller"],
+    rating: 5
   },
   {
     id: 4,
@@ -69,6 +72,7 @@ export const menInnerwear = [
     material: "Cotton 60%, Polyester 40%",
     care: "Machine wash at 30°C",
     delivery: "Free delivery on orders over Rs. 500. Standard delivery: Rs. 50.",
+  rating: 4
   },
   {
     id: 5,
@@ -86,6 +90,7 @@ export const menInnerwear = [
     care: "Machine wash at 30°C",
     delivery: "Free delivery on orders over Rs. 500. Standard delivery: Rs. 50.",
    tag: [ "Best Seller"],
+   rating: 5,
   },
   {
     id: 6,
@@ -101,7 +106,8 @@ export const menInnerwear = [
     description: "Classic design with breathable cotton fabric.",
     material: "Cotton 100%",
     care: "Machine wash at 30°C",
-    delivery: "Free delivery on orders over Rs. 500. Standard delivery: Rs. 50."
+    delivery: "Free delivery on orders over Rs. 500. Standard delivery: Rs. 50.",
+    rating: 4
   },
   {
     id: 7,
@@ -119,6 +125,7 @@ export const menInnerwear = [
     care: "Machine wash at 30°C",
     delivery: "Free delivery on orders over Rs. 500. Standard delivery: Rs. 50.",
  tag: ["Premium"],
+ rating: 5
   },
   {
     id: 8,
@@ -134,7 +141,8 @@ export const menInnerwear = [
     description: "Moisture-wicking fabric to keep you dry and comfortable.",
     material: "Cotton 90%, Polyester 10%",
     care: "Machine wash cold",
-    delivery: "Standard delivery: Rs. 50."
+    delivery: "Standard delivery: Rs. 50.",
+    rating: 5
   },
   {
     id: 9,
@@ -150,7 +158,8 @@ export const menInnerwear = [
     description: "Insulating layer perfect for cold weather.",
     material: "Cotton 50%, Polyester 50%",
     care: "Machine wash at 30°C",
-    delivery: "Standard delivery: Rs. 50."
+    delivery: "Standard delivery: Rs. 50.",
+    rating: 5
   },
   {
     id: 10,
@@ -165,7 +174,8 @@ export const menInnerwear = [
     description: "Simple and soft tank for layering or lounging.",
     material: "Cotton 100%",
     care: "Machine wash cold",
-    delivery: "Standard delivery: Rs. 50."
+    delivery: "Standard delivery: Rs. 50.",
+       rating: 4
   },
   {
     id: 11,
@@ -184,6 +194,7 @@ export const menInnerwear = [
     care: "Machine wash at 30°C",
     delivery: "Free delivery on orders over Rs. 500.",
     tag: ["Premium"],
+       rating: 4
   },
   {
     id: 12,
@@ -201,6 +212,7 @@ export const menInnerwear = [
     care: "Machine wash at 30°C",
     delivery: "Standard delivery: Rs. 50.",
          tag: ["HotPick"],
+            rating: 4
   },
   {
     id: 13,
@@ -218,6 +230,7 @@ export const menInnerwear = [
     care: "Machine wash cold",
     delivery: "Free delivery on orders over Rs. 500.",
          tag: ["HotPick"],
+            rating: 4
   },
   {
     id: 14,
@@ -235,6 +248,7 @@ export const menInnerwear = [
     care: "Machine wash at 30°C",
     delivery: "Free delivery on orders over Rs. 500.",
      tag: ["HotPick"],
+        rating: 4
   },
   {
     id: 15,
@@ -252,6 +266,7 @@ export const menInnerwear = [
     care: "Machine wash cold",
     delivery: "Standard delivery: Rs. 50.",
          tag: ["HotPick"],
+            rating: 4
   }
 ];
 
