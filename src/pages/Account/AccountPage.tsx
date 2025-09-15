@@ -7,6 +7,10 @@ import Wishlist from "../../components/Wishlist";
 // import Addresses from "./Addresses";
 import Help from "../../components/HelpSupport";
 import AccountProfile from "@/components/AccountProfile";
+import Container from "@/components/Container";
+import ShadowContainer from "@/components/ShadowContainer";
+import { Settings } from "lucide-react";
+import {mockOrders} from '../../api/orders/orders'
 
 const AccountPage: React.FC = () => {
   const navigate = useNavigate();
@@ -21,7 +25,9 @@ const AccountPage: React.FC = () => {
   const renderContent = () => {
     switch (activeTab) {
       case "orders":
-        return <Orders />;
+        return <Orders 
+        Orders ={mockOrders}
+        />;
       case "wishlist":
         return <Wishlist />;
       case "profile":
@@ -34,21 +40,43 @@ const AccountPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white pt-24">
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <aside className="col-span-1">
-          <AccountSidebar onLogout={handleLogout} onSelectTab={setActiveTab} selectedTab={activeTab}  />
-        </aside>
-
-        <main className="col-span-2 flex flex-col items-center justify-start">
-          <div className="w-full">{renderContent()}</div>
-
-          <div className="mt-6 text-xs text-gray-500">
-            <p>Cart items: {cart.length}</p>
+    <Container>
+      <ShadowContainer>
+        <div className="min-h-screen bg-white">
+          {/* Page Title on Top */}
+          <div className="max-w-7xl mx-auto px-4 lg:px-8 mb-20 flex flex-row justify-center items-center space-x-2">
+            <Settings className="w-6 h-6 text-gray-700" />
+            <h1 className="text-3xl font-semibold text-gray-800 text-center lg:text-left">
+              Account Settings
+            </h1>
           </div>
-        </main>
-      </div>
-    </div>
+
+
+          {/* Main Layout */}
+          <div className="max-w-7xl mx-auto px-4 lg:px-8 flex flex-col lg:flex-row gap-8">
+            {/* Sidebar */}
+            <aside className="lg:w-1/3 w-full">
+              <AccountSidebar
+                onLogout={handleLogout}
+                onSelectTab={setActiveTab}
+                selectedTab={activeTab}
+              />
+            </aside>
+
+            {/* Main Content */}
+            <main className="lg:w-2/3 w-full flex flex-col items-center justify-start">
+              {/* Tab Content */}
+              <div className="w-full">{renderContent()}</div>
+
+              {/* Cart Info */}
+              <div className="mt-6 text-xs text-gray-500 text-center lg:text-left">
+                <p>Cart items: {cart.length}</p>
+              </div>
+            </main>
+          </div>
+        </div>
+      </ShadowContainer>
+    </Container>
   );
 };
 

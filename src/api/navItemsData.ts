@@ -80,4 +80,6 @@ export const navLinks = [
   },
   { name: "BLOG", path: "/blog" },
   { name: "FAQ", path: "/faq" },
+  { name: "Export", path: "/export" },
+
 ];

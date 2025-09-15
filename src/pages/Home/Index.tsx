@@ -1,5 +1,4 @@
 import HeroSection from "@/components/HeroSection";
-import ProductCategories from "@/components/ProductCategories";
 import Sidebar from "@/components/Sidebar";
 import EnquireNow from "@/components/EnquireNow";
 import MainProducts from "@/components/MainProduct";
@@ -13,6 +12,9 @@ import { kidsInnerwear } from "@/api/kids/kidsProductsData";
 import ShadowContainer from "@/components/ShadowContainer";
 import FAQSection from "@/components/FAQ";
 import AppProductCarousel from "@/components/AppProductCarousel";
+import { faqData } from "@/api/faq/faq";
+import ProductCategories from "@/components/ProductCategories";
+import CountryExports from "@/components/CountryExports";
 
 
 const Index = () => {
@@ -229,13 +231,17 @@ const Index = () => {
      {/* FAQSection */}
        <ShadowContainer>
           <div id="FAQSection">
-      <FAQSection  />
+      <FAQSection 
+      faqData={faqData}
+      />
       </div>
       </ShadowContainer>
       {/* Footer */}
 
-      {/* Sidebar */}
-      <Sidebar />
+      {/* Export */}
+      <ShadowContainer>
+      <CountryExports/>
+      </ShadowContainer>
 
       {/* Floating Chatbot */}
     </div>

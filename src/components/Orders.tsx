@@ -9,29 +9,7 @@ interface Order {
   status: "Pending" | "Shipped" | "Delivered" | "Cancelled";
 }
 
-const mockOrders: Order[] = [
-  {
-    id: "ORD123456",
-    date: "2025-09-10",
-    itemsCount: 3,
-    total: 1499,
-    status: "Delivered",
-  },
-  {
-    id: "ORD123457",
-    date: "2025-09-05",
-    itemsCount: 1,
-    total: 499,
-    status: "Shipped",
-  },
-  {
-    id: "ORD123458",
-    date: "2025-09-01",
-    itemsCount: 2,
-    total: 999,
-    status: "Pending",
-  },
-];
+
 
 const statusIcon = (status: string) => {
   switch (status) {
@@ -48,12 +26,12 @@ const statusIcon = (status: string) => {
   }
 };
 
-const Orders: React.FC = () => {
+const Orders: React.FC = ({Orders}) => {
   return (
     <div className="w-full">
       <h2 className="text-2xl font-semibold mb-6">My Orders</h2>
 
-      {mockOrders.length === 0 ? (
+      {Orders.length === 0 ? (
         <div className="text-center py-20">
           <svg
             width="150"
@@ -71,7 +49,7 @@ const Orders: React.FC = () => {
         </div>
       ) : (
         <div className="space-y-4">
-          {mockOrders.map((order) => (
+          {Orders.map((order) => (
             <div
               key={order.id}
               className="border rounded-lg shadow-sm p-4 flex justify-between items-center hover:shadow-md transition"

@@ -2,8 +2,12 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import logo from "../assets/Zen-X-Logo-300x139-removebg-preview.webp"; // Replace with your logo path
+interface title{
+  title: string
+}
 
-const LoadingPage: React.FC = () => {
+
+const LoadingPage: React.FC <title>= ({title}) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
       <Card className="p-6 bg-white bg-opacity-20 backdrop-blur-md rounded-xl shadow-lg flex flex-col items-center">
@@ -20,7 +24,7 @@ const LoadingPage: React.FC = () => {
           animate={{ opacity: [0.5, 1, 0.5] }}
           transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
         >
-          Loading...
+         {title}
         </motion.p>
       </Card>
     </div>

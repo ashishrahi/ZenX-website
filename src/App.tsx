@@ -18,6 +18,9 @@ import WomenCategoryProductsPage from './pages/Women/WonenCategoryProductPage'
 import KidsCategoryProductsPage from './pages/Kids/KidsCategoryProductPage'
 import FAQSection from "./components/FAQ";
 import Wishlist from "./components/Wishlist";
+import FAQSectionPage from "./pages/FAQSection/FAQSectionPage";
+import TopBar from "./components/TopBar";
+import CountryExportPage from "./pages/CountryExport/CountryExportPage";
 
 // ✅ Lazy loading for better performance
 const Index = lazy(() => import("./pages/Home/Index"));
@@ -45,7 +48,7 @@ const App = () => (
         <Header />
 
         {/* Suspense ensures that while components are loading, fallback UI is shown */}
-       <Suspense fallback={<LoadingPage />}>
+       <Suspense fallback={<LoadingPage title = "Loading" />}>
   <Routes>
     {/* ✅ Wrap all pages under MainLayout */}
     <Route element={<MainLayout />}>
@@ -53,8 +56,10 @@ const App = () => (
       <Route path="/" element={<Index />} />
 
       {/* Blog */}
-       <Route path="/faq" element={<FAQSection />} />
+       <Route path="/faq" element={<FAQSectionPage />} />
       <Route path="/blog" element={<BlogPage />} />
+      <Route path="/export" element={<CountryExportPage />} />
+
 
 
       {/* MEN */}
@@ -90,7 +95,9 @@ const App = () => (
 
         <Footer />
         <Chatbot />
-      <Sidebar />
+      <Sidebar
+      title = {"LIFETIME PERFORMANCE WARRANTY"}
+      />
 
 
       </BrowserRouter>

@@ -108,7 +108,7 @@ const Header: React.FC = () => {
                 {/* Subcategory Dropdown */}
                 {link.subcategories && (
                   <div 
-                    className={`absolute left-0 top-full bg-white shadow-lg border-t mt-0 p-6 w-[800px] z-50 transition-all duration-300 ease-in-out ${
+                    className={`absolute left-0 top-full bg-white rounded-lg shadow-lg border-t mt-0 p-6 w-[800px] z-50 transition-all duration-300 ease-in-out ${
                       activeSubmenu === link.name 
                         ? "opacity-100 visible translate-y-0" 
                         : "opacity-0 invisible -translate-y-2"

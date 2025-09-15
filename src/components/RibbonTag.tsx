@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-export default function BestsellerTag() {
+export default function BestsellerTag({title}) {
   return (
     <div className="relative inline-block">
       <div className={cn(
@@ -9,7 +9,7 @@ export default function BestsellerTag() {
         "flex items-center justify-center",
         "shadow-md"
       )}>
-        Bestseller
+       {title}
       </div>
       
       <div className="absolute top-0 -left-1 w-2 h-2 overflow-hidden">
