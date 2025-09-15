@@ -1,3 +1,4 @@
+// src/context/WishlistContext.tsx
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { Product, WishlistContextType } from "../types/cartTypes";
 
@@ -12,11 +13,10 @@ export const WishlistProvider = ({ children }: WishlistProviderProps) => {
 
   const toggleWishlist = (product: Product) => {
     setWishlist((prev) => {
-      if (prev.find((item) => item.id === product.id)) {
-        return prev.filter((item) => item.id !== product.id);
-      } else {
-        return [...prev, product];
+      if (prev.some((item) => item.id === product.id)) {
+        return prev.filter((item) => item.id !== product.id); // Remove if exists
       }
+      return [...prev, product]; // Add if not exists
     });
   };
 
@@ -31,6 +31,8 @@ export const WishlistProvider = ({ children }: WishlistProviderProps) => {
 
 export const useWishlist = () => {
   const context = useContext(WishlistContext);
-  if (!context) throw new Error("useWishlist must be used within WishlistProvider");
+  if (!context) {
+    throw new Error("useWishlist must be used within a WishlistProvider");
+  }
   return context;
 };

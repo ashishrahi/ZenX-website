@@ -7,11 +7,10 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Star, Heart, MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
+import AppButton from "./AppComponent/AppButton";
 export interface Comment {
   id: number;
   author: string;
@@ -82,12 +81,12 @@ const Comments: React.FC<CommentsProps> = ({ initialComments }) => {
                 />
               ))}
             </div>
-            <Button
+            <AppButton
               onClick={handleAddComment}
               className="bg-blue-600 hover:bg-blue-700 w-full md:w-auto transition-colors"
             >
               Submit Review
-            </Button>
+            </AppButton>
           </div>
 
           {/* Comments List */}

@@ -1,42 +1,24 @@
-import React from "react";
 import { cn } from "@/lib/utils";
 
-interface RibbonTagProps {
-  label: string;
-  color?: string;
-  className?: string;
-}
-
-const RibbonTag: React.FC<RibbonTagProps> = ({
-  label,
-  color = "bg-red-800",
-  className,
-}) => {
+export default function BestsellerTag() {
   return (
-    <div
-      className={cn(
-        "absolute top-4 -left-3 z-50 flex flex-col items-center",
-        className
-      )}
-    >
-      {/* Ribbon Main Block */}
-      <div
-        className={cn(
-          `${color} text-white text-xs font-semibold px-2 py-2 shadow-md`,
-          "flex justify-center items-center h-20 w-6"
-        )}
-        style={{
-          writingMode: "vertical-rl",
-          transform: "rotate(180deg)",
-          clipPath: "polygon(0 0, 100% 0, 100% 90%, 50% 100%, 0 90%)",
-          letterSpacing: "0.5px",
-          borderRadius: "3px",
-        }}
-      >
-        {label}
+    <div className="relative inline-block">
+      <div className={cn(
+        "bg-gray-900 text-white text-xs font-bold uppercase tracking-wider",
+        "px-3 py-1.5 rounded-md",
+        "flex items-center justify-center",
+        "shadow-md"
+      )}>
+        Bestseller
+      </div>
+      
+      <div className="absolute top-0 -left-1 w-2 h-2 overflow-hidden">
+        <div className="absolute -top-1 -right-1 w-3 h-3 bg-gray-900 transform rotate-45"></div>
+      </div>
+      
+      <div className="absolute top-0 -right-1 w-2 h-2 overflow-hidden">
+        <div className="absolute -top-1 -left-1 w-3 h-3 bg-gray-900 transform rotate-45"></div>
       </div>
     </div>
   );
-};
-
-export default RibbonTag;
+}

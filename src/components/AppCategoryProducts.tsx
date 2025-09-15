@@ -1,11 +1,29 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useMemo } from "react";
-import { kidsInnerwear } from "../api/kids/kidsProductsData";
 import { Button } from "./ui/button";
 import EmptyState from "./EmptyState";
-import KidsProductCard from "./KidsProductCard";
+import AppProductCard from "./AppProductCard";
 
-const KidsCategoryProducts = () => {
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  category: string;
+  description?: string;
+  image?: string;
+}
+
+interface AppCategoryProductsProps {
+  productsData: Product[];
+  title?: string;
+  description?: string;
+}
+
+const AppCategoryProducts = ({
+  productsData,
+  title,
+  description,
+}: AppCategoryProductsProps) => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
 
@@ -13,29 +31,29 @@ const KidsCategoryProducts = () => {
   const [sortOption, setSortOption] = useState<string>("default");
   const [priceFilter, setPriceFilter] = useState<string>("all");
 
-  // State for load more
-  const [visibleCount, setVisibleCount] = useState<number>(8); // Show 8 products initially
-  const loadMoreStep = 8; // Number of products to load per click
+  // Load More functionality
+  const [visibleCount, setVisibleCount] = useState<number>(8);
+  const loadMoreStep = 8;
 
   // Filter products by category slug
-  const categoryProducts = kidsInnerwear?.filter(
+  const categoryProducts = productsData.filter(
     (product) => product.category === slug
   );
 
-  // Apply filters and sorting
+  // Apply sorting and filtering
   const filteredProducts = useMemo(() => {
     let products = [...categoryProducts];
 
-    // Price filter
+    // Filter by price
     if (priceFilter === "under50") {
       products = products.filter((p) => p.price < 50);
     } else if (priceFilter === "50to100") {
-      products = products.filter((p) => p.price >= 50 && p.price <= 100);
+      products = products.filter((p) => p.price >= 150 && p.price <= 500);
     } else if (priceFilter === "above100") {
-      products = products.filter((p) => p.price > 100);
+      products = products.filter((p) => p.price > 1000);
     }
 
-    // Sorting
+    // Sort by selected option
     if (sortOption === "priceLowHigh") {
       products.sort((a, b) => a.price - b.price);
     } else if (sortOption === "priceHighLow") {
@@ -66,11 +84,14 @@ const KidsCategoryProducts = () => {
       {/* Hero Section */}
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-extrabold capitalize text-gray-900 tracking-tight mb-4">
-          {slug?.replace("-", " ")}
+          {title || slug?.replace("-", " ")}
         </h1>
         <p className="text-gray-600 max-w-2xl mx-auto text-lg leading-relaxed">
-          Discover premium {slug?.replace("-", " ")} styles crafted for comfort,
-          elegance, and timeless appeal.
+          {description ||
+            `Discover premium ${slug?.replace(
+              "-",
+              " "
+            )} styles crafted for comfort, elegance, and timeless appeal.`}
         </p>
       </div>
 
@@ -90,6 +111,7 @@ const KidsCategoryProducts = () => {
             <option value="nameZA">Name: Z-A</option>
           </select>
         </div>
+
         <div>
           <label className="mr-2 font-medium">Filter By Price:</label>
           <select
@@ -109,7 +131,7 @@ const KidsCategoryProducts = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {filteredProducts.length > 0 ? (
           filteredProducts.slice(0, visibleCount).map((product) => (
-            <KidsProductCard
+            <AppProductCard
               key={product.id}
               product={product}
               onAddToBag={handleAddToBag}
@@ -147,4 +169,4 @@ const KidsCategoryProducts = () => {
   );
 };
 
-export default KidsCategoryProducts;
+export default AppCategoryProducts;

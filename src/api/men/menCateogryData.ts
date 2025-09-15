@@ -4,6 +4,7 @@ export const categories = [
   {
     name: "men-vests",
     slug: "men-vests",
+    gender: "mens",
     images: {
       White: [images.vestWhite],
       Black: [images.vestBlack],
@@ -14,6 +15,7 @@ export const categories = [
   {
     name: "men-trunks",
     slug: "men-trunks",
+       gender: "mens",
     images: {
       Black: [images.trunkBlack],
       White: [images.trunkWhite],
@@ -23,6 +25,7 @@ export const categories = [
   {
     name: "men-thermal",
     slug: "men-thermal",
+        gender: "mens",
     images: {
       Black: [images.thermalBlack],
       Grey: [images.thermalGrey],
@@ -32,6 +35,7 @@ export const categories = [
   {
   name: "men-briefs",
   slug: "men-briefs",
+      gender: "mens",
   images: {
     Navy: [images.navyBoxer],
     Black: [images.boxerBlack],
@@ -42,6 +46,7 @@ export const categories = [
   {
     name: "men-sleeveless",
     slug: "men-sleeveless",
+        gender: "mens",
     images: {
       Black: [images.sleevelessBlack],
       White: [images.sleevelessWhite],

@@ -1,9 +1,11 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import MenProductDetails from "../../../components/MenProductDetails";
-import MenProductCard from "@/components/MenProductCard";
+import MenProductDetails from "../../../components/AppProductDetails";
+import MenProductCard from "@/components/AppProductCard";
 import Comments, { Comment } from "@/components/Comments"; // Import Comments component
 import { menInnerwear } from "../../../api/men/menProductsData";
+import AppProductDetails from "../../../components/AppProductDetails";
+import AppProductCard from "@/components/AppProductCard";
 
 interface Product {
   id: number;
@@ -17,7 +19,7 @@ interface Product {
   images?: Record<string, string[]>;
 }
 
-const ProductDetailPage = () => {
+const MenProductDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
@@ -56,7 +58,7 @@ const ProductDetailPage = () => {
               className="flex flex-col lg:flex-row gap-10 lg:gap-16 mb-16"
             >
               <div className="flex-1 min-w-0 rounded-2xl shadow-md p-6">
-                <MenProductDetails product={currentProduct} />
+                <AppProductDetails product={currentProduct} />
               </div>
             </section>
 
@@ -66,7 +68,7 @@ const ProductDetailPage = () => {
                 <h2 className="text-2xl font-bold mb-6">Related Products</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                   {relatedProducts.map((product) => (
-                    <MenProductCard key={product.id} product={product} />
+                    <AppProductCard key={product.id} product={product} />
                   ))}
                 </div>
               </section>
@@ -93,4 +95,4 @@ const ProductDetailPage = () => {
   );
 };
 
-export default ProductDetailPage;
+export default MenProductDetailPage;

@@ -1,8 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import ProductDetails from "../../../components/WomenProductDetails";
-import WomenProductCard from "@/components/WomenProductCard"; // Assuming you have a card component
 import { womenInnerwear } from "../../../api/women/womenProductsData";
+import AppProductDetails from "@/components/AppProductDetails";
+import AppProductCard from "@/components/AppProductCard";
+import RibbonTag from "@/components/RibbonTag";
 
 interface Product {
   id: number;
@@ -46,6 +47,8 @@ console.log("Related products:", relatedProducts);
 
   return (
     <div className="min-h-screen">
+            <RibbonTag/>
+
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 pt-20 md:pt-28 pb-12">
         {currentProduct ? (
           <>
@@ -55,7 +58,7 @@ console.log("Related products:", relatedProducts);
               className="flex flex-col lg:flex-row gap-10 lg:gap-16 mb-16"
             >
               <div className="flex-1 min-w-0 rounded-2xl shadow-md p-6">
-                <ProductDetails product={currentProduct} />
+                <AppProductDetails product={currentProduct} />
               </div>
             </section>
 
@@ -65,7 +68,7 @@ console.log("Related products:", relatedProducts);
                 <h2 className="text-2xl font-bold mb-6">Related Products</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                   {relatedProducts.map((product) => (
-                    <WomenProductCard key={product.id} product={product} />
+                    <AppProductCard key={product.id} product={product} />
                   ))}
                 </div>
               </section>

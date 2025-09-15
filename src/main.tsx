@@ -9,7 +9,7 @@ import "swiper/css/navigation";
 import { CartProvider } from "./context/CartContext.tsx";
 import { WishlistProvider } from "./context/WishlistContext.tsx";
 import { BreadcrumbsProvider } from "./context/BreadcrumbsContext.tsx";
-import GlobalBreadcrumbs from "./components/GlobalBreadcrumbs.tsx";
+import GlobalBreadcrumbs from "./components/AppBreadcrumbs.tsx";
 
 createRoot(document.getElementById("root")!).render(
    <WishlistProvider>

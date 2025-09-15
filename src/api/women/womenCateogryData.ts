@@ -4,6 +4,7 @@ export const WomenCategories = [
   {
     name: "Bralette",
     slug: "women-bralettes",
+    gender:"womens",
     images: {
       White: [images.braletteWhite],
       Black: [images.braletteBlack],
@@ -14,6 +15,7 @@ export const WomenCategories = [
   {
     name: "Seamless Panties",
     slug: "women-panties",
+    gender:"womens",
     images: {
       Black: [images.pantyBlack],
       White: [images.pantyBlack],
@@ -23,6 +25,7 @@ export const WomenCategories = [
   {
     name: "Thermal Long Sleeve Top",
     slug: "women-thermal",
+    gender:"womens",
     images: {
       Black: [images.thermalBlackWomen],
       Grey: [images.thermalGreyWomen],
@@ -32,6 +35,7 @@ export const WomenCategories = [
   {
   name: "Seamless Sports Bra",
   slug: "women-sports-bra",
+  gender:"womens",
   images: {
     Navy: [images.sportsBraPink],
     Black: [images.sportsBraBlack],
@@ -42,6 +46,7 @@ export const WomenCategories = [
   {
     name: "Women-sleeve",
     slug: "Women-sleeve",
+    gender:"womens",
     images: {
       Black: [images.bannerOne],
       White: [images.bannerTwo],

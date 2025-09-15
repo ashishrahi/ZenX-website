@@ -12,6 +12,7 @@ export const womenInnerwear = [
       Beige: [images.braletteBeige],
     },
     sizes: ["S", "M", "L", "XL"],
+    gender: "womens",
     category: "women-bralettes",
     description: "Soft cotton bralette for all-day comfort and support.",
     material: "Cotton 95%, Elastane 5%",
@@ -25,6 +26,7 @@ export const womenInnerwear = [
     name: "Seamless Panties (Pack of 3)",
     price: 799,
     colors: ["Black", "White", "Nude"],
+    gender: "womens",
     images: {
       Black: [images.pantyBlack],
       White: [images.pantyBlack],
@@ -43,6 +45,7 @@ export const womenInnerwear = [
     id: 3,
     name: "Thermal Long Sleeve Top",
     price: 1099,
+    gender: "womens",
     colors: ["Grey", "Black"],
     images: {
       Grey: [images.thermalGreyWomen],
@@ -66,6 +69,7 @@ export const womenInnerwear = [
       Grey: [images.sportsBraGrey],
       Pink: [images.sportsBraPink],
     },
+    gender: "womens",
     sizes: ["S", "M", "L"],
     category: "women-sports-bra",
     description: "Stretchable sports bra for medium impact workouts.",

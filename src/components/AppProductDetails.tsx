@@ -1,14 +1,35 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { kidsInnerwear, sizeGuide, sizes } from "../api/kids/kidsProductsData";
 import Magnifier from "@/utilis/Magnifier";
 import PurchaseAssistantModal from "../components/PurchaseAssistantModal";
 import { useCart, CartItem } from "../context/CartContext";
 import AppButton from "../components/AppComponent/AppButton";
+import CollapsibleSection from "@/components/CollapsibleSection";
 
-const KidsProductDetails: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+export interface Product {
+  id: number;
+  name: string;
+  price: number;
+  colors: string[];
+  images: Record<string, string[]>;
+  description?: string;
+  material?: string;
+  care?: string;
+  delivery?: string;
+  tag?: string[];
+}
+
+interface ProductDetailsProps {
+  product: Product;
+  sizes?: string[];
+  sizeGuide?: Record<string, { label: string; values: string[] }[]>;
+}
+
+const AppProductDetails: React.FC<ProductDetailsProps> = ({
+  product,
+  sizes = ["XS", "S", "M", "L", "XL"],
+  sizeGuide = {},
+}) => {
   const { cart, addToCart } = useCart();
 
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
@@ -16,49 +37,26 @@ const KidsProductDetails: React.FC = () => {
   const [activeSizeRange, setActiveSizeRange] = useState<"XXS-S" | "M-XL" | "XXL-3XL">("XXS-S");
   const [selectedColor, setSelectedColor] = useState<string>("");
   const [currentImage, setCurrentImage] = useState(0);
-  const [openSections, setOpenSections] = useState({
-    description: false,
-    materials: false,
-    care: false,
-    delivery: false,
-  });
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
 
-  // Find the product using useMemo to prevent unnecessary recalculations
-  const product = useMemo(() => {
-    return kidsInnerwear?.find((p) => p?.id === Number(id));
-  }, [id]);
-
-  // Set initial color when product is available
   useEffect(() => {
     if (product && product.colors && product.colors.length > 0) {
       setSelectedColor(product.colors[0]);
     }
   }, [product]);
 
-  const toggleSection = (section: keyof typeof openSections) => {
-    setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
-  };
-
-  if (!product) {
-    return <p className="text-center mt-20 text-lg">Product not found.</p>;
-  }
-
-  // Reset image when color changes
   useEffect(() => {
     setCurrentImage(0);
   }, [selectedColor]);
 
-  // Get available images for selected color
   const colorImages = product.images[selectedColor] || [];
 
-  // Check if the selected product variant is already in the cart
   const isInCart = useMemo(() => {
     return cart?.some(
       (item) =>
-        item?.id === product?.id &&
-        item?.size === selectedSize &&
-        Object.keys(item?.images || {})[0] === selectedColor
+        item.id === product.id &&
+        item.size === selectedSize &&
+        Object.keys(item.images || {})[0] === selectedColor
     );
   }, [cart, product, selectedSize, selectedColor]);
 
@@ -78,16 +76,20 @@ const KidsProductDetails: React.FC = () => {
     addToCart(cartItem);
   };
 
+  if (!product) {
+    return <p className="text-center mt-20 text-lg text-foreground">Product not found.</p>;
+  }
+
   return (
-    <div className="min-h-screen py-1">
+    <div className="min-h-screen py-1 bg-background">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex flex-col lg:flex-row gap-4 md:gap-8">
-          {/* Images Section */}
+          {/* Images */}
           <div className="lg:w-1/2">
             <div className="flex flex-col gap-4">
               {colorImages.length > 0 && (
                 <>
-                  <div className="rounded-lg p-2 md:p-4">
+                  <div className="rounded-lg p-2 md:p-4 bg-card">
                     <div className="w-full h-auto max-w-full mx-auto">
                       <Magnifier
                         key={`${selectedColor}-${currentImage}`}
@@ -97,12 +99,7 @@ const KidsProductDetails: React.FC = () => {
                         zoomLevel={2}
                         showLens
                         showZoomBox
-                        style={{
-                          borderRadius: '8px',
-                          overflow: 'hidden',
-                          maxWidth: '100%',
-                          height: 'auto'
-                        }}
+                        className="rounded-lg overflow-hidden max-w-full h-auto"
                       />
                     </div>
                   </div>
@@ -112,8 +109,9 @@ const KidsProductDetails: React.FC = () => {
                         key={idx}
                         src={img}
                         alt={`${product.name} view ${idx + 1}`}
-                        className={`w-16 h-16 md:w-20 md:h-20 object-cover rounded-lg cursor-pointer border-2 ${currentImage === idx ? "border-red-600" : "border-gray-300"
-                          }`}
+                        className={`w-16 h-16 md:w-20 md:h-20 object-cover rounded-lg cursor-pointer border-2 ${
+                          currentImage === idx ? "border-destructive" : "border-muted"
+                        }`}
                         onMouseEnter={() => setCurrentImage(idx)}
                         onClick={() => setCurrentImage(idx)}
                         whileHover={{ scale: 1.05 }}
@@ -126,35 +124,37 @@ const KidsProductDetails: React.FC = () => {
             </div>
           </div>
 
-          {/* Details Section */}
+          {/* Details */}
           <div className="lg:w-1/2">
-            <div className="rounded-xl shadow-md p-4 md:p-6 h-full">
+            <div className="rounded-xl shadow-md p-4 md:p-6 bg-card h-full">
               <div className="flex flex-col gap-4 md:gap-6">
-                <h1 className="text-2xl md:text-3xl font-bold">{product.name}</h1>
-                <p className="text-gray-500 text-sm">Save to favourites</p>
-                <p className="text-red-600 text-xl md:text-2xl font-bold">Rs. {product.price}.00</p>
-                <p className="text-gray-500 text-xs md:text-sm">MRP inclusive of all taxes</p>
+                <h1 className="text-2xl md:text-3xl font-bold text-foreground">{product.name}</h1>
+                <p className="text-muted-foreground text-sm">Save to favourites</p>
+                <p className="text-destructive text-xl md:text-2xl font-bold">Rs. {product.price}.00</p>
+                <p className="text-muted-foreground text-xs md:text-sm">MRP inclusive of all taxes</p>
 
-                {/* Colour Selection */}
+                {/* Color selection */}
                 <div className="space-y-2">
-                  <p className="font-semibold">Colour: {selectedColor}</p>
+                  <p className="font-semibold text-foreground">Colour: {selectedColor}</p>
                   <div className="flex gap-2 md:gap-3 flex-wrap">
                     {product.colors?.map((color) => (
                       <button
                         key={color}
                         onClick={() => setSelectedColor(color)}
-                        className={`flex items-center gap-1 md:gap-2 px-2 py-1 md:px-3 md:py-2 rounded-lg border font-medium transition ${selectedColor === color
-                            ? "border-red-600 bg-red-50"
-                            : "border-gray-300 hover:border-red-600 hover:bg-red-50"
+                        className={`flex items-center gap-1 md:gap-2 px-2 py-1 md:px-3 md:py-2 rounded-lg border font-medium transition
+                          ${
+                            selectedColor === color
+                              ? "border-destructive bg-destructive/10 text-destructive"
+                              : "border-muted hover:border-destructive hover:bg-destructive/10 text-foreground"
                           }`}
                         aria-label={`Select color: ${color}`}
                         aria-pressed={selectedColor === color}
                       >
-                        {product.images[color] && product.images[color][0] && (
+                        {product.images[color]?.[0] && (
                           <img
                             src={product.images[color][0]}
                             alt={`${color} preview`}
-                            className="w-12 h-12 md:w-16 md:h-16 rounded object-cover border"
+                            className="w-12 h-12 md:w-16 md:h-16 rounded object-cover border border-muted"
                           />
                         )}
                         <span className="text-sm md:text-base">{color}</span>
@@ -163,12 +163,14 @@ const KidsProductDetails: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Size Selection */}
+                {/* Size selection */}
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <p className="font-semibold">Selected size: {selectedSize ?? "None"}</p>
+                    <p className="font-semibold text-foreground">
+                      Selected size: {selectedSize ?? "None"}
+                    </p>
                     <button
-                      className="text-red-600 hover:underline text-xs md:text-sm"
+                      className="text-destructive hover:underline text-xs md:text-sm"
                       onClick={() => setShowSizeChart(true)}
                       aria-expanded={showSizeChart}
                     >
@@ -179,9 +181,11 @@ const KidsProductDetails: React.FC = () => {
                     {sizes.map((size) => (
                       <button
                         key={size}
-                        className={`px-2 py-1 md:px-3 md:py-1 rounded-lg border font-medium transition ${selectedSize === size
-                            ? "bg-red-600 text-white border-red-600"
-                            : "bg-white text-gray-700 border-gray-300 hover:bg-red-600 hover:text-white"
+                        className={`px-2 py-1 md:px-3 md:py-1 rounded-lg border font-medium transition
+                          ${
+                            selectedSize === size
+                              ? "bg-destructive text-white border-destructive"
+                              : "bg-card text-foreground border-muted hover:bg-destructive/10 hover:text-destructive"
                           }`}
                         onClick={() => setSelectedSize(size)}
                         aria-label={`Select size: ${size}`}
@@ -193,85 +197,42 @@ const KidsProductDetails: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Action Buttons */}
+                {/* Action buttons */}
                 <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
                   {isInCart ? (
                     <AppButton
                       className="flex-1 py-2 md:py-3 bg-green-500 text-white rounded-lg font-medium cursor-not-allowed"
                       disabled
-                      aria-label="Item already in cart"
                     >
                       Added to Cart
                     </AppButton>
                   ) : (
                     <AppButton
-                      className="flex-1 py-2 md:py-3 bg-red-500 text-white rounded-lg font-medium hover:bg-red-700 transition"
+                      className="flex-1 py-2 md:py-3 bg-destructive text-white rounded-lg font-medium hover:bg-destructive/80 transition-colors"
                       onClick={handleAddToCart}
-                      aria-label="Add to cart"
                     >
                       ADD TO CART
                     </AppButton>
                   )}
 
                   <AppButton
-                    className="flex-1 py-2 md:py-3 border border-gray-300 rounded-lg hover:bg-gray-100 font-medium"
+                    className="flex-1 py-2 md:py-3 border border-muted rounded-lg hover:bg-muted/10 font-medium"
                     onClick={() => setShowPurchaseModal(true)}
-                    aria-label="Open purchase assistant"
                   >
                     PURCHASE ASSISTANT
                   </AppButton>
                 </div>
 
-                <button className="text-blue-600 hover:underline text-xs md:text-sm">
+                <button className="text-primary hover:underline text-xs md:text-sm">
                   Check availability
                 </button>
 
                 {/* Collapsible Sections */}
                 <div className="space-y-3 md:space-y-4">
-                  {["description", "materials", "care", "delivery"].map((sectionKey) => {
-                    const labels: Record<string, string> = {
-                      description: "Description & Fit",
-                      materials: "Materials",
-                      care: "Care Guide",
-                      delivery: "Delivery and Payment",
-                    };
-
-                    const content: Record<string, string> = {
-                      description: product.description ?? "",
-                      materials: product.material ?? "",
-                      care: product.care ?? "",
-                      delivery: product.delivery ?? "",
-                    };
-
-                    return (
-                      <div key={sectionKey} className="border border-gray-200 rounded-lg">
-                        <button
-                          className="w-full flex justify-between items-center p-3 md:p-4 font-semibold text-sm md:text-base"
-                          onClick={() => toggleSection(sectionKey as keyof typeof openSections)}
-                          aria-expanded={openSections[sectionKey as keyof typeof openSections]}
-                          aria-controls={`${sectionKey}-content`}
-                        >
-                          {labels[sectionKey]}
-                          <span>{openSections[sectionKey as keyof typeof openSections] ? "−" : "+"}</span>
-                        </button>
-                        <AnimatePresence>
-                          {openSections[sectionKey as keyof typeof openSections] && (
-                            <motion.div
-                              id={`${sectionKey}-content`}
-                              layout
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: "auto" }}
-                              exit={{ opacity: 0, height: 0 }}
-                              transition={{ duration: 0.3 }}
-                              className="p-3 md:p-4 border-t border-gray-200 overflow-hidden text-sm md:text-base"
-                            >
-                              {content[sectionKey]}
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    );
-                  })}
+                  <CollapsibleSection title="Description & Fit" content={product.description ?? ""} />
+                  <CollapsibleSection title="Materials" content={product.material ?? ""} />
+                  <CollapsibleSection title="Care Guide" content={product.care ?? ""} />
+                  <CollapsibleSection title="Delivery and Payment" content={product.delivery ?? ""} />
                 </div>
               </div>
             </div>
@@ -289,25 +250,20 @@ const KidsProductDetails: React.FC = () => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.25 }}
                 onClick={() => setShowSizeChart(false)}
-                aria-hidden="true"
               />
               <motion.div
-                className="fixed top-0 right-0 w-full max-w-md h-full bg-white shadow-lg z-50"
+                className="fixed top-0 right-0 w-full max-w-md h-full bg-background shadow-lg z-50"
                 initial={{ x: "100%" }}
                 animate={{ x: 0 }}
                 exit={{ x: "100%" }}
                 transition={{ type: "spring", stiffness: 250, damping: 35 }}
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="size-guide-title"
               >
                 <div className="h-full flex flex-col overflow-y-auto">
-                  <div className="flex justify-between items-center p-4 border-b">
-                    <h2 id="size-guide-title" className="text-lg font-bold">Size Guide</h2>
+                  <div className="flex justify-between items-center p-4 border-b border-muted">
+                    <h2 className="text-lg font-bold text-foreground">Size Guide</h2>
                     <button
-                      className="text-gray-500 hover:text-gray-700 text-2xl"
+                      className="text-muted-foreground hover:text-foreground text-2xl"
                       onClick={() => setShowSizeChart(false)}
-                      aria-label="Close size guide"
                     >
                       ×
                     </button>
@@ -317,9 +273,11 @@ const KidsProductDetails: React.FC = () => {
                       {["XXS-S", "M-XL", "XXL-3XL"].map((range) => (
                         <button
                           key={range}
-                          className={`px-3 py-1 rounded-lg border font-medium transition ${activeSizeRange === range
-                              ? "bg-red-600 text-white border-red-600"
-                              : "bg-white text-gray-700 border-gray-300 hover:bg-red-600 hover:text-white"
+                          className={`px-3 py-1 rounded-lg border font-medium transition
+                            ${
+                              activeSizeRange === range
+                                ? "bg-destructive text-white border-destructive"
+                                : "bg-background text-foreground border-muted hover:bg-destructive/10 hover:text-destructive"
                             }`}
                           onClick={() => setActiveSizeRange(range as any)}
                           aria-pressed={activeSizeRange === range}
@@ -332,9 +290,9 @@ const KidsProductDetails: React.FC = () => {
                       <table className="w-full border-collapse text-sm">
                         <thead>
                           <tr>
-                            <th className="border p-2">Measurement</th>
+                            <th className="border p-2 text-foreground">Measurement</th>
                             {sizeGuide[activeSizeRange]?.[0]?.values?.map((_, idx) => (
-                              <th key={idx} className="border p-2 text-center">
+                              <th key={idx} className="border p-2 text-center text-foreground">
                                 {sizes[idx]}
                               </th>
                             ))}
@@ -342,10 +300,10 @@ const KidsProductDetails: React.FC = () => {
                         </thead>
                         <tbody>
                           {sizeGuide[activeSizeRange]?.map((row, idx) => (
-                            <tr key={idx} className="border-t">
-                              <td className="border p-2 font-medium">{row?.label}</td>
+                            <tr key={idx} className="border-t border-muted">
+                              <td className="border p-2 font-medium text-foreground">{row?.label}</td>
                               {row?.values?.map((val, i) => (
-                                <td key={i} className="border p-2 text-center">
+                                <td key={i} className="border p-2 text-center text-foreground">
                                   {val}
                                 </td>
                               ))}
@@ -371,4 +329,4 @@ const KidsProductDetails: React.FC = () => {
   );
 };
 
-export default KidsProductDetails;
+export default AppProductDetails;

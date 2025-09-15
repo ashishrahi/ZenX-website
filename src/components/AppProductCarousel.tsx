@@ -1,27 +1,22 @@
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import MenProductCard from "./MenProductCard";
-import Sweater from "../assets/swater.avif";
+import AppProductCard from "@/components/AppProductCard";
+import { Product } from "../context/CartContext";
 
-interface Product {
-  id: number;
-  name: string;
-  images: { [key: string]: string };
-  tag?: string[];
-}
-
-interface MenProductsProps {
-  productsData?: Product[];
+interface ProductCarouselProps {
+  productsData: Product[];
   title?: string;
   description?: string;
+  onWishlistToggle?: (product: Product) => void;
 }
 
-const MenProducts = ({
+const ProductCarousel = ({
   productsData = [],
   title = "Default Title",
   description = "Default Description",
-}: MenProductsProps) => {
+  onWishlistToggle,
+}: ProductCarouselProps) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slidesToShow, setSlidesToShow] = useState(1);
@@ -30,53 +25,32 @@ const MenProducts = ({
   useEffect(() => {
     const updateSlidesToShow = () => {
       if (!containerRef.current) return;
-
-      const containerWidth = containerRef.current.offsetWidth;
-      if (containerWidth >= 1024) setSlidesToShow(4);
-      else if (containerWidth >= 640) setSlidesToShow(2);
-      else setSlidesToShow(1);
+      const width = containerRef.current.offsetWidth;
+      setSlidesToShow(width >= 1024 ? 4 : width >= 640 ? 2 : 1);
     };
-
     updateSlidesToShow();
     window.addEventListener("resize", updateSlidesToShow);
     return () => window.removeEventListener("resize", updateSlidesToShow);
   }, []);
 
-  const handleAddToBag = (productId: number) => {
-    console.log("Added to Bag:", productId);
-  };
-
-  const handleWishlistToggle = (productId: number) => {
-    console.log("Wishlist toggled for:", productId);
-  };
-
   const nextSlide = () => {
-    if (currentIndex < productsData.length - slidesToShow) {
-      setCurrentIndex((prev) => prev + 1);
-    }
+    if (currentIndex < productsData.length - slidesToShow) setCurrentIndex(prev => prev + 1);
   };
-
   const prevSlide = () => {
-    if (currentIndex > 0) setCurrentIndex((prev) => prev - 1);
+    if (currentIndex > 0) setCurrentIndex(prev => prev - 1);
   };
-
   const slideWidth = `${100 / slidesToShow}%`;
 
   return (
-    <section className="py-2 bg-background" id="trending-products">
+    <section className="py-2 bg-background" id="product-carousel">
       <div className="container mx-auto px-4">
-        {/* Section Heading */}
         <div className="text-center mb-10">
           <h2 className="text-3xl font-bold tracking-wide uppercase">
-            {title.split(" ").map((word, index) => (
+            {title.split(" ").map((word, idx) => (
               <span
-                key={index}
+                key={idx}
                 className={
-                  index === 0
-                    ? "text-black"
-                    : index === 1
-                    ? "text-red-500"
-                    : "text-foreground"
+                  idx === 0 ? "text-black" : idx === 1 ? "text-red-500" : "text-foreground"
                 }
               >
                 {word}{" "}
@@ -86,9 +60,7 @@ const MenProducts = ({
           <p className="text-muted-foreground text-sm mt-2">{description}</p>
         </div>
 
-        {/* Carousel */}
         <div className="relative" ref={containerRef}>
-          {/* Left Arrow */}
           <button
             onClick={prevSlide}
             disabled={currentIndex === 0}
@@ -99,11 +71,9 @@ const MenProducts = ({
             <ChevronLeft className="h-6 w-6 text-white" />
           </button>
 
-          {/* Carousel Track */}
           <div className="overflow-hidden">
             <motion.div
               className="flex"
-              initial={false}
               animate={{ x: `-${currentIndex * (100 / slidesToShow)}%` }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
             >
@@ -118,46 +88,12 @@ const MenProducts = ({
                       onMouseEnter={() => setHoveredIndex(index)}
                       onMouseLeave={() => setHoveredIndex(null)}
                     >
-                      {/* Product Card */}
-                      <MenProductCard
+                      <AppProductCard
                         product={product}
-                        primaryImage={product.images.Burgundy || Sweater}
-                        secondaryImage={product.images.Black || Sweater}
-                        onAddToBag={handleAddToBag}
-                        onWishlistToggle={handleWishlistToggle}
                         hovered={hoveredIndex === index}
+                        toggleWishlist={() => onWishlistToggle?.(product)}
+                        basePath={`/${product.gender ?? "mens"}`}
                       />
-
-                      {/* Floating Badge */}
-                      {product.tag && product.tag.length > 0 && (
-                        <div className="absolute top-2 left-2 flex flex-col items-start space-y-2 z-20">
-                          {product.tag.map((badge, index) => (
-                            <motion.div
-                              key={index}
-                              initial={{ y: 0, opacity: 0 }}
-                              animate={{
-                                y: [0, -3, 0],
-                                opacity: 1,
-                              }}
-                              transition={{
-                                duration: 3,
-                                ease: "easeInOut",
-                                repeat: Infinity,
-                                repeatType: "mirror",
-                              }}
-                              className={`px-2 py-1 text-[10px] font-bold shadow-md rounded ${
-                                badge === "Best Seller"
-                                  ? "bg-yellow-500 text-black"
-                                  : badge === "Premium"
-                                  ? "bg-purple-600 text-white"
-                                  : "bg-gray-300 text-black"
-                              }`}
-                            >
-                              {badge.toUpperCase()}
-                            </motion.div>
-                          ))}
-                        </div>
-                      )}
                     </motion.div>
                   </div>
                 </div>
@@ -165,7 +101,6 @@ const MenProducts = ({
             </motion.div>
           </div>
 
-          {/* Right Arrow */}
           <button
             onClick={nextSlide}
             disabled={currentIndex >= productsData.length - slidesToShow}
@@ -183,4 +118,4 @@ const MenProducts = ({
   );
 };
 
-export default MenProducts;
+export default ProductCarousel;

@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import KidsProductDetails from "../../../components/KidsProductDetails";
-import MenProductCard from "@/components/MenProductCard";
+import AppProductDetails from "../../../components/AppProductDetails";
+import AppProductCard from "@/components/AppProductCard";
 import Comments, { Comment } from "@/components/Comments"; // Import Comments component
 import { kidsInnerwear } from "../../../api/kids/kidsProductsData";
 
@@ -56,7 +56,7 @@ const KidsProductDetailPage = () => {
               className="flex flex-col lg:flex-row gap-10 lg:gap-16 mb-16"
             >
               <div className="flex-1 min-w-0 rounded-2xl shadow-md p-6">
-                <KidsProductDetails product={currentProduct} />
+                <AppProductDetails product={currentProduct} />
               </div>
             </section>
 
@@ -66,7 +66,7 @@ const KidsProductDetailPage = () => {
                 <h2 className="text-2xl font-bold mb-6">Related Products</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                   {relatedProducts.map((product) => (
-                    <MenProductCard key={product.id} product={product} />
+                    <AppProductCard key={product.id} product={product} />
                   ))}
                 </div>
               </section>

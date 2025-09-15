@@ -6,6 +6,7 @@ export const kidsInnerwear = [
     name: "Cotton T-Shirt",
     price: 399,
     colors: ["White", "Black", "Blue"],
+    gender:"kids",
     images: {
       White: [images.kidsTshirtWhite],
       Black: [images.kidsTshirtBlack],
@@ -25,6 +26,7 @@ export const kidsInnerwear = [
     name: "Casual Shorts (Pack of 2)",
     price: 699,
     colors: ["Black", "Grey", "Navy"],
+    gender:"kids",
     images: {
       Black: [images.kidsShortsBlack],
       Grey: [images.kidsShortsGrey],
@@ -44,6 +46,7 @@ export const kidsInnerwear = [
     name: "Winter Jacket",
     price: 1299,
     colors: ["Red", "Blue"],
+    gender:"kids",
     images: {
       Red: [images.kidsWinterRed],
       Blue: [images.kidsWinterBlue],
@@ -62,6 +65,7 @@ export const kidsInnerwear = [
     name: "Sports Tracksuit",
     price: 999,
     colors: ["Green", "Black", "Yellow"],
+    gender:"kids",
     images: {
       Green: [images.kidsSportsGreen],
       Black: [images.kidsSportsBlack],

@@ -4,6 +4,7 @@ export const kidsCategories = [
   {
     name: "T-Shirts",
     slug: "kids-tshirts",
+    gender: "kids",
     images: {
       White: [images.kidsTshirtWhite],
       Black: [images.kidsTshirtBlack],
@@ -14,6 +15,7 @@ export const kidsCategories = [
   {
     name: "Shorts",
     slug: "kids-shorts",
+      gender: "kids",
     images: {
       Black: [images.kidsShortsBlack],
       Grey: [images.kidsShortsGrey],
@@ -23,6 +25,7 @@ export const kidsCategories = [
   {
     name: "Winter Wear",
     slug: "kids-winter-wear",
+      gender: "kids",
     images: {
       Red: [images.kidsWinterRed],
       Blue: [images.kidsWinterBlue],
@@ -32,6 +35,7 @@ export const kidsCategories = [
   {
     name: "Sportswear",
     slug: "kids-sportswear",
+      gender: "kids",
     images: {
       Green: [images.kidsSportsGreen],
       Black: [images.kidsSportsBlack],
@@ -42,6 +46,7 @@ export const kidsCategories = [
   {
     name: "Accessories",
     slug: "kids-accessories",
+      gender: "kids",
     images: {
       Black: [images.kidsCapBlack],
       White: [images.kidsCapWhite],

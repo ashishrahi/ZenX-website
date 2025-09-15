@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import WomenProductCard from "./WomenProductCard";
+import AppProductCard from "./AppProductCard";
 import Sweater from "../assets/swater.avif";
 
 interface Product {
@@ -119,7 +119,7 @@ const MainProducts = ({ productsData, title, description }: TrendingProductsProp
                       onMouseLeave={() => setHoveredIndex(null)}
                     >
                       {/* Product Card */}
-                      <WomenProductCard
+                      <AppProductCard
                         product={product}
                         primaryImage={product.images.Burgundy || Sweater}
                         secondaryImage={product.images.Black || Sweater}

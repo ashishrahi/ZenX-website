@@ -4,17 +4,16 @@ import Sidebar from "@/components/Sidebar";
 import EnquireNow from "@/components/EnquireNow";
 import MainProducts from "@/components/MainProduct";
 import ZenxAbout from "@/components/ZenxAbout";
-import { slides } from "../api/slidesData";
+import { slides } from "../../api/slidesData";
 import { categories } from "@/api/main/categories";
-import { menInnerwear } from '../api/men/menProductsData';
+import { menInnerwear } from '../../api/men/menProductsData';
 import { motion } from "framer-motion";
-import WomenProducts from "@/components/WomenProducts";
 import { womenInnerwear } from "@/api/women/womenProductsData";
-import MenProducts from "@/components/MenProducts";
-import KidsProducts from "@/components/KidsProducts";
 import { kidsInnerwear } from "@/api/kids/kidsProductsData";
 import ShadowContainer from "@/components/ShadowContainer";
 import FAQSection from "@/components/FAQ";
+import AppProductCarousel from "@/components/AppProductCarousel";
+
 
 const Index = () => {
   return (
@@ -37,7 +36,7 @@ const Index = () => {
       {/* Trending Products */}
             <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 lg:px-12 py-6">
         <div className="relative rounded-[8px] overflow-hidden w-full max-w-[1600px] mx-auto shadow-2xl">
-      <MenProducts
+      <AppProductCarousel
         productsData={menInnerwear.filter(innerwear =>
           innerwear.tag?.includes("HotPick")
         )}
@@ -50,7 +49,7 @@ const Index = () => {
       {/* WomenProducts */}
       <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 lg:px-12 py-6">
         <div className="relative rounded-[8px] overflow-hidden w-full max-w-[1600px] mx-auto shadow-2xl">
-      <WomenProducts
+      <AppProductCarousel
         productsData={womenInnerwear}
         title="Women’s Choice"
         description="Explore our curated collection of premium innerwear, designed for comfort, style, and lasting quality"
@@ -110,7 +109,7 @@ const Index = () => {
 {/* Kids Products Section */}
 <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 lg:px-12 py-6">
   <div className="rounded-2xl shadow-2xl bg-white overflow-hidden">
-    <KidsProducts
+    <AppProductCarousel
       productsData={kidsInnerwear}
       title="Kids Products"
       description="Stay ahead with these top-selling, stylish innerwear picks"
@@ -157,7 +156,7 @@ const Index = () => {
     whileInView={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.8, delay: 0.2 }}
   >
-    <MenProducts
+    <AppProductCarousel
       productsData={menInnerwear.filter(innerwear =>
         innerwear.tag?.includes("Best Seller")
       )}
@@ -205,7 +204,7 @@ const Index = () => {
     whileInView={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.8, delay: 0.2 }}
   >
-    <WomenProducts
+    <AppProductCarousel
       productsData={womenInnerwear}
       title=""
       description=""
