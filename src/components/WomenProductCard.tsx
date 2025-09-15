@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
-import AppButton from "./AppButton";
+import AppButton from "../components/AppComponent/AppButton";
 import {renderStars}  from '../utilis/renderStars'
 
 

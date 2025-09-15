@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Heart, ImageOff, Star, StarHalf, Star as StarOutline } from "lucide-react";
+import { Heart, ImageOff } from "lucide-react";
 import {
   Card,
   CardHeader,
@@ -9,10 +9,8 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { useCart } from "@/context/CartContext";
-import { useWishlist } from "../context/WishlistContext";
-import AppButton from "../components/AppComponent/AppButton";
-import { renderStars } from "../utilis/renderStars";
+import { renderStars } from "../../utilis/renderStars";
+import AppButton from "./AppButton";
 
 interface ProductCardProps {
   product: {
@@ -28,19 +26,32 @@ interface ProductCardProps {
     bestSeller?: boolean;
     rating?: number;
   };
+  /** Custom route to navigate when "View Details" is clicked */
+  detailRoute?: string;
+
+  /** Wishlist state & actions */
+  isInWishlist?: boolean;
+  toggleWishlist?: (product: any) => void;
+
+  /** Cart state & actions */
+  isInCart?: boolean;
+  addToCart?: (product: any) => void;
 }
 
-const KidsProductCard: FC<ProductCardProps> = ({ product }) => {
+const ProductCard: FC<ProductCardProps> = ({
+  product,
+  detailRoute = `/product/${product?.id}`,
+  isInWishlist = false,
+  toggleWishlist,
+  isInCart = false,
+  addToCart,
+}) => {
   const navigate = useNavigate();
-  const { addToCart, cart } = useCart();
-  const { toggleWishlist, isInWishlist } = useWishlist();
   const [imageError, setImageError] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
   const [hoveredColor, setHoveredColor] = useState<string | null>(null);
 
-  const handleViewDetails = () => navigate(`/kids/product/${product?.id}`);
-  const isInCart = cart.some((item) => item.id === product.id);
-  const inWishlist = isInWishlist(product.id);
+  const handleViewDetails = () => navigate(detailRoute);
 
   const getPrimaryImage = () => {
     const colorToUse = hoveredColor || (product?.images ? Object.keys(product.images)[0] : null);
@@ -48,27 +59,18 @@ const KidsProductCard: FC<ProductCardProps> = ({ product }) => {
     return product.images[colorToUse]?.[0] || "";
   };
 
-  const handleImageError = () => {
-    setImageError(true);
-    setImageLoading(false);
-  };
-
-  const handleImageLoad = () => setImageLoading(false);
-
-
-
   return (
     <Card className="group relative rounded-2xl border shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col h-[480px]">
-      {/* Trending & Best Seller Badges */}
+      {/* Trending or Best Seller Badge */}
       {product?.trending && !product?.bestSeller && (
-        <div className="absolute top-3 left-0 z-20 overflow-visible">
+        <div className="absolute top-3 left-0 z-20">
           <div className="bg-red-500 text-white text-xs font-bold px-3 py-1 transform -rotate-45 shadow-lg">
             Trending
           </div>
         </div>
       )}
       {product?.bestSeller && (
-        <div className="absolute top-3 left-0 z-30 overflow-visible">
+        <div className="absolute top-3 left-0 z-30">
           <div className="bg-yellow-500 text-white text-xs font-bold px-3 py-1 transform -rotate-45 shadow-lg">
             Best Seller
           </div>
@@ -76,14 +78,16 @@ const KidsProductCard: FC<ProductCardProps> = ({ product }) => {
       )}
 
       {/* Wishlist Button */}
-      <button
-        className="absolute top-3 right-3 z-20 bg-white p-2 rounded-full shadow hover:bg-red-50 transition"
-        onClick={() => toggleWishlist(product)}
-      >
-        <Heart
-          className={`h-5 w-5 transition ${inWishlist ? "text-red-500" : "text-gray-500 group-hover:text-red-500"}`}
-        />
-      </button>
+      {toggleWishlist && (
+        <button
+          className="absolute top-3 right-3 z-20 bg-white p-2 rounded-full shadow hover:bg-red-50 transition"
+          onClick={() => toggleWishlist(product)}
+        >
+          <Heart
+            className={`h-5 w-5 transition ${isInWishlist ? "text-red-500" : "text-gray-500 group-hover:text-red-500"}`}
+          />
+        </button>
+      )}
 
       {/* Product Image */}
       <CardContent
@@ -100,8 +104,11 @@ const KidsProductCard: FC<ProductCardProps> = ({ product }) => {
             src={getPrimaryImage()}
             alt={product?.name}
             className="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-300"
-            onError={handleImageError}
-            onLoad={handleImageLoad}
+            onError={() => {
+              setImageError(true);
+              setImageLoading(false);
+            }}
+            onLoad={() => setImageLoading(false)}
           />
         ) : (
           <div className="flex flex-col items-center justify-center text-gray-400 h-full w-full">
@@ -138,27 +145,33 @@ const KidsProductCard: FC<ProductCardProps> = ({ product }) => {
       {/* Price + Add to Cart */}
       <CardFooter className="flex flex-col gap-4 p-5 pt-0 mt-auto">
         <div className="flex items-center gap-2">
-          {product?.discountPrice && <span className="text-lg font-bold text-primary">₹{product.discountPrice}</span>}
+          {product?.discountPrice && (
+            <span className="text-lg font-bold text-primary">₹{product.discountPrice}</span>
+          )}
           <span
-            className={`text-xl font-bold text-gray-900 ${product?.discountPrice ? "line-through text-gray-400" : ""}`}
+            className={`text-xl font-bold text-gray-900 ${
+              product?.discountPrice ? "line-through text-gray-400" : ""
+            }`}
           >
             ₹{product?.price}
           </span>
         </div>
 
-        <AppButton
-          className={`w-full py-3 rounded-xl font-medium ${
-            isInCart
-              ? "bg-muted cursor-not-allowed text-muted-foreground"
-              : "bg-primary text-primary-foreground hover:bg-primary/90"
-          } transition-colors duration-300 shadow-md hover:shadow-lg`}
-          onClick={() => !isInCart && addToCart(product)}
-        >
-          {isInCart ? "Added" : "ADD TO BAG"}
-        </AppButton>
+        {addToCart && (
+          <AppButton
+            className={`w-full py-3 rounded-xl font-medium ${
+              isInCart
+                ? "bg-muted cursor-not-allowed text-muted-foreground"
+                : "bg-primary text-primary-foreground hover:bg-primary/90"
+            } transition-colors duration-300 shadow-md hover:shadow-lg`}
+            onClick={() => !isInCart && addToCart(product)}
+          >
+            {isInCart ? "Added" : "ADD TO BAG"}
+          </AppButton>
+        )}
       </CardFooter>
     </Card>
   );
 };
 
-export default KidsProductCard;
+export default ProductCard;

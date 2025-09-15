@@ -5,7 +5,7 @@ import { kidsInnerwear, sizeGuide, sizes } from "../api/kids/kidsProductsData";
 import Magnifier from "@/utilis/Magnifier";
 import PurchaseAssistantModal from "../components/PurchaseAssistantModal";
 import { useCart, CartItem } from "../context/CartContext";
-import AppButton from "./AppButton";
+import AppButton from "../components/AppComponent/AppButton";
 
 const KidsProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
