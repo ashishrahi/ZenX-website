@@ -13,7 +13,7 @@ interface ProductCategoriesCarouselProps {
     name: string;
     description: string;
     images: Record<string, string[]>;
-    gender: "mens" | "womens" | "kids";
+    gender: "mens" | "womens" | "kids"
   }[];
 }
 
@@ -27,7 +27,6 @@ const AppProductCategoriesCarousel = ({ title, description, categories }: Produc
   const [activeIndex, setActiveIndex] = useState(0);
   const autoplayRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const resumeTimeoutRef = useRef<number | null>(null);
-  const carouselContainerRef = useRef<HTMLDivElement | null>(null); // Added ref for wheel scrolling
 
   // ===== Autoplay Management =====
   const startAutoplay = () => {
@@ -93,32 +92,9 @@ const AppProductCategoriesCarousel = ({ title, description, categories }: Produc
     };
   }, [categories]);
 
-  const handleCardClick = (gender: string, slug: string) => {
-    navigate(`/${gender}/category/${slug}`);
-  };
-
-  // ===== Mouse Wheel Scroll Logic =====
-  useEffect(() => {
-    const handleWheel = (event: WheelEvent) => {
-      if (!carouselContainerRef.current) return;
-
-      event.preventDefault(); // Prevent default scrolling
-      if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
-        if (event.deltaY > 0) {
-          goToNext();
-        } else {
-          goToPrev();
-        }
-      }
-    };
-
-    const container = carouselContainerRef.current;
-    container?.addEventListener("wheel", handleWheel, { passive: false });
-
-    return () => {
-      container?.removeEventListener("wheel", handleWheel);
-    };
-  }, [categories]);
+ const handleCardClick = (gender: string, slug: string) => {
+  navigate(`/${gender}/category/${slug}`);
+};
 
   return (
     <section className="py-12 bg-background" id="products">
@@ -139,7 +115,7 @@ const AppProductCategoriesCarousel = ({ title, description, categories }: Produc
         </div>
 
         {/* Carousel */}
-        <div className="w-full max-w-7xl mx-auto relative" ref={carouselContainerRef}>
+        <div className="w-full max-w-7xl mx-auto relative">
           {/* Navigation Buttons */}
           <Button
             className="absolute left-0 top-1/2 -translate-y-1/2 border bg-red-500 shadow-md hover:bg-red-700 w-12 h-12 rounded-full"

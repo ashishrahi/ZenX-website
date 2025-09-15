@@ -16,13 +16,13 @@ import MenProductDetailPage from "./pages/Men/ProductDetailPage/MenProductDetail
 import MenCategoryProductPage from "./pages/Men/MenCategoryProduct/MenCategoryProductPage";
 import WomenCategoryProductsPage from './pages/Women/WonenCategoryProductPage'
 import KidsCategoryProductsPage from './pages/Kids/KidsCategoryProductPage'
+import FAQSection from "./components/FAQ";
+import Wishlist from "./components/Wishlist";
 
 // ✅ Lazy loading for better performance
 const Index = lazy(() => import("./pages/Home/Index"));
 const NotFound = lazy(() => import("./pages/NotFound"));
-const ProductDetailsPage = lazy(() =>
-  import("./pages/Men/ProductDetailPage/MenProductDetailPage")
-);
+
 const CheckoutPage = lazy(() => import("./pages/CheckoutPage/CheckoutPage"));
 const AccountPage = lazy(() => import("./pages/Account/AccountPage"));
 const MenPage = lazy(() => import("./pages/Men/MenPage"));
@@ -53,7 +53,9 @@ const App = () => (
       <Route path="/" element={<Index />} />
 
       {/* Blog */}
+       <Route path="/faq" element={<FAQSection />} />
       <Route path="/blog" element={<BlogPage />} />
+
 
       {/* MEN */}
       <Route path="/mens">

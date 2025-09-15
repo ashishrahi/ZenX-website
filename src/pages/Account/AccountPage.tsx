@@ -6,6 +6,7 @@ import Orders from "../../components/Orders";
 import Wishlist from "../../components/Wishlist";
 // import Addresses from "./Addresses";
 import Help from "../../components/HelpSupport";
+import AccountProfile from "@/components/AccountProfile";
 
 const AccountPage: React.FC = () => {
   const navigate = useNavigate();
@@ -23,8 +24,8 @@ const AccountPage: React.FC = () => {
         return <Orders />;
       case "wishlist":
         return <Wishlist />;
-      // case "addresses":
-      //   return <Addresses />;
+      case "profile":
+        return <AccountProfile />;
       case "help":
         return <Help />;
       default:

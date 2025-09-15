@@ -18,13 +18,13 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({
   const tabs = [
     { id: "orders", label: "My Orders", description: "Check your Order Status", Icon: Box },
     { id: "wishlist", label: "Wishlist", description: "Shop from your Wishlist", Icon: Heart },
-    { id: "addresses", label: "Saved Address", description: "Saved addresses for effortless checkout", Icon: MapPin },
+    { id: "profile", label: "Edit Profile", description: "Saved addresses for effortless checkout", Icon: MapPin },
     { id: "help", label: "Help & Support", description: "", Icon: HelpCircle },
   ];
 
   return (
     <div className="bg-white border rounded-lg shadow-sm overflow-hidden flex flex-col">
-      <AccountProfile />
+      {/* <AccountProfile /> */}
 
       <div className="p-4 flex-1">
         <ul className="divide-y">
