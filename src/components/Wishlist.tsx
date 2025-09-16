@@ -55,14 +55,14 @@ const Wishlist: React.FC = () => {
         return (
           <Card key={product.id} className="group relative rounded-2xl border shadow-sm hover:shadow-lg transition-all duration-300 h-full flex flex-col">
             {/* Trending & Best Seller */}
-            {product.trending && !product.bestSeller && (
+            {product.trending && !product.bestseller && (
               <div className="absolute top-3 left-0 z-20 overflow-visible">
                 <div className="bg-red-500 text-white text-xs font-bold px-3 py-1 transform -rotate-45 shadow-lg">
                   Trending
                 </div>
               </div>
             )}
-            {product.bestSeller && (
+            {product.bestseller && (
               <div className="absolute top-3 left-0 z-30 overflow-visible">
                 <div className="bg-yellow-500 text-white text-xs font-bold px-3 py-1 transform -rotate-45 shadow-lg">
                   Best Seller

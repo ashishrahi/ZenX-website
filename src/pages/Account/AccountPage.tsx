@@ -11,6 +11,7 @@ import Container from "@/components/Container";
 import ShadowContainer from "@/components/ShadowContainer";
 import { Settings } from "lucide-react";
 import {mockOrders} from '../../api/orders/orders'
+import ColoredTitle from "@/components/ColoredTitle";
 
 const AccountPage: React.FC = () => {
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ const AccountPage: React.FC = () => {
           <div className="max-w-7xl mx-auto px-4 lg:px-8 mb-20 flex flex-row justify-center items-center space-x-2">
             <Settings className="w-6 h-6 text-gray-700" />
             <h1 className="text-3xl font-semibold text-gray-800 text-center lg:text-left">
-              Account Settings
+           <ColoredTitle title = "Account Settings"/>   
             </h1>
           </div>
 

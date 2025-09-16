@@ -1,18 +1,19 @@
-// src/types/cartTypes.ts
+import { SizeRange } from "./SizeRange";
+
 export interface Product {
   id: number;
   name: string;
   description?: string;
   price: number;
   discountPrice?: number;
-  images?: Record<string, string[]>; // Example: { red: ["red1.jpg"], blue: ["blue1.jpg"] }
+  images?: Record<string, string[]>;
   colors?: string[];
   rating: number;
   gender?: string;
   tag?: string[];
   isBestseller?: boolean;
   bestseller?: boolean;
-  inWishlist?: boolean; // Derived from context
+  inWishlist?: boolean;
 }
 
 export interface WishlistContextType {
@@ -23,6 +24,8 @@ export interface WishlistContextType {
 
 export interface CartItem extends Product {
   quantity: number;
+  size: SizeRange;      
+  selectedColor: string;
 }
 
 export interface CartContextType {

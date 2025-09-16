@@ -21,9 +21,13 @@ const ProductCategories = ({ title, categories = [], description }) => {
     .filter((v, i, a) => a.findIndex(cat => cat.slug === v.slug) === i) 
     .flatMap(cat => cat.subCategories || []);
 
-  const handleCardClick = (slug?: string) => {
-    if (slug) navigate(`/category/${slug}`);
-  };
+  const handleCardClick = (e: React.MouseEvent<HTMLDivElement>, slug?: string) => {
+  e.preventDefault(); // Prevent default browser behavior
+
+  if (slug) {
+    navigate(`/category/${slug}`);
+  }
+};
 
   const startAutoplay = () => {
     stopAutoplay();

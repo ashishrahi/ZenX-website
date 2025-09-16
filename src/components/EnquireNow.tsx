@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { motion } from "framer-motion";
+import { FormikHelpers } from "formik";
+import { EnquireFormValues } from "@/types/EnquireFormValues";
 
 // Validation Schema
 const EnquireSchema = Yup.object().shape({
@@ -16,7 +18,8 @@ const EnquireSchema = Yup.object().shape({
 const EnquireNow = () => {
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (values: any, { resetForm }: any) => {
+  const handleSubmit = (  values: EnquireFormValues,
+  { resetForm }: FormikHelpers<EnquireFormValues>) => {
     setLoading(true);
     setTimeout(() => {
       console.log("Form Submitted:", values);

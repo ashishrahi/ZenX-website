@@ -16,11 +16,11 @@ import MenProductDetailPage from "./pages/Men/ProductDetailPage/MenProductDetail
 import MenCategoryProductPage from "./pages/Men/MenCategoryProduct/MenCategoryProductPage";
 import WomenCategoryProductsPage from './pages/Women/WonenCategoryProductPage'
 import KidsCategoryProductsPage from './pages/Kids/KidsCategoryProductPage'
-import FAQSection from "./components/FAQ";
-import Wishlist from "./components/Wishlist";
 import FAQSectionPage from "./pages/FAQSection/FAQSectionPage";
-import TopBar from "./components/TopBar";
 import CountryExportPage from "./pages/CountryExport/CountryExportPage";
+import ScrollToTop from "./components/ScrollToTop";
+import ZenHistory from "./components/ZenHistory";
+import ZenHistoryPage from "./pages/ZenHistory/ZenHistoryPage";
 
 // ✅ Lazy loading for better performance
 const Index = lazy(() => import("./pages/Home/Index"));
@@ -44,60 +44,68 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop />
         {/* Global Header */}
         <Header />
 
         {/* Suspense ensures that while components are loading, fallback UI is shown */}
-       <Suspense fallback={<LoadingPage title = "Loading" />}>
-  <Routes>
-    {/* ✅ Wrap all pages under MainLayout */}
-    <Route element={<MainLayout />}>
-      {/* Home */}
-      <Route path="/" element={<Index />} />
+        <Suspense fallback={<LoadingPage title="Loading" />}>
+          <Routes>
+            {/* ✅ Wrap all pages under MainLayout */}
+            <Route element={<MainLayout />}>
+              {/* Home */}
+              <Route path="/" element={<Index />} />
 
-      {/* Blog */}
-       <Route path="/faq" element={<FAQSectionPage />} />
-      <Route path="/blog" element={<BlogPage />} />
-      <Route path="/export" element={<CountryExportPage />} />
+              {/* Faq */}
+              <Route path="/faq" element={<FAQSectionPage />} />
+              {/* Blog */}
+              <Route path="/blog" element={<BlogPage />} />
+              {/* Export */}
+
+              <Route path="/export" element={<CountryExportPage />} />
+              {/* history */}
+              <Route path="/history" element={<ZenHistoryPage />} />
 
 
 
-      {/* MEN */}
-      <Route path="/mens">
-        <Route index element={<MenPage />} />
-        <Route path="category/:slug" element={<MenCategoryProductPage />} />
-        <Route path="product/:id" element={<MenProductDetailPage />} />
-      </Route>
 
-      {/* WOMEN */}
-      <Route path="/womens">
-        <Route index element={<WomenPage />} />
-        <Route path="category/:slug" element={<WomenCategoryProductsPage />} />
-        <Route path="product/:id" element={<WomenProductDetailsPage />} />
-      </Route>
+              {/* MEN */}
+              <Route path="/mens">
+                <Route index element={<MenPage />} />
+                <Route path="category/:slug" element={<MenCategoryProductPage />} />
+                <Route path="product/:id" element={<MenProductDetailPage />} />
+              </Route>
 
-      {/* KIDS */}
-      <Route path="/kids">
-        <Route index element={<KidsPage />} />
-        <Route path="category/:slug" element={<KidsCategoryProductsPage />} />
-        <Route path="product/:id" element={<KidsProductDetailPage />} />
-      </Route>
+              {/* WOMEN */}
+              <Route path="/womens">
+                <Route index element={<WomenPage />} />
+                <Route path="category/:slug" element={<WomenCategoryProductsPage />} />
+                <Route path="product/:id" element={<WomenProductDetailsPage />} />
+              </Route>
 
-      {/* Checkout and Account */}
-      <Route path="/checkout" element={<CheckoutPage />} />
-      <Route path="/account" element={<AccountPage />} />
+              {/* KIDS */}
+              <Route path="/kids">
+                <Route index element={<KidsPage />} />
+                <Route path="category/:slug" element={<KidsCategoryProductsPage />} />
+                <Route path="product/:id" element={<KidsProductDetailPage />} />
+              </Route>
 
-      {/* 404 Page */}
-      <Route path="*" element={<NotFound />} />
-    </Route>
-  </Routes>
-</Suspense>
+              {/* Checkout and Account */}
+              <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/account" element={<AccountPage />} />
+
+              {/* 404 Page */}
+              <Route path="*" element={<NotFound />} />
+            </Route>
+          </Routes>
+        </Suspense>
 
         <Footer />
+        {/* <ScrollToBottom/> */}
         <Chatbot />
-      <Sidebar
-      title = {"LIFETIME PERFORMANCE WARRANTY"}
-      />
+        <Sidebar
+          title={"LIFETIME PERFORMANCE WARRANTY"}
+        />
 
 
       </BrowserRouter>

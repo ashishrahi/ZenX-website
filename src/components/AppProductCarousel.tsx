@@ -2,14 +2,9 @@ import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import AppProductCard from "@/components/AppProductCard";
-import { Product } from "../context/CartContext";
+import { ProductCarouselProps } from "../types/productTypes";
 
-interface ProductCarouselProps {
-  productsData: Product[];
-  title?: string;
-  description?: string;
-  onWishlistToggle?: (product: Product) => void;
-}
+
 
 const ProductCarousel = ({
   productsData = [],

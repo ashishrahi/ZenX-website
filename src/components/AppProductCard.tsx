@@ -13,15 +13,11 @@ import {
 import { renderStars } from "../utilis/renderStars";
 import AppButton from "./AppComponent/AppButton";
 import RibbonTag from "./RibbonTag";
-import { Product } from "../types/cartTypes";
 import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
+import { ProductCardProps } from "@/types/ProductCardProps";
 
-interface ProductCardProps {
-  product: Product;
-  basePath?: string;
-  detailRoute?: string;
-}
+
 
 const AppProductCard: FC<ProductCardProps> = ({ product, basePath, detailRoute }) => {
   const { cart, addToCart } = useCart();

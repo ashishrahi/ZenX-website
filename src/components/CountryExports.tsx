@@ -178,7 +178,6 @@ const CountryExports: React.FC = () => {
             {/* Tooltip */}
             <Tooltip
               anchorSelect=".map-country"
-              multiline
               place="top"
               variant="dark"
               style={{ padding: "4px 8px", fontSize: "12px", borderRadius: "4px" }}

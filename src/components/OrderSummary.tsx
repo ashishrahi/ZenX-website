@@ -1,4 +1,10 @@
-const OrderSummary = ({ cart }: { cart?: any[] }) => {
+import { CartItem } from "@/types/cartTypes";
+
+interface OrderSummaryProps {
+  cart?: CartItem[];
+}
+
+const OrderSummary: React.FC<OrderSummaryProps>  = ({ cart }) => {
   const subtotal = cart?.reduce((acc, item) => acc + (item?.price ?? 0) * (item?.quantity ?? 0), 0) ?? 0;
 
   return (

@@ -47,7 +47,7 @@ const HelpSupport: React.FC = () => {
         {supportItems.map((item, idx) => (
           <Link
             key={idx}
-            // to={item.link}
+            to={item.link}
             className="flex flex-col items-start p-6 bg-black rounded-lg shadow-lg hover:shadow-2xl transition-all group"
           >
             <div className="mb-4 p-3 bg-red-600 rounded-full">{item.icon}</div>
@@ -91,9 +91,9 @@ const HelpSupport: React.FC = () => {
       {/* Additional Note */}
       <div className="mt-10 p-6 bg-black rounded-lg text-center text-white">
         Can't find what you're looking for?{" "}
-        <Link  className="text-red-600 font-semibold hover:underline">
+        {/* <Link  className="text-red-600 font-semibold hover:underline"> */}
           Get in touch
-        </Link>
+        {/* </Link> */}
         .
       </div>
     </div>

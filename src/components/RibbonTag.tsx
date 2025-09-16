@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
+import { RibbonTagProps } from "@/types/RibbonTagProps";
 
-export default function BestsellerTag({title}) {
+export default function BestsellerTag({ label }: RibbonTagProps) {
   return (
     <div className="relative inline-block">
       <div className={cn(
@@ -9,7 +10,7 @@ export default function BestsellerTag({title}) {
         "flex items-center justify-center",
         "shadow-md"
       )}>
-       {title}
+       {label}
       </div>
       
       <div className="absolute top-0 -left-1 w-2 h-2 overflow-hidden">

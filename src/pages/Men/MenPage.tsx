@@ -1,35 +1,20 @@
-import Sidebar from "@/components/Sidebar";
 import Container from "@/components/Container";
 import ShadowContainer from "@/components/ShadowContainer";
 import AppHeroBanner from "@/components/AppHeroBanner";
 import AppProductCategoriesCarousel from "@/components/AppProductCategoriesCarousel";
 import AppProductCarousel from "@/components/AppProductCarousel";
-
 import { categories } from "../../api/men/menCateogryData";
 import { menInnerwear as productsData } from "../../api/men/menProductsData";
 import images from "@/assets/men/images";
+import { useFilteredProducts } from "@/hooks/useFilteredProducts/useFilteredProducts";
 
 const MenPage = () => {
-  // ===== Precompute filtered products =====
-  const trendingProducts = productsData.filter(
-    (product) => product.tag !== "Premium"
-  );
 
-  const premiumProducts = productsData.filter((product) =>
-    product.tag?.includes("Premium")
-  );
-
-  const essentialProducts = productsData.filter(
-    (product) =>
-      (product.category === "men-trunks" ||
-        product.category === "men-briefs") &&
-      product.tag?.includes("Premium")
-  );
-
+const { trendingProducts, premiumProducts, essentialProducts } = useFilteredProducts(productsData);
+  
   return (
     <Container>
       {/* Sidebar (fixed on left side) */}
-      <Sidebar />
 
       <div className="flex-1 space-y-8">
         {/* Hero Section */}

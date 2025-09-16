@@ -5,25 +5,10 @@ import PurchaseAssistantModal from "../components/PurchaseAssistantModal";
 import { useCart, CartItem } from "../context/CartContext";
 import AppButton from "../components/AppComponent/AppButton";
 import CollapsibleSection from "@/components/CollapsibleSection";
+import {ProductDetailsProps} from '../types/productTypes'
+import { SizeRange } from "@/types/SizeRange";
 
-export interface Product {
-  id: number;
-  name: string;
-  price: number;
-  colors: string[];
-  images: Record<string, string[]>;
-  description?: string;
-  material?: string;
-  care?: string;
-  delivery?: string;
-  tag?: string[];
-}
 
-interface ProductDetailsProps {
-  product: Product;
-  sizes?: string[];
-  sizeGuide?: Record<string, { label: string; values: string[] }[]>;
-}
 
 const AppProductDetails: React.FC<ProductDetailsProps> = ({
   product,
@@ -32,7 +17,7 @@ const AppProductDetails: React.FC<ProductDetailsProps> = ({
 }) => {
   const { cart, addToCart } = useCart();
 
-  const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [selectedSize, setSelectedSize] = useState<SizeRange  | null>(null);
   const [showSizeChart, setShowSizeChart] = useState(false);
   const [activeSizeRange, setActiveSizeRange] = useState<"XXS-S" | "M-XL" | "XXL-3XL">("XXS-S");
   const [selectedColor, setSelectedColor] = useState<string>("");
@@ -87,7 +72,7 @@ const AppProductDetails: React.FC<ProductDetailsProps> = ({
           {/* Images */}
           <div className="lg:w-1/2">
             <div className="flex flex-col gap-4">
-              {colorImages.length > 0 && (
+              {colorImages?.length > 0 && (
                 <>
                   <div className="rounded-lg p-2 md:p-4 bg-card">
                     <div className="w-full h-auto max-w-full mx-auto">
@@ -99,7 +84,6 @@ const AppProductDetails: React.FC<ProductDetailsProps> = ({
                         zoomLevel={2}
                         showLens
                         showZoomBox
-                        className="rounded-lg overflow-hidden max-w-full h-auto"
                       />
                     </div>
                   </div>
@@ -279,7 +263,7 @@ const AppProductDetails: React.FC<ProductDetailsProps> = ({
                                 ? "bg-destructive text-white border-destructive"
                                 : "bg-background text-foreground border-muted hover:bg-destructive/10 hover:text-destructive"
                             }`}
-                          onClick={() => setActiveSizeRange(range as any)}
+                          onClick={() => setActiveSizeRange(range as SizeRange)}
                           aria-pressed={activeSizeRange === range}
                         >
                           {range}

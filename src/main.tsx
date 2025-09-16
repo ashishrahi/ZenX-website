@@ -10,8 +10,10 @@ import { CartProvider } from "./context/CartContext.tsx";
 import { WishlistProvider } from "./context/WishlistContext.tsx";
 import { BreadcrumbsProvider } from "./context/BreadcrumbsContext.tsx";
 import GlobalBreadcrumbs from "./components/AppBreadcrumbs.tsx";
-
+import { Provider } from "react-redux";
+import { store } from "./store/store.ts";
 createRoot(document.getElementById("root")!).render(
+    <Provider store={store}>
    <WishlistProvider>
     <BreadcrumbsProvider>
      <GlobalBreadcrumbs />
@@ -21,5 +23,6 @@ createRoot(document.getElementById("root")!).render(
     </CartProvider>
     </BreadcrumbsProvider>
     </WishlistProvider>
+    </Provider>
 
 );

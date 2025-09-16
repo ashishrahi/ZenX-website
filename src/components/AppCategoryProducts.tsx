@@ -3,21 +3,8 @@ import { useState, useMemo } from "react";
 import { Button } from "./ui/button";
 import EmptyState from "./EmptyState";
 import AppProductCard from "./AppProductCard";
+import {AppCategoryProductsProps} from '../types/productTypes'
 
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  category: string;
-  description?: string;
-  image?: string;
-}
-
-interface AppCategoryProductsProps {
-  productsData: Product[];
-  title?: string;
-  description?: string;
-}
 
 const AppCategoryProducts = ({
   productsData,

@@ -93,7 +93,7 @@ const AppProductCategoriesCarousel = ({ title, description, categories }: Produc
   }, [categories]);
 
  const handleCardClick = (gender: string, slug: string) => {
-  navigate(`/${gender}/category/${slug}`);
+  navigate(`/${gender}/category/${slug}`,{ replace: false });
 };
 
   return (
@@ -122,6 +122,7 @@ const AppProductCategoriesCarousel = ({ title, description, categories }: Produc
             onClick={goToPrev}
             aria-label="Previous category"
             style={{ zIndex: 45 }}
+            
           >
             <ChevronLeft className="h-6 w-6" />
           </Button>
@@ -194,6 +195,7 @@ const AppProductCategoriesCarousel = ({ title, description, categories }: Produc
                         <h3 className="text-xl font-bold uppercase">{category.name}</h3>
                         <p className="text-sm mt-2">{category.description}</p>
                         <Button
+                         type="button"
                           variant="secondary"
                           className="bg-white text-black hover:bg-gray-100 rounded-lg px-5 py-2 mt-4 self-start"
                         >
