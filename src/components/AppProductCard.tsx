@@ -1,7 +1,7 @@
 // src/components/AppProductCard.tsx
 import React, { FC, useState, MouseEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { Heart, ImageOff } from "lucide-react";
+import { Check, Heart, ImageOff, ShoppingBag } from "lucide-react";
 import {
   Card,
   CardHeader,
@@ -44,9 +44,9 @@ const AppProductCard: FC<ProductCardProps> = ({ product, basePath, detailRoute }
 
   const isBestSeller = Boolean(
     product.isBestseller ||
-      product.bestseller ||
-      (Array.isArray(product.tag) &&
-        product.tag.some((t) => String(t).toLowerCase() === "bestseller"))
+    product.bestseller ||
+    (Array.isArray(product.tag) &&
+      product.tag.some((t) => String(t).toLowerCase() === "bestseller"))
   );
 
   return (
@@ -66,9 +66,8 @@ const AppProductCard: FC<ProductCardProps> = ({ product, basePath, detailRoute }
         aria-label="Toggle wishlist"
       >
         <Heart
-          className={`h-5 w-5 transition ${
-            isWishlisted ? "text-red-500" : "text-gray-500 group-hover:text-red-500"
-          }`}
+          className={`h-5 w-5 transition ${isWishlisted ? "text-red-500" : "text-gray-500 group-hover:text-red-500"
+            }`}
         />
       </button>
 
@@ -122,11 +121,10 @@ const AppProductCard: FC<ProductCardProps> = ({ product, basePath, detailRoute }
           {product.colors.map((color) => (
             <button
               key={color}
-              className={`w-4 h-4 rounded-full border ${
-                selectedColor === color
+              className={`w-4 h-4 rounded-full border ${selectedColor === color
                   ? "ring-1 ring-black border-s-emerald-50"
                   : "border-gray-300"
-              }`}
+                }`}
               style={{ backgroundColor: color.toLowerCase() }}
               onClick={(e) => {
                 e.stopPropagation();
@@ -145,26 +143,32 @@ const AppProductCard: FC<ProductCardProps> = ({ product, basePath, detailRoute }
             <span className="text-lg font-bold text-primary">₹{product.discountPrice}</span>
           )}
           <span
-            className={`text-xl font-bold ${
-              product.discountPrice ? "line-through text-gray-400" : "text-gray-900"
-            }`}
+            className={`text-xl font-bold ${product.discountPrice ? "line-through text-gray-400" : "text-gray-900"
+              }`}
           >
             ₹{product.price}
           </span>
         </div>
 
         <AppButton
-          className={`w-full py-3 rounded-xl font-medium ${
-            isInCart
+          className={`w-full py-3 rounded-xl font-medium flex items-center justify-center gap-2 ${isInCart
               ? "bg-muted cursor-not-allowed text-muted-foreground"
               : "bg-primary text-primary-foreground hover:bg-primary/90"
-          } transition-colors duration-300 shadow-md hover:shadow-lg`}
-          onClick={(e: MouseEvent<HTMLButtonElement>) => {
+            } transition-colors duration-300 shadow-md hover:shadow-lg`}
+          onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
             e.stopPropagation();
             if (!isInCart) addToCart(product);
           }}
         >
-          {isInCart ? "Added" : "ADD TO BAG"}
+          {isInCart ? (
+            <>
+              <Check className="w-5 h-5" /> Added
+            </>
+          ) : (
+            <>
+              <ShoppingBag className="w-5 h-5" /> ADD TO BAG
+            </>
+          )}
         </AppButton>
       </CardFooter>
     </Card>
