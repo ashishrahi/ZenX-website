@@ -14,7 +14,6 @@ const MenPage = () => {
 
   // Filter products by slug if slug exists
   const filteredProducts = productsData?.filter((product) => product.category === "men")
-    const filteredProducts = productsData?.filter((product) => product.category === "women")
     
   // const { trendingProducts, premiumProducts, essentialProducts } = useFilteredProducts(filteredProducts);
 
