@@ -3,9 +3,9 @@ import React from "react";
 interface HeroBannerProps {
   image: string;
   title: string;
-  highlight: string;
-  subtitle: string;
-  buttonText: string;
+  highlight?: string;
+  subtitle?: string;
+  buttonText?: string;
   onButtonClick?: () => void;
 }
 
@@ -36,17 +36,21 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
           {/* Content */}
           <div className="absolute right-0 z-10 text-right px-4 sm:px-6 md:px-12 lg:px-20">
             <h2 className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold uppercase drop-shadow-lg">
-              {title} <span className="text-red-500">{highlight}</span>
+              {title} {highlight && <span className="text-red-500">{highlight}</span>}
             </h2>
-            <p className="mt-3 text-lg sm:text-xl md:text-2xl text-gray-200 drop-shadow">
-              {subtitle}
-            </p>
-           {(buttonText && buttonText.length > 0) ? <button
-              onClick={onButtonClick}
-              className="mt-6 px-6 py-3 bg-white text-black font-semibold rounded shadow hover:bg-gray-200 transition"
-            >
-              {buttonText}
-            </button> : ""}
+            {subtitle && (
+              <p className="mt-3 text-lg sm:text-xl md:text-2xl text-gray-200 drop-shadow">
+                {subtitle}
+              </p>
+            )}
+            {buttonText && (
+              <button
+                onClick={onButtonClick}
+                className="mt-6 px-6 py-3 bg-white text-black font-semibold rounded shadow hover:bg-gray-200 transition"
+              >
+                {buttonText}
+              </button>
+            )}
           </div>
         </div>
       </div>

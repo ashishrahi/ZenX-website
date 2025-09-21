@@ -4,7 +4,6 @@ import AppHeroBanner from "@/components/AppHeroBanner";
 import AppProductCategoriesCarousel from "@/components/AppProductCategoriesCarousel";
 import AppProductCarousel from "@/components/AppProductCarousel";
 import images from "@/assets/men/images";
-import { useFilteredProducts } from "@/hooks/useFilteredProducts/useFilteredProducts";
 import { useSubcategories } from "@/hooks/Subcategories";
 import { useProducts } from "@/hooks/Products";
 
@@ -13,9 +12,7 @@ const MenPage = () => {
   const { data: productsData } = useProducts();
 
   // Filter products by slug if slug exists
-  const filteredProducts = productsData?.filter((product) => product.category === "men")
-    
-  // const { trendingProducts, premiumProducts, essentialProducts } = useFilteredProducts(filteredProducts);
+  const filteredProducts = productsData?.filter((product) => product.category === "men");
 
   return (
     <Container>
@@ -28,14 +25,14 @@ const MenPage = () => {
           <AppProductCategoriesCarousel
             title="Effortless Comfort, Perfect Fit"
             description="Modern, product-focused tagline"
-            categories={subcategories}
+            categories={subcategories ?? []} // optional chaining with fallback
           />
         </ShadowContainer>
 
         {/* Trending Products */}
         <ShadowContainer>
           <AppProductCarousel
-            productsData={filteredProducts}
+            productsData={filteredProducts ?? []} // optional chaining with fallback
             title="Handpicked For You"
             description="Personalization ka touch, especially for logged-in users"
           />
@@ -44,7 +41,7 @@ const MenPage = () => {
         {/* Premium Products */}
         <ShadowContainer>
           <AppProductCarousel
-            productsData={filteredProducts}
+            productsData={filteredProducts ?? []} // optional chaining with fallback
             title="Premium Choices"
             description="High-quality picks crafted for your ultimate satisfaction"
           />
@@ -53,7 +50,7 @@ const MenPage = () => {
         {/* Essential Products */}
         <ShadowContainer>
           <AppProductCarousel
-            productsData={filteredProducts}
+            productsData={filteredProducts ?? []} // optional chaining with fallback
             title="Essentials Journal"
             description="Focuses on everyday wear elevated"
           />

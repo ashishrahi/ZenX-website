@@ -7,14 +7,14 @@ import { ArrowRight, ChevronLeft, ChevronRight, Box } from "lucide-react";
 
 interface ProductCategoriesCarouselProps {
   title: string;
-  description: string;
-  categories: {
+  description?: string;
+  categories?: {
     slug: string;
     name: string;
-    description: string;
-    images: string[];
+    description?: string;
+    images?: string[];
     categoryId?: {
-      slug: string; // For gender/category slug in URL
+      slug?: string; // Optional for gender/category slug in URL
     };
   }[];
 }
@@ -26,7 +26,7 @@ const CARD_GAP = 30;
 const AppProductCategoriesCarousel = ({
   title,
   description,
-  categories,
+  categories = [],
 }: ProductCategoriesCarouselProps) => {
   const navigate = useNavigate();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -34,11 +34,9 @@ const AppProductCategoriesCarousel = ({
   const autoplayRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const resumeTimeoutRef = useRef<number | null>(null);
 
-  // ===== Autoplay Management =====
   const startAutoplay = () => {
     stopAutoplay();
     if (!categories?.length) return;
-
     autoplayRef.current = window.setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % categories.length);
     }, AUTOPLAY_INTERVAL);
@@ -60,13 +58,9 @@ const AppProductCategoriesCarousel = ({
     }, AUTOPLAY_INTERVAL * 2);
   };
 
-  const goToNext = () =>
-    pauseAndMaybeResume(() => setActiveIndex((prev) => (prev + 1) % categories.length));
+  const goToNext = () => pauseAndMaybeResume(() => setActiveIndex((prev) => (prev + 1) % categories.length));
+  const goToPrev = () => pauseAndMaybeResume(() => setActiveIndex((prev) => (prev - 1 + categories.length) % categories.length));
 
-  const goToPrev = () =>
-    pauseAndMaybeResume(() => setActiveIndex((prev) => (prev - 1 + categories.length) % categories.length));
-
-  // ===== Card Transform Logic =====
   const calculateCardTransform = (index: number) => {
     const totalItems = categories.length;
     const offset = CARD_WIDTH * 0.7 + CARD_GAP;
@@ -77,23 +71,17 @@ const AppProductCategoriesCarousel = ({
     if (position < -half) position += totalItems;
 
     if (position === 0) return { scale: 1.1, rotateY: 0, zIndex: 30, x: 0, opacity: 1 };
-    else if (position === -1) return { scale: 0.9, rotateY: 25, zIndex: 20, x: -offset, opacity: 0.85 };
-    else if (position === 1) return { scale: 0.9, rotateY: -25, zIndex: 20, x: offset, opacity: 0.85 };
-    else return { scale: 0.8, rotateY: 0, zIndex: 10, x: position * offset, opacity: 0.5 };
+    if (position === -1) return { scale: 0.9, rotateY: 25, zIndex: 20, x: -offset, opacity: 0.85 };
+    if (position === 1) return { scale: 0.9, rotateY: -25, zIndex: 20, x: offset, opacity: 0.85 };
+    return { scale: 0.8, rotateY: 0, zIndex: 10, x: position * offset, opacity: 0.5 };
   };
 
-  // ===== Image Helpers =====
-  const getImage = (images?: string[], index = 0) => {
-    if (!images || !images.length) return "";
-    return images[index] || images[0];
+  const getImage = (images?: string[], index = 0) => images?.[index] || images?.[0] || "";
+
+  const handleCardClick = (categorySlug?: string, subcategorySlug?: string) => {
+    if (categorySlug && subcategorySlug) navigate(`/${categorySlug}/category/${subcategorySlug}`);
   };
 
-  // ===== Click Handler =====
-  const handleCardClick = (categorySlug: string, subcategorySlug: string) => {
-    navigate(`/${categorySlug}/category/${subcategorySlug}`, { replace: false });
-  };
-
-  // ===== Lifecycle =====
   useEffect(() => {
     startAutoplay();
     return () => {
@@ -117,20 +105,19 @@ const AppProductCategoriesCarousel = ({
               </span>
             ))}
           </h2>
-          <p className="text-gray-500 mt-3 text-lg max-w-2xl mx-auto">{description}</p>
+          {description && <p className="text-gray-500 mt-3 text-lg max-w-2xl mx-auto">{description}</p>}
         </div>
 
         {/* Carousel */}
         <div className="w-full max-w-7xl mx-auto relative">
-          {categories?.length === 0 ? (
-            // ===== Empty State =====
+          {categories.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-[400px] text-gray-400">
               <Box className="h-16 w-16 mb-4" />
               <span className="text-lg font-medium">No Categories Available</span>
             </div>
           ) : (
             <>
-              {/* Navigation Buttons */}
+              {/* Navigation */}
               <Button
                 className="absolute left-0 top-1/2 -translate-y-1/2 border bg-red-500 shadow-md hover:bg-red-700 w-12 h-12 rounded-full"
                 onClick={goToPrev}
@@ -183,7 +170,7 @@ const AppProductCategoriesCarousel = ({
                       <Card
                         className="group cursor-pointer border shadow-lg hover:shadow-2xl overflow-hidden transition-all duration-500 w-80 h-[340px] rounded-2xl relative bg-white pointer-events-auto"
                         onClick={() =>
-                          handleCardClick(category.categoryId?.slug || "men", category.slug)
+                          handleCardClick(category.categoryId?.slug, category.slug)
                         }
                       >
                         <CardContent className="h-full relative rounded-2xl p-0">
@@ -208,7 +195,7 @@ const AppProductCategoriesCarousel = ({
                           {/* Content */}
                           <div className="absolute inset-0 flex flex-col justify-end p-6 bg-black/30 text-white">
                             <h3 className="text-xl font-bold uppercase">{category.name}</h3>
-                            <p className="text-sm mt-2">{category.description}</p>
+                            {category.description && <p className="text-sm mt-2">{category.description}</p>}
                             <Button
                               type="button"
                               variant="secondary"
