@@ -1,13 +1,19 @@
 import images from '@/assets/men/images'
 import Container from '@/components/Container'
 import { kidsCategories } from '../../api/kids/kidsCateogryData'
-import { kidsInnerwear } from '../../api/kids/kidsProductsData'
 import ShadowContainer from '@/components/ShadowContainer'
 import  AppHeroBanner from '../../components/AppHeroBanner'
 import AppProductCategoriesCarousel from '@/components/AppProductCategoriesCarousel'
 import AppProductCarousel from "@/components/AppProductCarousel";
+import { useSubcategories } from '@/hooks/Subcategories'
+import { useProducts } from '@/hooks/Products'
 
 const KidsPage = () => {
+
+  const { data: subcategoryData } = useSubcategories();
+      const { data: productsData } = useProducts();
+        const filteredProducts = productsData?.filter((product) => product.category === "kid")
+        const subcategories = subcategoryData?.filter((subcategory) => subcategory.category === "kid")
   return (
     <Container>
       {/* Hero Section */}
@@ -18,14 +24,14 @@ const KidsPage = () => {
       <AppProductCategoriesCarousel
         title="Comfortable Styles for Every Adventure"
         description="Fun, durable, and stylish wear designed to keep up with kids’ active lifestyles."
-        categories={kidsCategories}
+        categories={subcategories}
       />
       </ShadowContainer>
 
       {/* Trending Products */}
       <ShadowContainer>
       <AppProductCarousel
-        productsData={kidsInnerwear.filter(product => product.tag !== "Premium")}
+        productsData={filteredProducts}
         title="Popular Picks for Kids"
         description="Discover our most-loved styles, perfect for everyday play and fun."
       />
@@ -34,7 +40,7 @@ const KidsPage = () => {
       {/* Premium Collection */}
       <ShadowContainer> 
       <AppProductCarousel
-        productsData={kidsInnerwear.filter(product => product.tag?.includes("Premium"))}
+        productsData={filteredProducts}
         title="Premium Kids Collection"
         description="Elevated designs with premium fabrics for style, comfort, and durability."
       />
@@ -43,11 +49,7 @@ const KidsPage = () => {
       {/* Everyday Essentials */}
       <ShadowContainer>
       <AppProductCarousel
-        productsData={kidsInnerwear.filter(
-          product =>
-            product.category === "kids-tshirts" ||
-            product.category === "kids-winter-wear"
-        )}
+        productsData={filteredProducts}
         title="Everyday Essentials"
         description="Must-have pieces made for comfort, play, and daily adventures."
       />

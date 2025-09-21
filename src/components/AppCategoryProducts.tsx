@@ -119,7 +119,7 @@ const AppCategoryProducts = ({
         {filteredProducts.length > 0 ? (
           filteredProducts.slice(0, visibleCount).map((product) => (
             <AppProductCard
-              key={product.id}
+              key={product._id}
               product={product}
               onAddToBag={handleAddToBag}
               onWishlistToggle={handleWishlistToggle}

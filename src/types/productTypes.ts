@@ -4,7 +4,7 @@ export interface ProductImage {
 }
 
 export interface Product {
-  id: number;
+  _id: string;
   name: string;
   description?: string;
   price: number;
@@ -18,6 +18,7 @@ export interface Product {
   bestseller?: boolean;
   inWishlist?: boolean; 
   category?:string;
+  slug?:string
 
 }
 

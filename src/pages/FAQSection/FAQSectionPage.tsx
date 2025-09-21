@@ -1,8 +1,9 @@
 import FAQSection from '@/components/FAQ'
-import { faqData } from '@/api/faq/faq'
 import Container from '@/components/Container'
 import ShadowContainer from '@/components/ShadowContainer'
+import { useFAQs } from '@/hooks/faq/useFAQ'
 const FAQSectionPage = () => {
+  const {data:faqData} = useFAQs()
   return (
     <Container>
         <ShadowContainer>

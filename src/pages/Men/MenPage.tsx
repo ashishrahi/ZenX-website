@@ -3,19 +3,23 @@ import ShadowContainer from "@/components/ShadowContainer";
 import AppHeroBanner from "@/components/AppHeroBanner";
 import AppProductCategoriesCarousel from "@/components/AppProductCategoriesCarousel";
 import AppProductCarousel from "@/components/AppProductCarousel";
-import { categories } from "../../api/men/menCateogryData";
-import { menInnerwear as productsData } from "../../api/men/menProductsData";
 import images from "@/assets/men/images";
 import { useFilteredProducts } from "@/hooks/useFilteredProducts/useFilteredProducts";
+import { useSubcategories } from "@/hooks/Subcategories";
+import { useProducts } from "@/hooks/Products";
 
 const MenPage = () => {
+  const { data: subcategories } = useSubcategories();
+  const { data: productsData } = useProducts();
 
-const { trendingProducts, premiumProducts, essentialProducts } = useFilteredProducts(productsData);
-  
+  // Filter products by slug if slug exists
+  const filteredProducts = productsData?.filter((product) => product.category === "men")
+    const filteredProducts = productsData?.filter((product) => product.category === "women")
+    
+  // const { trendingProducts, premiumProducts, essentialProducts } = useFilteredProducts(filteredProducts);
+
   return (
     <Container>
-      {/* Sidebar (fixed on left side) */}
-
       <div className="flex-1 space-y-8">
         {/* Hero Section */}
         <AppHeroBanner image={images.menBanner} />
@@ -25,16 +29,14 @@ const { trendingProducts, premiumProducts, essentialProducts } = useFilteredProd
           <AppProductCategoriesCarousel
             title="Effortless Comfort, Perfect Fit"
             description="Modern, product-focused tagline"
-            categories={categories}
+            categories={subcategories}
           />
         </ShadowContainer>
-
-        
 
         {/* Trending Products */}
         <ShadowContainer>
           <AppProductCarousel
-            productsData={trendingProducts}
+            productsData={filteredProducts}
             title="Handpicked For You"
             description="Personalization ka touch, especially for logged-in users"
           />
@@ -43,7 +45,7 @@ const { trendingProducts, premiumProducts, essentialProducts } = useFilteredProd
         {/* Premium Products */}
         <ShadowContainer>
           <AppProductCarousel
-            productsData={premiumProducts}
+            productsData={filteredProducts}
             title="Premium Choices"
             description="High-quality picks crafted for your ultimate satisfaction"
           />
@@ -52,7 +54,7 @@ const { trendingProducts, premiumProducts, essentialProducts } = useFilteredProd
         {/* Essential Products */}
         <ShadowContainer>
           <AppProductCarousel
-            productsData={essentialProducts}
+            productsData={filteredProducts}
             title="Essentials Journal"
             description="Focuses on everyday wear elevated"
           />

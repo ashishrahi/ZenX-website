@@ -1,17 +1,13 @@
 import AppCategoryProducts from '@/components/AppCategoryProducts'
-import { menInnerwear } from "../../../api/men/menProductsData"
-import { useParams } from 'react-router-dom';
-
+import { useCategories } from '@/hooks/Categories';
 const MenCategoryProduct = () => {
-
-  const { slug } = useParams<{ slug: string }>();
+const {data: categoryData} = useCategories()
 
   return (
     <>
     <AppCategoryProducts
     
-      productsData={menInnerwear}
-      title={slug}
+      productsData={categoryData}
       description="Explore our exclusive men's collection featuring the latest trends."
     />
     </>

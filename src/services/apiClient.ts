@@ -58,6 +58,11 @@ class ApiClient {
 }
 
 // Export a single instance
+// export const apiClient = new ApiClient(
+//   "http://localhost:5000"
+// );
+
 export const apiClient = new ApiClient(
-  "http://localhost:5000"
+ " https://zenxapi-5.onrender.com/api/v1"
+
 );

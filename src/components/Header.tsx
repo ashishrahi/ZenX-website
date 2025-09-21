@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import CartModal from "./CartModal";
 import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
+import InfoModal from "./InfoModal";
 
 // IconButton component
 export const IconButton = React.forwardRef<
@@ -45,7 +46,6 @@ const Header: React.FC = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
-
   const navigate = useNavigate();
   const { cart } = useCart();
   const { wishlist } = useWishlist();
@@ -160,85 +160,7 @@ const Header: React.FC = () => {
             </div>
 
             {/* Info Modal */}
-            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-              <DialogTrigger asChild>
-                <IconButton>
-                  <Info size={25} />
-                </IconButton>
-              </DialogTrigger>
-
-              <DialogContent className="sm:max-w-[900px] max-h-[90vh] overflow-y-auto rounded-lg p-6 transition-transform duration-300 ease-in-out">
-                <DialogTitle className="text-2xl font-bold">Get in Touch</DialogTitle>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                  {/* Corporate Office */}
-                  <div className="border rounded-lg p-4 shadow-sm hover:shadow-md transition">
-                    <h3 className="font-semibold text-lg mb-2">Corporate Office</h3>
-                    <p className="text-sm text-gray-700">
-                      ZenX Industries Limited, Cessna Business Park, Umiya Business Bay-Tower-1, 7th Floor, Kanpur, Uttar Pradesh, India, 560103.
-                    </p>
-                    <p className="text-sm mt-2 font-medium">CIN: L18101KA1994PLC016554</p>
-                    <p className="mt-2">
-                      📧{" "}
-                      <a href="mailto:wecare@ZenX.com" className="text-blue-600 hover:underline">
-                        wecare@ZenX.com
-                      </a>
-                    </p>
-                    <p className="mt-1">📞 1800-572-1299 / 1860-425-3333</p>
-                    <p className="text-xs text-gray-500">(Mon-Sun, 10:00 AM - 7:00 PM)</p>
-                  </div>
-
-                  {/* Purchase Queries */}
-                  <div className="border rounded-lg p-4 shadow-sm hover:shadow-md transition">
-                    <h3 className="font-semibold text-lg mb-2">For Purchase Related Queries</h3>
-                    <p className="text-sm text-gray-700">
-                      ZenX Industries Limited, Cessna Business Park, Umiya Business Bay-Tower-1, 3rd Floor, Kanpur, Uttar Pradesh, India, 560103.
-                    </p>
-                    <p className="text-sm mt-2 font-medium">CIN: L18101KA1994PLC016554</p>
-                    <p className="mt-2">
-                      📧{" "}
-                      <a href="mailto:wecare@jockeyindia.com" className="text-blue-600 hover:underline">
-                        wecare@jockeyindia.com
-                      </a>
-                    </p>
-                    <p className="mt-1">📞 1800-572-1299 / 1860-425-3333</p>
-                    <p className="text-xs text-gray-500">(Mon-Sun, 10:00 AM - 7:00 PM)</p>
-                  </div>
-
-                  {/* Franchisee */}
-                  <div className="border rounded-lg p-4 shadow-sm hover:shadow-md transition">
-                    <h3 className="font-semibold text-lg mb-2">To Apply for: Franchisee (Exclusive Outlet)</h3>
-                    <p className="mt-2">
-                      📧{" "}
-                      <a href="mailto:franchisee@ZenX.com" className="text-blue-600 hover:underline">
-                        franchisee@ZenX.com
-                      </a>
-                    </p>
-                    <p className="mt-1">📞 1800-572-1299</p>
-                  </div>
-
-                  {/* Distributorship */}
-                  <div className="border rounded-lg p-4 shadow-sm hover:shadow-md transition">
-                    <h3 className="font-semibold text-lg mb-2">To Apply for: Distributorship</h3>
-                    <p className="mt-2">
-                      📧{" "}
-                      <a href="mailto:wecare@jockeyindia.com" className="text-blue-600 hover:underline">
-                        wecare@ZenXindia.com
-                      </a>
-                    </p>
-                    <p className="mt-1">📞 1800-572-1299</p>
-                  </div>
-
-                  {/* Grievance Officer */}
-                  <div className="border rounded-lg p-4 shadow-sm hover:shadow-md transition md:col-span-2">
-                    <h3 className="font-semibold text-lg mb-2">Grievance Officer</h3>
-                    <p className="font-semibold">Ms. Meena Patel</p>
-                    <p className="text-sm text-gray-700 mt-2">
-                      Zen-X Industries Limited, Cessna Business Park, Umiya Business Bay-Tower-1, 3rd Floor, Kanpur, Uttar Pradesh, India, 560103.
-                    </p>
-                  </div>
-                </div>
-              </DialogContent>
-            </Dialog>
+             <InfoModal open={dialogOpen} setOpen={setDialogOpen} />
 
             {/* Wishlist */}
             <div className="relative">

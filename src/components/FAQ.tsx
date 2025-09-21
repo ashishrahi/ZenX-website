@@ -36,7 +36,7 @@ const FAQSection = ({faqData}) => {
           <div className="space-y-3">
             {faqData?.map((item, index) => (
               <CollapsibleSection
-                key={index}
+                key={index._id}
                 title={item.question}
                 content={item.answer}
               />

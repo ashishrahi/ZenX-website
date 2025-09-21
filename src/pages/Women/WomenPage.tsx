@@ -6,8 +6,16 @@ import ShadowContainer from '@/components/ShadowContainer'
 import AppHeroBanner from '../../components/AppHeroBanner'
 import AppProductCategoriesCarousel from '@/components/AppProductCategoriesCarousel'
 import AppProductCarousel from "@/components/AppProductCarousel";
+import { useSubcategories } from '@/hooks/Subcategories'
+import { useProducts } from '@/hooks/Products'
 
 const WomenPage = () => {
+
+   const { data: subcategoryData } = useSubcategories();
+    const { data: productsData } = useProducts();
+      const filteredProducts = productsData?.filter((product) => product.category === "women")
+      const subcategories = subcategoryData?.filter((subcategory) => subcategory.category === "women")
+
   return (
     <Container>
       {/* Hero Section */}
@@ -18,14 +26,14 @@ const WomenPage = () => {
         <AppProductCategoriesCarousel
           title="Discover Timeless Comfort"
           description="Explore versatile styles crafted for modern women, combining comfort and elegance."
-          categories={WomenCategories}
+          categories={subcategories}
         />
       </ShadowContainer>
 
       {/* Trending Products */}
       <ShadowContainer>
         <AppProductCarousel
-          productsData={womenInnerwear.filter(product => product.tag !== "Premium")}
+          productsData={filteredProducts}
           title="Top Picks for You"
           description="Curated favorites designed to match your style and everyday needs."
         />
@@ -34,7 +42,7 @@ const WomenPage = () => {
       <ShadowContainer>
 
         <AppProductCarousel
-          productsData={womenInnerwear.filter(product => product.tag?.includes("Premium"))}
+          productsData={filteredProducts}
           title="Exclusive Premium Collection"
           description="Experience the best in quality, style, and lasting comfort."
         />
@@ -44,11 +52,7 @@ const WomenPage = () => {
       <ShadowContainer>
 
         <AppProductCarousel
-          productsData={womenInnerwear.filter(
-            product =>
-              product.category === "women-bralettes" ||
-              product.category === "women-panties"
-          )}
+          productsData={filteredProducts}
           title="Essential Daily Wear"
           description="Classic essentials created for everyday comfort and effortless style."
         />

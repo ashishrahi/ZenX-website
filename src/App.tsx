@@ -19,7 +19,6 @@ import KidsCategoryProductsPage from './pages/Kids/KidsCategoryProductPage'
 import FAQSectionPage from "./pages/FAQSection/FAQSectionPage";
 import CountryExportPage from "./pages/CountryExport/CountryExportPage";
 import ScrollToTop from "./components/ScrollToTop";
-import ZenHistory from "./components/ZenHistory";
 import ZenHistoryPage from "./pages/ZenHistory/ZenHistoryPage";
 
 // ✅ Lazy loading for better performance
@@ -70,21 +69,21 @@ const App = () => (
 
 
               {/* MEN */}
-              <Route path="/mens">
+              <Route path="/men">
                 <Route index element={<MenPage />} />
                 <Route path="category/:slug" element={<MenCategoryProductPage />} />
-                <Route path="product/:id" element={<MenProductDetailPage />} />
+                <Route path="product/:slug" element={<MenProductDetailPage />} />
               </Route>
 
               {/* WOMEN */}
-              <Route path="/womens">
+              <Route path="/women">
                 <Route index element={<WomenPage />} />
                 <Route path="category/:slug" element={<WomenCategoryProductsPage />} />
                 <Route path="product/:id" element={<WomenProductDetailsPage />} />
               </Route>
 
               {/* KIDS */}
-              <Route path="/kids">
+              <Route path="/kid">
                 <Route index element={<KidsPage />} />
                 <Route path="category/:slug" element={<KidsCategoryProductsPage />} />
                 <Route path="product/:id" element={<KidsProductDetailPage />} />

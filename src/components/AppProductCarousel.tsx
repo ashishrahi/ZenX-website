@@ -1,10 +1,8 @@
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Box } from "lucide-react"; // Box as example placeholder icon
 import AppProductCard from "@/components/AppProductCard";
 import { ProductCarouselProps } from "../types/productTypes";
-
-
 
 const ProductCarousel = ({
   productsData = [],
@@ -56,57 +54,66 @@ const ProductCarousel = ({
         </div>
 
         <div className="relative" ref={containerRef}>
-          <button
-            onClick={prevSlide}
-            disabled={currentIndex === 0}
-            className={`absolute left-0 top-1/2 -translate-y-1/2 p-2 rounded-full bg-red-800 z-20 transition ${
-              currentIndex === 0 ? "opacity-50 cursor-not-allowed" : "hover:bg-red-900"
-            }`}
-          >
-            <ChevronLeft className="h-6 w-6 text-white" />
-          </button>
+          {productsData.length === 0 ? (
+            <div className="flex justify-center items-center h-64 text-gray-400">
+              <Box className="h-16 w-16" />
+              <span className="ml-2 text-lg">No Products Available</span>
+            </div>
+          ) : (
+            <>
+              <button
+                onClick={prevSlide}
+                disabled={currentIndex === 0}
+                className={`absolute left-0 top-1/2 -translate-y-1/2 p-2 rounded-full bg-red-800 z-20 transition ${
+                  currentIndex === 0 ? "opacity-50 cursor-not-allowed" : "hover:bg-red-900"
+                }`}
+              >
+                <ChevronLeft className="h-6 w-6 text-white" />
+              </button>
 
-          <div className="overflow-hidden">
-            <motion.div
-              className="flex"
-              animate={{ x: `-${currentIndex * (100 / slidesToShow)}%` }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            >
-              {productsData.map((product, index) => (
-                <div key={product.id} className="flex-shrink-0" style={{ width: slideWidth }}>
-                  <div className="p-2 relative">
-                    <motion.div
-                      initial={{ opacity: 0, y: 40 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      viewport={{ once: true }}
-                      onMouseEnter={() => setHoveredIndex(index)}
-                      onMouseLeave={() => setHoveredIndex(null)}
-                    >
-                      <AppProductCard
-                        product={product}
-                        hovered={hoveredIndex === index}
-                        toggleWishlist={() => onWishlistToggle?.(product)}
-                        basePath={`/${product.gender ?? "mens"}`}
-                      />
-                    </motion.div>
-                  </div>
-                </div>
-              ))}
-            </motion.div>
-          </div>
+              <div className="overflow-hidden">
+                <motion.div
+                  className="flex"
+                  animate={{ x: `-${currentIndex * (100 / slidesToShow)}%` }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                >
+                  {productsData.map((product, index) => (
+                    <div key={product.id} className="flex-shrink-0" style={{ width: slideWidth }}>
+                      <div className="p-2 relative">
+                        <motion.div
+                          initial={{ opacity: 0, y: 40 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5, delay: index * 0.1 }}
+                          viewport={{ once: true }}
+                          onMouseEnter={() => setHoveredIndex(index)}
+                          onMouseLeave={() => setHoveredIndex(null)}
+                        >
+                          <AppProductCard
+                            product={product}
+                            hovered={hoveredIndex === index}
+                            toggleWishlist={() => onWishlistToggle?.(product)}
+                            basePath={`/${product.gender ?? "mens"}`}
+                          />
+                        </motion.div>
+                      </div>
+                    </div>
+                  ))}
+                </motion.div>
+              </div>
 
-          <button
-            onClick={nextSlide}
-            disabled={currentIndex >= productsData.length - slidesToShow}
-            className={`absolute right-0 top-1/2 -translate-y-1/2 p-2 rounded-full bg-red-700 z-20 transition ${
-              currentIndex >= productsData.length - slidesToShow
-                ? "opacity-50 cursor-not-allowed"
-                : "hover:bg-red-900"
-            }`}
-          >
-            <ChevronRight className="h-6 w-6 text-white" />
-          </button>
+              <button
+                onClick={nextSlide}
+                disabled={currentIndex >= productsData.length - slidesToShow}
+                className={`absolute right-0 top-1/2 -translate-y-1/2 p-2 rounded-full bg-red-700 z-20 transition ${
+                  currentIndex >= productsData.length - slidesToShow
+                    ? "opacity-50 cursor-not-allowed"
+                    : "hover:bg-red-900"
+                }`}
+              >
+                <ChevronRight className="h-6 w-6 text-white" />
+              </button>
+            </>
+          )}
         </div>
       </div>
     </section>

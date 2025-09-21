@@ -11,23 +11,18 @@ const CARD_GAP = 30;
 
 const ProductCategories = ({ title, categories = [], description }) => {
   const navigate = useNavigate();
+
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const autoplayRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const resumeTimeoutRef = useRef<number | null>(null);
 
-  // Flatten all subCategories for carousel
-  const allSubCategories = categories
-    .filter((v, i, a) => a.findIndex(cat => cat.slug === v.slug) === i) 
-    .flatMap(cat => cat.subCategories || []);
+  // Use categories directly (no subCategories)
+  const allSubCategories = categories;
 
-  const handleCardClick = (e: React.MouseEvent<HTMLDivElement>, slug?: string) => {
-  e.preventDefault(); // Prevent default browser behavior
-
-  if (slug) {
-    navigate(`/category/${slug}`);
-  }
-};
+  const handleCardClick = (slug?: string) => {
+    if (slug) navigate(`/${slug}`);
+  };
 
   const startAutoplay = () => {
     stopAutoplay();
@@ -74,16 +69,12 @@ const ProductCategories = ({ title, categories = [], description }) => {
     else return { scale: 0.8, rotateY: 0, zIndex: 10, x: position * offset, opacity: 0.5 };
   };
 
-  const getFirstImage = (imagesObj?: Record<string, string[]>) => {
-    if (!imagesObj) return "";
-    const firstColor = Object.keys(imagesObj)?.[0];
-    return imagesObj[firstColor]?.[0] || "";
+  const getFirstImage = (images?: string[]) => {
+    return images?.[0] || "";
   };
 
-  const getHoverImage = (imagesObj?: Record<string, string[]>) => {
-    if (!imagesObj) return "";
-    const colors = Object.keys(imagesObj);
-    return colors[1] ? imagesObj[colors[1]][0] : imagesObj[colors[0]][0];
+  const getHoverImage = (images?: string[]) => {
+    return images?.[1] || images?.[0] || "";
   };
 
   useEffect(() => {

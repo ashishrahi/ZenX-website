@@ -34,8 +34,8 @@ const AppProductCard: FC<ProductCardProps> = ({ product, basePath, detailRoute }
 
   // Generate product detail route dynamically
   const getProductDetailRoute = () => {
-    const gender = product.gender ?? "mens";
-    return detailRoute ?? `${basePath ?? `/${gender}`}/product/${product.id}`;
+    const gender = product.gender ?? "men";
+    return detailRoute ?? `${basePath ?? `/${gender}`}/product/${product.slug}`;
   };
 
   const handleViewDetails = () => navigate(getProductDetailRoute());

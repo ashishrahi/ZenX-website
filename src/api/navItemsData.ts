@@ -1,7 +1,7 @@
 export const navLinks = [
   {
     name: "MEN",
-    path: "/mens",
+    path: "/men",
     subcategories: [
       {
         title: "INNERWEAR",
@@ -36,13 +36,13 @@ export const navLinks = [
     ],
     rightBanner: {
       image: "/assets/men-banner.jpg", // apni image path rakho
-      link: "/mens",
+      link: "/men",
       text: "Everything for MEN",
     },
   },
   {
     name: "WOMEN",
-    path: "/womens",
+    path: "/women",
     subcategories: [
       {
         title: "INNERWEAR",
@@ -61,7 +61,7 @@ export const navLinks = [
   },
   {
     name: "KIDS",
-    path: "/kids",
+    path: "/kid",
     subcategories: [
       {
         title: "BOYS",
@@ -74,7 +74,7 @@ export const navLinks = [
     ],
     rightBanner: {
       image: "/assets/kids-banner.jpg",
-      link: "/kids",
+      link: "/kid",
       text: "Everything for KIDS",
     },
   },

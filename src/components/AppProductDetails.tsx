@@ -162,7 +162,7 @@ const AppProductDetails: React.FC<ProductDetailsProps> = ({
                     </button>
                   </div>
                   <div className="flex gap-2 flex-wrap">
-                    {sizes.map((size) => (
+                    {sizes?.map((size) => (
                       <button
                         key={size}
                         className={`px-2 py-1 md:px-3 md:py-1 rounded-lg border font-medium transition
