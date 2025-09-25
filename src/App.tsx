@@ -20,6 +20,8 @@ import FAQSectionPage from "./pages/FAQSection/FAQSectionPage";
 import CountryExportPage from "./pages/CountryExport/CountryExportPage";
 import ScrollToTop from "./components/ScrollToTop";
 import ZenHistoryPage from "./pages/ZenHistory/ZenHistoryPage";
+import OrderConfirmation from "./components/AppConfirmation";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 // ✅ Lazy loading for better performance
 const Index = lazy(() => import("./pages/Home/Index"));
@@ -90,9 +92,11 @@ const App = () => (
               </Route>
 
               {/* Checkout and Account */}
+               <Route element={<ProtectedRoute />}>
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/account" element={<AccountPage />} />
-
+                  <Route path="/order-confirmation" element={<OrderConfirmation />} />
+              </Route>
               {/* 404 Page */}
               <Route path="*" element={<NotFound />} />
             </Route>

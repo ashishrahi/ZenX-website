@@ -5,8 +5,8 @@ import PurchaseAssistantModal from "../components/PurchaseAssistantModal";
 import { useCart, CartItem } from "../context/CartContext";
 import AppButton from "../components/AppComponent/AppButton";
 import CollapsibleSection from "@/components/CollapsibleSection";
-import {ProductDetailsProps} from '../types/productTypes'
-import { SizeRange } from "@/types/SizeRange";
+import {ProductDetailsProps} from '../types/IproductTypes'
+import { SizeRange } from "@/types/ISizeRange";
 
 
 

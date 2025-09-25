@@ -1,15 +1,10 @@
 import React from "react";
 import { Package, CheckCircle, XCircle, Clock } from "lucide-react";
+import { IOrderPayload } from "@/types/IOrderPayload";
 
-interface Order {
-  id: string;
-  date: string;
-  itemsCount: number;
-  total: number;
-  status: "Pending" | "Shipped" | "Delivered" | "Cancelled";
+interface OrdersProps {
+  orders?: IOrderPayload[];
 }
-
-
 
 const statusIcon = (status: string) => {
   switch (status) {
@@ -26,12 +21,12 @@ const statusIcon = (status: string) => {
   }
 };
 
-const Orders: React.FC = ({Orders}) => {
+const Orders: React.FC<OrdersProps> = ({ orders }) => {
   return (
     <div className="w-full">
       <h2 className="text-2xl font-semibold mb-6">My Orders</h2>
 
-      {Orders.length === 0 ? (
+      {orders?.length === 0 ? (
         <div className="text-center py-20">
           <svg
             width="150"
@@ -49,21 +44,21 @@ const Orders: React.FC = ({Orders}) => {
         </div>
       ) : (
         <div className="space-y-4">
-          {Orders.map((order) => (
+          {orders?.map((order) => (
             <div
-              key={order.id}
+              key={order._id}
               className="border rounded-lg shadow-sm p-4 flex justify-between items-center hover:shadow-md transition"
             >
               <div className="flex items-center gap-4">
                 <div className="bg-gray-100 p-2 rounded-full">{statusIcon(order.status)}</div>
                 <div>
-                  <p className="font-semibold">Order ID: {order.id}</p>
-                  <p className="text-sm text-gray-500">{order.date}</p>
+                  <p className="font-semibold">Order ID: {order._id}</p>
+                  <p className="text-sm text-gray-500">{order.createdAt?.toString()}</p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-sm text-gray-500">{order.itemsCount} items</p>
-                <p className="font-semibold">₹{order.total}</p>
+                <p className="text-sm text-gray-500">{order.products.length} items</p>
+                <p className="font-semibold">₹{order.totalPrice}</p>
                 <p className="text-xs mt-1">{order.status}</p>
               </div>
             </div>

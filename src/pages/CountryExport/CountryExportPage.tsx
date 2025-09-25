@@ -1,7 +1,7 @@
 import Container from '@/components/Container'
 import CountryExports from '@/components/CountryExports'
 import ShadowContainer from '@/components/ShadowContainer'
-import { useExports } from "@/hooks/Exports/useExport";
+import { useExports } from "@/hooks/Exports/useExports";
 const CountryExportPage = () => {
     const {data:exportData} = useExports()
     return (

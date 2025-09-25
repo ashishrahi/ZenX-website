@@ -2,7 +2,6 @@ import HeroSection from "@/components/HeroSection";
 import EnquireNow from "@/components/EnquireNow";
 import MainProducts from "@/components/MainProduct";
 import ZenxAbout from "@/components/ZenxAbout";
-import { slides } from "../../api/slidesData";
 import { motion } from "framer-motion";
 import ShadowContainer from "@/components/ShadowContainer";
 import FAQSection from "@/components/FAQ";
@@ -10,15 +9,17 @@ import AppProductCarousel from "@/components/AppProductCarousel";
 import ProductCategories from "@/components/ProductCategories";
 import CountryExports from "@/components/CountryExports";
 import { useFAQs } from "@/hooks/faq/useFAQ";
-import { useExports } from "@/hooks/Exports/useExport";
+import { useExports } from "@/hooks/Exports/useExports";
 import { useCategories } from "@/hooks/Categories";
 import { useProducts } from "@/hooks/Products";
+import { useBanners } from "@/hooks/Banners";
 
 const Index = () => {
   const { data: faqData } = useFAQs();
   const { data: exportData } = useExports();
   const { data: categories } = useCategories();
   const { data: productsData } = useProducts();
+  const {data:slides} = useBanners()
 
   return (
     <div className="min-h-screen bg-background relative flex flex-col gap-10">

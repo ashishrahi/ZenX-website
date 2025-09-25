@@ -13,16 +13,19 @@ interface BlogPost {
   category: string;
   title: string;
   description: string;
-  link: string;
+  // link: string;
   image: string;
   tags?: string[];
 }
 
 interface BlogProps {
-  blogPosts?: BlogPost[];
+  blogPosts?: BlogPost[] | null; // allow null or undefined
 }
 
-const Blog: React.FC<BlogProps> = ({ blogPosts = [] }) => {
+const Blog: React.FC<BlogProps> = ({ blogPosts }) => {
+  // Ensure we always have an array
+  const posts = Array.isArray(blogPosts) ? blogPosts : [];
+
   return (
     <div className="max-w-7xl mx-auto px-4 mt-12 md:mt-16 lg:mt-10">
       <section
@@ -38,13 +41,13 @@ const Blog: React.FC<BlogProps> = ({ blogPosts = [] }) => {
             Our Blog
           </h1>
 
-          {blogPosts.length === 0 ? (
+          {posts.length === 0 ? (
             <p className="text-center text-muted-foreground">
               No blog posts available at the moment.
             </p>
           ) : (
             <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-              {blogPosts.map((post, index) => (
+              {posts.map((post, index) => (
                 <Card
                   key={index}
                   className="hover:scale-105 transition-transform shadow-lg bg-card backdrop-blur-sm"
@@ -55,7 +58,6 @@ const Blog: React.FC<BlogProps> = ({ blogPosts = [] }) => {
                     className="w-full h-48 object-cover rounded-t-lg"
                   />
                   <CardContent>
-                    {/* Category text using primary color */}
                     <span className="text-primary font-semibold uppercase text-sm">
                       {post.category}
                     </span>
@@ -68,7 +70,6 @@ const Blog: React.FC<BlogProps> = ({ blogPosts = [] }) => {
                       {post.description}
                     </CardDescription>
 
-                    {/* Tags with accent color */}
                     {post.tags && post.tags.length > 0 && (
                       <div className="mt-3 flex flex-wrap gap-2">
                         {post.tags.map((tag, i) => (
@@ -84,12 +85,8 @@ const Blog: React.FC<BlogProps> = ({ blogPosts = [] }) => {
                   </CardContent>
 
                   <CardFooter>
-                    <Button
-                      variant="link"
-                      asChild
-                      className="text-primary font-semibold"
-                    >
-                      <a href={post.link}>Read More</a>
+                    <Button variant="link" asChild className="text-primary font-semibold">
+                      {/* <a href={post.link}>Read More</a> */}
                     </Button>
                   </CardFooter>
                 </Card>

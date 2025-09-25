@@ -1,7 +1,7 @@
 "use client"
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CategoryService } from "@/services/categoryService";
-import { ICategory } from "@/types/categoriesTypes";
+import { ICategory } from "@/types/IcategoriesTypes";
 
 export const useAddCategory = () => {
   const queryClient = useQueryClient();

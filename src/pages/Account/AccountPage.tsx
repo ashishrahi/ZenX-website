@@ -10,13 +10,14 @@ import AccountProfile from "@/components/AccountProfile";
 import Container from "@/components/Container";
 import ShadowContainer from "@/components/ShadowContainer";
 import { Settings } from "lucide-react";
-import {mockOrders} from '../../api/orders/orders'
 import ColoredTitle from "@/components/ColoredTitle";
+import { useOrders } from "@/hooks/Orders";
 
 const AccountPage: React.FC = () => {
   const navigate = useNavigate();
   const { cart } = useCart();
   const [activeTab, setActiveTab] = useState("orders"); // default tab
+  const { data: orders } = useOrders();
 
   const handleLogout = () => {
     console.log("Logout clicked");
@@ -26,17 +27,24 @@ const AccountPage: React.FC = () => {
   const renderContent = () => {
     switch (activeTab) {
       case "orders":
-        return <Orders 
-        Orders ={mockOrders}
-        />;
+        return <Orders orders={orders} />; // fixed prop name
       case "wishlist":
         return <Wishlist />;
       case "profile":
-        return <AccountProfile />;
+        return (
+          <AccountProfile
+            onSave={(data) => {
+              console.log("Saved profile data:", data);
+            }}
+            onCancel={() => {
+              console.log("Profile edit cancelled");
+            }}
+          />
+        );
       case "help":
         return <Help />;
       default:
-        return <Orders />;
+        return <Orders orders={orders} />; // default with proper prop
     }
   };
 
@@ -48,10 +56,9 @@ const AccountPage: React.FC = () => {
           <div className="max-w-7xl mx-auto px-4 lg:px-8 mb-20 flex flex-row justify-center items-center space-x-2">
             <Settings className="w-6 h-6 text-gray-700" />
             <h1 className="text-3xl font-semibold text-gray-800 text-center lg:text-left">
-           <ColoredTitle title = "Account Settings"/>   
+              <ColoredTitle title="Account Settings" />
             </h1>
           </div>
-
 
           {/* Main Layout */}
           <div className="max-w-7xl mx-auto px-4 lg:px-8 flex flex-col lg:flex-row gap-8">

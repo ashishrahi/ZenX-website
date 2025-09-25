@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { BlogService } from "@/services/blogService";
-import { IBlog } from "@/types/blogTypes";
+import { IBlog } from "@/types/Iblog";
 
 export const useBlogs = () => {
   return useQuery<IBlog[], Error>({

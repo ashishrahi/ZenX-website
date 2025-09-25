@@ -1,9 +1,26 @@
-import { Formik, Form, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import AppInput from "./AppComponent/AppInput";
 import AppButton from "./AppComponent/AppButton";
 
-// ===== Delivery Form Validation Schema =====
+export interface DeliveryFormValues {
+  firstName: string;
+  lastName: string;
+  company?: string;
+  address: string;
+  apartment?: string;
+  city: string;
+  state: string;
+  pin: string;
+  country: string;
+  paymentMethod: "Cash on Delivery" | "PayPal" | "Credit Card";
+}
+
+interface DeliveryFormProps {
+  onSubmit: (values: DeliveryFormValues) => void;
+  isSubmitting?: boolean;
+}
+
 const DeliverySchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
   lastName: Yup.string().required("Last name is required"),
@@ -13,10 +30,14 @@ const DeliverySchema = Yup.object().shape({
   pin: Yup.string()
     .matches(/^[0-9]{6}$/, "PIN must be 6 digits")
     .required("PIN is required"),
+  country: Yup.string().required("Country is required"),
+  paymentMethod: Yup.mixed<DeliveryFormValues["paymentMethod"]>()
+    .oneOf(["Cash on Delivery", "PayPal", "Credit Card"])
+    .required("Payment method is required"),
 });
 
-const DeliveryForm = ({ onSubmit }: { onSubmit: (values: any) => void }) => {
-  const initialValues = {
+const DeliveryForm: React.FC<DeliveryFormProps> = ({ onSubmit, isSubmitting }) => {
+  const initialValues: DeliveryFormValues = {
     firstName: "",
     lastName: "",
     company: "",
@@ -25,137 +46,69 @@ const DeliveryForm = ({ onSubmit }: { onSubmit: (values: any) => void }) => {
     city: "",
     state: "",
     pin: "",
+    country: "India",
+    paymentMethod: "Cash on Delivery",
   };
 
   return (
     <div className="max-w-2xl mx-auto bg-card p-8 rounded-xl shadow-md mt-10">
-      <Formik
+      <Formik<DeliveryFormValues>
         initialValues={initialValues}
         validationSchema={DeliverySchema}
         onSubmit={onSubmit}
       >
-        {({ isSubmitting }) => (
+        {({ values, setFieldValue }) => (
           <Form className="space-y-6">
             <h2 className="text-2xl font-semibold text-foreground">Delivery</h2>
 
-            {/* First and Last Name */}
+            {/* Name Fields */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label htmlFor="firstName" className="block text-sm font-medium mb-1 text-foreground">
-                  First Name
-                </label>
-                <AppInput
-                  id="firstName"
-                  type="text"
-                  name="firstName"
-                  placeholder="Enter first name"
-                  className="w-full border border-border rounded-md px-3 py-2 focus:ring-2 focus:ring-ring outline-none bg-background text-foreground"
-                />
-                <ErrorMessage name="firstName" component="div" className="text-destructive text-sm mt-1" />
+                <AppInput label="First Name" name="firstName" placeholder="Enter first name" />
               </div>
               <div>
-                <label htmlFor="lastName" className="block text-sm font-medium mb-1 text-foreground">
-                  Last Name
-                </label>
-                <AppInput
-                  id="lastName"
-                  type="text"
-                  name="lastName"
-                  placeholder="Enter last name"
-                  className="w-full border border-border rounded-md px-3 py-2 focus:ring-2 focus:ring-ring outline-none bg-background text-foreground"
-                />
-                <ErrorMessage name="lastName" component="div" className="text-destructive text-sm mt-1" />
+                <AppInput label="Last Name" name="lastName" placeholder="Enter last name" />
               </div>
             </div>
 
             {/* Company */}
-            <div>
-              <label htmlFor="company" className="block text-sm font-medium mb-1 text-foreground">
-                Company (optional)
-              </label>
-              <AppInput
-                id="company"
-                type="text"
-                name="company"
-                placeholder="Company name"
-                className="w-full border border-border rounded-md px-3 py-2 focus:ring-2 focus:ring-ring outline-none bg-background text-foreground"
-              />
-            </div>
+            <AppInput label="Company (optional)" name="company" placeholder="Company name" optional />
 
             {/* Address */}
-            <div>
-              <label htmlFor="address" className="block text-sm font-medium mb-1 text-foreground">
-                Address
-              </label>
-              <AppInput
-                id="address"
-                type="text"
-                name="address"
-                placeholder="Street address"
-                className="w-full border border-border rounded-md px-3 py-2 focus:ring-2 focus:ring-ring outline-none bg-background text-foreground"
-              />
-              <ErrorMessage name="address" component="div" className="text-destructive text-sm mt-1" />
-            </div>
-
-            {/* Apartment */}
-            <div>
-              <label htmlFor="apartment" className="block text-sm font-medium mb-1 text-foreground">
-                Apartment, suite, etc. (optional)
-              </label>
-              <AppInput
-                id="apartment"
-                type="text"
-                name="apartment"
-                placeholder="Apartment details"
-                className="w-full border border-border rounded-md px-3 py-2 focus:ring-2 focus:ring-ring outline-none bg-background text-foreground"
-              />
-            </div>
+            <AppInput label="Address" name="address" placeholder="Street address" />
+            <AppInput label="Apartment, suite, etc. (optional)" name="apartment" placeholder="Apartment details" optional />
 
             {/* City, State, PIN */}
             <div className="grid grid-cols-3 gap-4">
-              <div>
-                <label htmlFor="city" className="block text-sm font-medium mb-1 text-foreground">
-                  City
+              <AppInput label="City" name="city" placeholder="City" />
+              <AppInput label="State" name="state" as="select">
+                <option value="">Select State</option>
+                <option value="UP">Uttar Pradesh</option>
+                <option value="DL">Delhi</option>
+                <option value="MH">Maharashtra</option>
+              </AppInput>
+              <AppInput label="PIN Code" name="pin" placeholder="ZIP / Postal code" />
+            </div>
+
+            {/* Country */}
+            <AppInput label="Country" name="country" placeholder="Country" />
+
+            {/* Payment Method Radio Buttons */}
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-foreground">Payment Method</label>
+              {(["Cash on Delivery", "PayPal", "Credit Card"] as const).map((method) => (
+                <label key={method} className="flex items-center gap-2">
+                  <Field
+                    type="radio"
+                    name="paymentMethod"
+                    value={method}
+                    checked={values.paymentMethod === method}
+                    onChange={() => setFieldValue("paymentMethod", method)}
+                  />
+                  <span>{method}</span>
                 </label>
-                <AppInput
-                  id="city"
-                  type="text"
-                  name="city"
-                  placeholder="City"
-                  className="w-full border border-border rounded-md px-3 py-2 focus:ring-2 focus:ring-ring outline-none bg-background text-foreground"
-                />
-                <ErrorMessage name="city" component="div" className="text-destructive text-sm mt-1" />
-              </div>
-              <div>
-                <label htmlFor="state" className="block text-sm font-medium mb-1 text-foreground">
-                  State
-                </label>
-                <AppInput
-                  id="state"
-                  as="select"
-                  name="state"
-                  className="w-full border border-border rounded-md px-3 py-2 focus:ring-2 focus:ring-ring outline-none bg-background text-foreground"
-                >
-                  <option value="">Select State</option>
-                  <option value="UP">Uttar Pradesh</option>
-                  <option value="DL">Delhi</option>
-                  <option value="MH">Maharashtra</option>
-                </AppInput>
-                <ErrorMessage name="state" component="div" className="text-destructive text-sm mt-1" />
-              </div>
-              <div>
-                <label htmlFor="pin" className="block text-sm font-medium mb-1 text-foreground">
-                  PIN Code
-                </label>
-                <AppInput
-                  id="pin"
-                  type="text"
-                  name="pin"
-                  placeholder="ZIP / Postal code"
-                  className="w-full border border-border rounded-md px-3 py-2 focus:ring-2 focus:ring-ring outline-none bg-background text-foreground"
-                />
-                <ErrorMessage name="pin" component="div" className="text-destructive text-sm mt-1" />
-              </div>
+              ))}
+              <ErrorMessage name="paymentMethod" component="div" className="text-destructive text-sm mt-1" />
             </div>
 
             {/* Submit Button */}

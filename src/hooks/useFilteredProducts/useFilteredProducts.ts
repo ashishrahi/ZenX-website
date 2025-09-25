@@ -1,22 +1,19 @@
 // src/hooks/useFilteredProducts.ts
-import { Product } from "../../types/productTypes";
+import { Product } from "../../types/IproductTypes";
 
 export const useFilteredProducts = (products: Product[] = []) => {
-
-     
-
   const trendingProducts = products.filter(
-    (product) => !product.tag?.includes("Premium")
+    (product) => !product.tags?.includes("Premium")
   );
 
   const premiumProducts = products.filter(
-    (p) => p.tag?.includes("Premium")
+    (product) => product.tags?.includes("Premium")
   );
 
   const essentialProducts = products.filter(
-    (p) =>
-      (p.category === "men-trunks" || p.category === "men-briefs") &&
-      p.tag?.includes("Premium")
+    (product) =>
+      (product.category === "men-trunks" || product.category === "men-briefs") &&
+      product.tags?.includes("Premium")
   );
 
   return { trendingProducts, premiumProducts, essentialProducts };

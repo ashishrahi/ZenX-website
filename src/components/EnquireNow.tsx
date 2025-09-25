@@ -1,11 +1,13 @@
+"use client";
+
 import { useState } from "react";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { motion } from "framer-motion";
-import { FormikHelpers } from "formik";
-import { EnquireFormValues } from "@/types/EnquireFormValues";
+import { useAddEnquire } from "@/hooks/Enquires/useAddEnquire";
+import { EnquireFormValues } from "@/types/IEnquireFormValues";
 
-// Validation Schema
+// Validation schema
 const EnquireSchema = Yup.object().shape({
   name: Yup.string().min(3, "Must be at least 3 characters").required("Required"),
   email: Yup.string().email("Invalid email").required("Required"),
@@ -16,22 +18,29 @@ const EnquireSchema = Yup.object().shape({
 });
 
 const EnquireNow = () => {
-  const [loading, setLoading] = useState(false);
+  const mutation = useAddEnquire(); // full mutation object
+  const { mutateAsync, isLoading } = mutation; // ✅ TypeScript knows isLoading exists
+  const [successMessage, setSuccessMessage] = useState("");
 
-  const handleSubmit = (  values: EnquireFormValues,
-  { resetForm }: FormikHelpers<EnquireFormValues>) => {
-    setLoading(true);
-    setTimeout(() => {
-      console.log("Form Submitted:", values);
-      alert("Thank you! Your enquiry has been submitted.");
-      setLoading(false);
+  const handleSubmit = async (
+    values: EnquireFormValues,
+    { resetForm }: FormikHelpers<EnquireFormValues>
+  ) => {
+    try {
+      await mutateAsync({
+        ...values,
+        message: values.message || "", // provide default message
+        createdAt: new Date(),         // required Date field
+      });
+      setSuccessMessage("Thank you! Your enquiry has been submitted.");
       resetForm();
-    }, 1500);
+    } catch (error) {
+      setSuccessMessage(""); // clear on error
+    }
   };
 
   return (
     <section className="max-w-5xl mx-auto px-4 py-12">
-      {/* Title */}
       <motion.h2
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -41,22 +50,25 @@ const EnquireNow = () => {
         ENQUIRE NOW
       </motion.h2>
 
-      {/* Form */}
       <Formik
-        initialValues={{ name: "", email: "", phone: "", interested: "" }}
+        initialValues={{
+          name: "",
+          email: "",
+          phone: "",
+          interested: "",
+          message: "", // required field
+        }}
         validationSchema={EnquireSchema}
         onSubmit={handleSubmit}
       >
         {({ errors, touched }) => (
           <Form className="space-y-8">
-            {/* Fields in one row */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               {/* Name */}
               <div className="flex flex-col">
                 <Field
                   name="name"
                   placeholder="NAME *"
-                  
                   className="border-b border-black focus:outline-none focus:bg-white py-2 text-sm tracking-widest placeholder-gray-700"
                 />
                 {errors.name && touched.name && (
@@ -115,12 +127,17 @@ const EnquireNow = () => {
                 type="submit"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                disabled={loading}
+                disabled={isLoading}
                 className="bg-red-700 text-white px-8 py-3 rounded-full tracking-widest font-light transition duration-300 disabled:opacity-50"
               >
-                {loading ? "SUBMITTING..." : "SUBMIT"}
+                {isLoading ? "SUBMITTING..." : "SUBMIT"}
               </motion.button>
             </div>
+
+            {/* Success Message */}
+            {successMessage && (
+              <p className="text-green-600 text-center mt-4">{successMessage}</p>
+            )}
           </Form>
         )}
       </Formik>

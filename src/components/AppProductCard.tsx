@@ -1,5 +1,5 @@
 // src/components/AppProductCard.tsx
-import React, { FC, useState, MouseEvent } from "react";
+import React, { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Check, Heart, ImageOff, ShoppingBag } from "lucide-react";
 import {
@@ -15,9 +15,7 @@ import AppButton from "./AppComponent/AppButton";
 import RibbonTag from "./RibbonTag";
 import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
-import { ProductCardProps } from "@/types/ProductCardProps";
-
-
+import { ProductCardProps } from "@/types/IproductTypes";
 
 const AppProductCard: FC<ProductCardProps> = ({ product, basePath, detailRoute }) => {
   const { cart, addToCart } = useCart();
@@ -29,8 +27,8 @@ const AppProductCard: FC<ProductCardProps> = ({ product, basePath, detailRoute }
   const [selectedColor, setSelectedColor] = useState<string>(product.colors?.[0] || "");
 
   // Check if product is already in cart or wishlist
-  const isInCart = cart.some((item) => item.id === product.id);
-  const isWishlisted = isInWishlist(product.id);
+  const isInCart = cart.some((item) => item._id === product._id);
+  const isWishlisted = isInWishlist(product._id);
 
   // Generate product detail route dynamically
   const getProductDetailRoute = () => {
@@ -40,13 +38,22 @@ const AppProductCard: FC<ProductCardProps> = ({ product, basePath, detailRoute }
 
   const handleViewDetails = () => navigate(getProductDetailRoute());
 
-  const getPrimaryImage = () => product.images?.[selectedColor]?.[0] || "";
+  // Fix: Get primary image from variants
+  const getPrimaryImage = () => {
+    // Try to find variant with selected color
+    const variant =
+      product.variants?.find(
+        (v) => v.color?.toLowerCase() === selectedColor.toLowerCase()
+      ) || product.variants?.[0]; // fallback to first variant
+
+    return variant?.images?.[0] || "";
+  };
 
   const isBestSeller = Boolean(
     product.isBestseller ||
-    product.bestseller ||
-    (Array.isArray(product.tag) &&
-      product.tag.some((t) => String(t).toLowerCase() === "bestseller"))
+      product.bestseller ||
+      (Array.isArray(product.tag) &&
+        product.tag.some((t) => String(t).toLowerCase() === "bestseller"))
   );
 
   return (
@@ -66,8 +73,11 @@ const AppProductCard: FC<ProductCardProps> = ({ product, basePath, detailRoute }
         aria-label="Toggle wishlist"
       >
         <Heart
-          className={`h-5 w-5 transition ${isWishlisted ? "text-red-500" : "text-gray-500 group-hover:text-red-500"
-            }`}
+          className={`h-5 w-5 transition ${
+            isWishlisted
+              ? "text-red-500"
+              : "text-gray-500 group-hover:text-red-500"
+          }`}
         />
       </button>
 
@@ -111,7 +121,8 @@ const AppProductCard: FC<ProductCardProps> = ({ product, basePath, detailRoute }
         </div>
 
         <CardDescription className="line-clamp-2 text-gray-500">
-          {product.description ?? "Premium quality product, designed for everyday comfort."}
+          {product.description ||
+            "Premium quality product, designed for everyday comfort."}
         </CardDescription>
       </CardHeader>
 
@@ -121,14 +132,17 @@ const AppProductCard: FC<ProductCardProps> = ({ product, basePath, detailRoute }
           {product.colors.map((color) => (
             <button
               key={color}
-              className={`w-4 h-4 rounded-full border ${selectedColor === color
+              className={`w-4 h-4 rounded-full border ${
+                selectedColor === color
                   ? "ring-1 ring-black border-s-emerald-50"
                   : "border-gray-300"
-                }`}
+              }`}
               style={{ backgroundColor: color.toLowerCase() }}
               onClick={(e) => {
                 e.stopPropagation();
                 setSelectedColor(color);
+                setImageError(false);
+                setImageLoading(true);
               }}
               aria-label={`Select ${color}`}
             />
@@ -140,22 +154,28 @@ const AppProductCard: FC<ProductCardProps> = ({ product, basePath, detailRoute }
       <CardFooter className="flex flex-col gap-4 p-5 pt-0 mt-auto">
         <div className="flex items-center gap-2">
           {product.discountPrice && (
-            <span className="text-lg font-bold text-primary">₹{product.discountPrice}</span>
+            <span className="text-lg font-bold text-primary">
+              ₹{product.discountPrice}
+            </span>
           )}
           <span
-            className={`text-xl font-bold ${product.discountPrice ? "line-through text-gray-400" : "text-gray-900"
-              }`}
+            className={`text-xl font-bold ${
+              product.discountPrice
+                ? "line-through text-gray-400"
+                : "text-gray-900"
+            }`}
           >
             ₹{product.price}
           </span>
         </div>
 
         <AppButton
-          className={`w-full py-3 rounded-xl font-medium flex items-center justify-center gap-2 ${isInCart
+          className={`w-full py-3 rounded-xl font-medium flex items-center justify-center gap-2 ${
+            isInCart
               ? "bg-muted cursor-not-allowed text-muted-foreground"
               : "bg-primary text-primary-foreground hover:bg-primary/90"
-            } transition-colors duration-300 shadow-md hover:shadow-lg`}
-          onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+          } transition-colors duration-300 shadow-md hover:shadow-lg`}
+          onClick={(e) => {
             e.stopPropagation();
             if (!isInCart) addToCart(product);
           }}

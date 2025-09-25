@@ -1,6 +1,6 @@
 // services/countryService.ts
 import axiosInstance from "@/lib/axios";
-import { ICountry } from "@/types/countryTypes";
+import { ICountry } from "@/types/IcountryTypes";
 
 export const CountryService = {
   // Fetch all countries

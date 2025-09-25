@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CountryService } from "@/services/countryService"; // Make sure this exists
-import { ICountry } from "@/types/countryTypes";
+import { ICountry } from "@/types/IcountryTypes";
 
 export const useAddCountry = () => {
   const queryClient = useQueryClient();

@@ -1,6 +1,6 @@
 // services/productService.ts
 import axiosInstance from "@/lib/axios";
-import { Product } from "@/types/productTypes";
+import { Product } from "@/types/IproductTypes";
 
 export const ProductService = {
   getAll: async (): Promise<Product[]> => {

@@ -11,16 +11,20 @@ interface WishlistProviderProps {
 export const WishlistProvider = ({ children }: WishlistProviderProps) => {
   const [wishlist, setWishlist] = useState<Product[]>([]);
 
+  // ✅ Toggle wishlist item
   const toggleWishlist = (product: Product) => {
     setWishlist((prev) => {
-      if (prev.some((item) => item.id === product.id)) {
-        return prev.filter((item) => item.id !== product.id); // Remove if exists
+      if (prev.some((item) => item._id === product._id)) {
+        // Remove if already in wishlist
+        return prev.filter((item) => item._id !== product._id);
       }
-      return [...prev, product]; // Add if not exists
+      // Add if not in wishlist
+      return [...prev, product];
     });
   };
 
-  const isInWishlist = (id: number) => wishlist.some((item) => item.id === id);
+  // ✅ Check if product is in wishlist
+  const isInWishlist = (_id: string) => wishlist.some((item) => item._id === _id);
 
   return (
     <WishlistContext.Provider value={{ wishlist, toggleWishlist, isInWishlist }}>
@@ -29,6 +33,7 @@ export const WishlistProvider = ({ children }: WishlistProviderProps) => {
   );
 };
 
+// ✅ Custom hook for consuming the context
 export const useWishlist = () => {
   const context = useContext(WishlistContext);
   if (!context) {

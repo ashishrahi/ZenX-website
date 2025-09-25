@@ -37,7 +37,7 @@ const CartModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen,
 </p>
         ) : (
           cart.map((item) => (
-            <div key={item.id} className="flex items-start gap-4 border rounded-xl p-3 bg-white shadow-sm">
+            <div key={item._id} className="flex items-start gap-4 border rounded-xl p-3 bg-white shadow-sm">
               {item.images?.Burgundy && (
                 <img
                   src={item.images.Burgundy[0]}
@@ -57,7 +57,7 @@ const CartModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen,
               <Button
                 size="icon"
                 className="text-white hover:bg-red-700"
-                onClick={() => removeItem(item.id)}
+                onClick={() => removeItem(item._id)}
               >
                 <Trash2 size={18} />
               </Button>

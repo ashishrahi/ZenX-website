@@ -1,4 +1,4 @@
-import { SizeRange } from "./SizeRange";
+import { SizeRange } from "./ISizeRange";
 
 export interface Product {
   id: number;

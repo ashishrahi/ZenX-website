@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { FAQService } from "@/services/faq"; // your service for FAQs
-import { FAQItem } from "@/types/FAQItem";
+import { FAQItem } from "@/types/IFAQItem";
 
 export const useFAQs = () => {
   return useQuery<FAQItem[], Error>({

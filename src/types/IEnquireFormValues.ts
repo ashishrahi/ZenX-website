@@ -3,4 +3,6 @@ export interface EnquireFormValues {
   email: string;
   phone: string;
   interested: string;
+  message: string; // Add this
+  createdAt?: string;
 }

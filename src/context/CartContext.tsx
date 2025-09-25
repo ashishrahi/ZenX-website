@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 export interface Product {
-  id: number;
+  _id: string; // Use MongoDB _id
   name: string;
   description?: string;
   price: number;
@@ -13,8 +13,6 @@ export interface Product {
   bestSeller?: boolean;
 }
 
-
-
 export interface CartItem extends Product {
   quantity: number;
   size?: string;
@@ -24,7 +22,9 @@ export interface CartItem extends Product {
 interface CartContextType {
   cart: CartItem[];
   addToCart: (product: Product) => void;
-  removeItem: (id: number) => void;
+  removeItem: (_id: string) => void;
+  updateQuantity: (_id: string, quantity: number) => void;
+  clearCart: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -40,22 +40,38 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const addToCart = (product: Product) => {
     setCart((prev) => {
-      const existing = prev.find((item) => item.id === product.id);
+      const existing = prev.find((item) => item._id === product._id);
       if (existing) {
         return prev.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          item._id === product._id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
         );
       }
       return [...prev, { ...product, quantity: 1 }];
     });
   };
 
-  const removeItem = (id: number) => {
-    setCart((prev) => prev.filter((item) => item.id !== id));
+  const removeItem = (_id: string) => {
+    setCart((prev) => prev.filter((item) => item._id !== _id));
+  };
+
+  const updateQuantity = (_id: string, quantity: number) => {
+    setCart((prev) =>
+      prev.map((item) =>
+        item._id === _id ? { ...item, quantity: Math.max(1, quantity) } : item
+      )
+    );
+  };
+
+  const clearCart = () => {
+    setCart([]);
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeItem }}>
+    <CartContext.Provider
+      value={{ cart, addToCart, removeItem, updateQuantity, clearCart }}
+    >
       {children}
     </CartContext.Provider>
   );

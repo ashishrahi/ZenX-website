@@ -1,5 +1,5 @@
 import axiosInstance from "@/lib/axios";
-import { FAQItem } from "@/types/FAQItem";
+import { FAQItem } from "@/types/IFAQItem";
 
 export const FAQService = {
   getAll: async (): Promise<FAQItem[]> => {

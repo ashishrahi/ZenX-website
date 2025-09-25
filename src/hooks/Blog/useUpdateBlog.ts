@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { BlogService } from "@/services/blogService";
-import { IBlog } from "@/types/blogTypes";
+import { IBlog } from "@/types/Iblog";
 
 export const useUpdateBlog = () => {
   const queryClient = useQueryClient();

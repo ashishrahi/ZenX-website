@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { CountryService } from "@/services/countryService"; // Make sure you have this service
-import { ICountry } from "@/types/countryTypes";
+import { ICountry } from "@/types/IcountryTypes";
 
 export const useCountries = () => {
   return useQuery<ICountry[], Error>({

@@ -1,7 +1,7 @@
 "use client"
 
 import axiosInstance from "@/lib/axios";
-import { ICategory } from "@/types/categoriesTypes";
+import { ICategory } from "@/types/IcategoriesTypes";
 
 export const CategoryService = {
   // Fetch all categories

@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Box } from "lucide-react"; // Box as example placeholder icon
 import AppProductCard from "@/components/AppProductCard";
-import { ProductCarouselProps } from "../types/productTypes";
+import { ProductCarouselProps } from "../types/IproductTypes";
 
 const ProductCarousel = ({
   productsData = [],
