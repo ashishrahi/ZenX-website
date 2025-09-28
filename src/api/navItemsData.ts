@@ -1,7 +1,7 @@
 export const navLinks = [
   {
     name: "MEN",
-    path: "/men",
+    path: "category/men",
     subcategories: [
       {
         title: "INNERWEAR",
@@ -42,7 +42,7 @@ export const navLinks = [
   },
   {
     name: "WOMEN",
-    path: "/women",
+    path: "category/women",
     subcategories: [
       {
         title: "INNERWEAR",
@@ -81,5 +81,6 @@ export const navLinks = [
   { name: "BLOG", path: "/blog" },
   { name: "FAQ", path: "/faq" },
   { name: "Export", path: "/export" },
+  { name: "History", path: "/history" },
 
 ];

@@ -78,7 +78,7 @@ const App = () => (
               </Route>
 
               {/* WOMEN */}
-              <Route path="/women">
+              <Route path="category/women">
                 <Route index element={<WomenPage />} />
                 <Route path="category/:slug" element={<WomenCategoryProductsPage />} />
                 <Route path="product/:slug" element={<WomenProductDetailsPage />} />
