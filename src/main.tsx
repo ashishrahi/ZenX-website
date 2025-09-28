@@ -15,13 +15,15 @@ import { store } from "./store/store.ts";
 createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
    <WishlistProvider>
+    <CartProvider>
+
     <BreadcrumbsProvider>
      <GlobalBreadcrumbs />
      
-    <CartProvider>
         <App />
-    </CartProvider>
     </BreadcrumbsProvider>
+    </CartProvider>
+
     </WishlistProvider>
     </Provider>
 

@@ -42,7 +42,7 @@ const Index = () => {
       <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 lg:px-12 py-6">
         <div className="relative rounded-[8px] overflow-hidden w-full shadow-2xl">
           <AppProductCarousel
-            productsData={productsData?.filter(p => p.tag?.includes("HotPick")) ?? []}
+            productsData={productsData?? []}
             title="🔥 Trending Products"
             description="Stay ahead with these top-selling, stylish innerwear picks"
           />
@@ -94,7 +94,7 @@ const Index = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <MainProducts
-              productsData={productsData?.filter(p => p.tag?.includes("New Arrivals")) ?? []}
+              productsData={productsData ??[]}
               title=""
               description=""
             />
@@ -146,7 +146,7 @@ const Index = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <AppProductCarousel
-              productsData={productsData?.filter(p => p.tag?.includes("Best Seller")) ?? []}
+              productsData={productsData ?? []}
               title=""
               description=""
             />
