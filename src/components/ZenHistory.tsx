@@ -1,12 +1,21 @@
 import React from "react";
 import { FaBuilding, FaHistory, FaGlobe, FaUsers } from "react-icons/fa";
+import ZenxLogo from "@/assets/shriganesh.jpg"; // Update the path to your actual logo file
 
 const ZenHistory = () => {
   return (
     <main className="max-w-5xl mx-auto px-6 py-12 text-left">
-      <h1 className="text-5xl font-bold mb-6" itemProp="headline">
-        Zenx History - Evolution of Comfort Apparel in India
-      </h1>
+      {/* Logo Section */}
+      <div className="flex flex-col items-center mb-6">
+        <img
+          src={ZenxLogo}
+          alt="Zenx Logo"
+          className="h-40 w-40  mr-4 object-contain"
+        />
+        <h1 className="text-5xl font-bold" itemProp="headline">
+          Zenx History - Evolution of Comfort Apparel in India
+        </h1>
+      </div>
 
       {/* Intro Section */}
       <section className="mb-10" itemScope itemType="https://schema.org/Organization">
