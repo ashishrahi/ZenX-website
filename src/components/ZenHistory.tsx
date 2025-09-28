@@ -1,68 +1,68 @@
 import React from "react";
 import { FaBuilding, FaHistory, FaGlobe, FaUsers } from "react-icons/fa";
-import ZenxLogo from "@/assets/shriganesh.jpg"; // Update the path to your actual logo file
+import ZenxLogo from "@/assets/shriganesh.jpg"; // Update with your logo path
 
 const ZenHistory = () => {
+  const timeline = [
+    {
+      year: "2018",
+      title: "Chapter One",
+      icon: <FaHistory className="text-green-600 text-2xl" />,
+      description:
+        "Zenx was founded in 1876, pioneering innerwear and evolving comfort apparel for Men, Women, and Kids across 140+ countries.",
+    },
+    {
+      year: "2019",
+      title: "Chapter Two",
+      icon: <FaGlobe className="text-green-600 text-2xl" />,
+      description:
+        "Zenx Industries Ltd. was set up in 1994 to bring the Zenx brand to India, manufacturing and marketing products for Men, Women, and Kids.",
+    },
+    {
+      year: "2020",
+      title: "Chapter Three",
+      icon: <FaBuilding className="text-green-600 text-2xl" />,
+      description:
+        "Zenx Industries Ltd. became a public limited company in March 2007 and is listed on the BSE and NSE of India.",
+    },
+    {
+      year: "Present",
+      title: "Chapter Four",
+      icon: <FaUsers className="text-green-600 text-2xl" />,
+      description:
+        "The promoters of Zenx in India are the Genomal family, who have been associated with Zenx International Inc. for over 25 years.",
+    },
+  ];
+
   return (
-    <main className="max-w-5xl mx-auto px-6 py-12 text-left">
+    <main className="max-w-5xl mx-auto px-6 py-12">
       {/* Logo Section */}
-      <div className="flex flex-col items-center mb-6">
+      <div className="flex flex-col items-center mb-12">
         <img
           src={ZenxLogo}
           alt="Zenx Logo"
-          className="h-40 w-40  mr-4 object-contain"
+          className="h-32 w-32 mb-4 object-contain"
         />
-        <h1 className="text-5xl font-bold" itemProp="headline">
-          Zenx History - Evolution of Comfort Apparel in India
+        <h1 className="text-4xl font-bold text-center">
+          Zenx History - Evolution of Comfort Apparel
         </h1>
       </div>
 
-      {/* Intro Section */}
-      <section className="mb-10" itemScope itemType="https://schema.org/Organization">
-        <FaHistory className="inline-block mr-2 text-gray-700" />
-        <h2 className="text-2xl font-semibold mb-4">Our Journey</h2>
-        <p className="text-gray-700 leading-relaxed text-lg" itemProp="description">
-          Founded in 1876, Zenx pioneered innerwear, evolving and innovating not only the
-          product, but also the way it has been marketed globally. Zenx manufactures,
-          distributes, and markets comfort apparel for the whole family — Men, Women, and Kids — in more than 140 countries.
-        </p>
-      </section>
-
-      {/* Official Operations Section */}
-      <section className="mb-10">
-        <FaGlobe className="inline-block mr-2 text-gray-700" />
-        <h2 className="text-2xl font-semibold mb-4">Zenx in India</h2>
-        <p className="text-gray-700 leading-relaxed text-lg">
-          Zenx Industries Ltd. was set up in 1994 to bring the world-renowned Zenx brand
-          to India. The company manufactures, distributes, and markets products for Men,
-          Women, and Kids, providing comfort and quality in every product.
-        </p>
-      </section>
-
-      {/* Company Information Section */}
-      <section className="mb-10">
-        <FaBuilding className="inline-block mr-2 text-gray-700" />
-        <h2 className="text-2xl font-semibold mb-4">Page Industries Limited</h2>
-        <p className="text-gray-700 leading-relaxed text-lg">
-          Zenx Industries Limited, located in Kanpur, India, is the exclusive licensee
-          of Zenx International Inc for the manufacture, distribution, and marketing
-          of the Zenx brand in India, Sri Lanka, Oman, Bangladesh, Nepal, and UAE.
-          Zenx Industries Ltd. became a public limited company in March 2007 and is
-          listed on the BSE and NSE of India.
-        </p>
-      </section>
-
-      {/* Founders Section */}
-      <section className="mb-10">
-        <FaUsers className="inline-block mr-2 text-gray-700" />
-        <h2 className="text-2xl font-semibold mb-4">Our Promoters</h2>
-        <p className="text-gray-700 leading-relaxed text-lg">
-          The promoters of Zenx in India are the Genomal family, who have been associated
-          with Zenx International Inc. for over 25 years as their sole licensee in the
-          Philippines. Their commitment to quality and innovation continues to drive
-          Zenx’s growth in India and abroad.
-        </p>
-      </section>
+      {/* Timeline */}
+      <div className="relative border-l-4 border-green-600">
+        {timeline.map((item, index) => (
+          <div key={index} className="mb-10 ml-6">
+            <div className="absolute -left-5 flex items-center justify-center w-10 h-10 bg-white border-4 border-green-600 rounded-full">
+              {item.icon}
+            </div>
+            <span className="text-sm text-gray-500">{item.year}</span>
+            <h3 className="text-xl font-semibold text-green-700">
+              {item.title}
+            </h3>
+            <p className="text-gray-700">{item.description}</p>
+          </div>
+        ))}
+      </div>
     </main>
   );
 };
