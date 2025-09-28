@@ -78,7 +78,7 @@ const ProductCarousel = ({
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 >
                   {productsData.map((product, index) => (
-                    <div key={product.id} className="flex-shrink-0" style={{ width: slideWidth }}>
+                    <div key={product._id} className="flex-shrink-0" style={{ width: slideWidth }}>
                       <div className="p-2 relative">
                         <motion.div
                           initial={{ opacity: 0, y: 40 }}
@@ -92,7 +92,7 @@ const ProductCarousel = ({
                             product={product}
                             hovered={hoveredIndex === index}
                             toggleWishlist={() => onWishlistToggle?.(product)}
-                            basePath={`/${product.gender ?? "mens"}`}
+                            basePath={`/${product.category}`}
                           />
                         </motion.div>
                       </div>

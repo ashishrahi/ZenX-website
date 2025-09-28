@@ -17,7 +17,7 @@ export const OrderService = {
   // Create a new order
   create: async (order: Omit<IOrderPayload, "_id">): Promise<IOrderPayload> => {
     const response = await axiosInstance.post("/orders/create", order);
-    return response?.data?.data;
+    return response?.data;
   },
 
   // Update an existing order

@@ -5,46 +5,57 @@ import PurchaseAssistantModal from "../components/PurchaseAssistantModal";
 import { useCart, CartItem } from "../context/CartContext";
 import AppButton from "../components/AppComponent/AppButton";
 import CollapsibleSection from "@/components/CollapsibleSection";
-import {ProductDetailsProps} from '../types/IproductTypes'
-import { SizeRange } from "@/types/ISizeRange";
+import { ProductDetailsProps } from "../types/IproductTypes";
+import { useParams } from "react-router-dom";
+import { useProduct } from "@/hooks/Products";
+// Size types
+export type SizeRange = "XS" | "S" | "M" | "L" | "XL";
+export type SizeGroup = "XXS-S" | "M-XL" | "XXL-3XL";
 
+const DEFAULT_SIZES: SizeRange[] = ["XS", "S", "M", "L", "XL"];
 
+const SIZE_GROUPS: SizeGroup[] = ["XXS-S", "M-XL", "XXL-3XL"];
 
 const AppProductDetails: React.FC<ProductDetailsProps> = ({
   product,
-  sizes = ["XS", "S", "M", "L", "XL"],
+  sizes = DEFAULT_SIZES,
   sizeGuide = {},
 }) => {
   const { cart, addToCart } = useCart();
 
-  const [selectedSize, setSelectedSize] = useState<SizeRange  | null>(null);
+  const [selectedSize, setSelectedSize] = useState<SizeRange | null>(null);
   const [showSizeChart, setShowSizeChart] = useState(false);
-  const [activeSizeRange, setActiveSizeRange] = useState<"XXS-S" | "M-XL" | "XXL-3XL">("XXS-S");
+  const [activeSizeRange, setActiveSizeRange] = useState<SizeGroup>("XXS-S");
   const [selectedColor, setSelectedColor] = useState<string>("");
   const [currentImage, setCurrentImage] = useState(0);
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
-
+  const { slug } = useParams<{ slug: string }>(); 
+  const {data} = useProduct(slug)
+  // Set default color
   useEffect(() => {
-    if (product && product.colors && product.colors.length > 0) {
+    if (product?.colors && product.colors.length > 0) {
       setSelectedColor(product.colors[0]);
     }
   }, [product]);
 
+  // Reset image when color changes
   useEffect(() => {
     setCurrentImage(0);
   }, [selectedColor]);
 
-  const colorImages = product.images[selectedColor] || [];
+  const colorImages = product?.images?.[selectedColor] || [];
 
+  // Check if product is already in cart
   const isInCart = useMemo(() => {
     return cart?.some(
       (item) =>
-        item.id === product.id &&
+        item._id === product._id &&
         item.size === selectedSize &&
         Object.keys(item.images || {})[0] === selectedColor
     );
   }, [cart, product, selectedSize, selectedColor]);
 
+  // Add product to cart
   const handleAddToCart = () => {
     if (!selectedSize) {
       alert("Please select a size before adding to cart.");
@@ -72,20 +83,18 @@ const AppProductDetails: React.FC<ProductDetailsProps> = ({
           {/* Images */}
           <div className="lg:w-1/2">
             <div className="flex flex-col gap-4">
-              {colorImages?.length > 0 && (
+              {colorImages.length > 0 && (
                 <>
                   <div className="rounded-lg p-2 md:p-4 bg-card">
-                    <div className="w-full h-auto max-w-full mx-auto">
-                      <Magnifier
-                        key={`${selectedColor}-${currentImage}`}
-                        src={colorImages[currentImage]}
-                        width={500}
-                        height={500}
-                        zoomLevel={2}
-                        showLens
-                        showZoomBox
-                      />
-                    </div>
+                    <Magnifier
+                      key={`${selectedColor}-${currentImage}`}
+                      src={colorImages[currentImage]}
+                      width={500}
+                      height={500}
+                      zoomLevel={2}
+                      showLens
+                      showZoomBox
+                    />
                   </div>
                   <div className="flex gap-2 overflow-x-auto py-2">
                     {colorImages.map((img, idx) => (
@@ -134,7 +143,7 @@ const AppProductDetails: React.FC<ProductDetailsProps> = ({
                         aria-label={`Select color: ${color}`}
                         aria-pressed={selectedColor === color}
                       >
-                        {product.images[color]?.[0] && (
+                        {product.images?.[color]?.[0] && (
                           <img
                             src={product.images[color][0]}
                             alt={`${color} preview`}
@@ -162,7 +171,7 @@ const AppProductDetails: React.FC<ProductDetailsProps> = ({
                     </button>
                   </div>
                   <div className="flex gap-2 flex-wrap">
-                    {sizes?.map((size) => (
+                    {sizes.map((size) => (
                       <button
                         key={size}
                         className={`px-2 py-1 md:px-3 md:py-1 rounded-lg border font-medium transition
@@ -171,7 +180,7 @@ const AppProductDetails: React.FC<ProductDetailsProps> = ({
                               ? "bg-destructive text-white border-destructive"
                               : "bg-card text-foreground border-muted hover:bg-destructive/10 hover:text-destructive"
                           }`}
-                        onClick={() => setSelectedSize(size)}
+                        onClick={() => setSelectedSize(size as SizeRange)}
                         aria-label={`Select size: ${size}`}
                         aria-pressed={selectedSize === size}
                       >
@@ -184,10 +193,7 @@ const AppProductDetails: React.FC<ProductDetailsProps> = ({
                 {/* Action buttons */}
                 <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
                   {isInCart ? (
-                    <AppButton
-                      className="flex-1 py-2 md:py-3 bg-green-500 text-white rounded-lg font-medium cursor-not-allowed"
-                      disabled
-                    >
+                    <AppButton className="flex-1 py-2 md:py-3 bg-green-500 text-white rounded-lg font-medium cursor-not-allowed" disabled>
                       Added to Cart
                     </AppButton>
                   ) : (
@@ -214,9 +220,9 @@ const AppProductDetails: React.FC<ProductDetailsProps> = ({
                 {/* Collapsible Sections */}
                 <div className="space-y-3 md:space-y-4">
                   <CollapsibleSection title="Description & Fit" content={product.description ?? ""} />
-                  <CollapsibleSection title="Materials" content={product.material ?? ""} />
-                  <CollapsibleSection title="Care Guide" content={product.care ?? ""} />
-                  <CollapsibleSection title="Delivery and Payment" content={product.delivery ?? ""} />
+                  <CollapsibleSection title="Materials" content={product.material} />
+                  <CollapsibleSection title="Care Guide" content={product.care} />
+                  <CollapsibleSection title="Delivery and Payment" content={product.delivery} />
                 </div>
               </div>
             </div>
@@ -254,7 +260,7 @@ const AppProductDetails: React.FC<ProductDetailsProps> = ({
                   </div>
                   <div className="p-4 space-y-4">
                     <div className="flex gap-2 mb-2 flex-wrap">
-                      {["XXS-S", "M-XL", "XXL-3XL"].map((range) => (
+                      {SIZE_GROUPS.map((range) => (
                         <button
                           key={range}
                           className={`px-3 py-1 rounded-lg border font-medium transition
@@ -263,7 +269,7 @@ const AppProductDetails: React.FC<ProductDetailsProps> = ({
                                 ? "bg-destructive text-white border-destructive"
                                 : "bg-background text-foreground border-muted hover:bg-destructive/10 hover:text-destructive"
                             }`}
-                          onClick={() => setActiveSizeRange(range as SizeRange)}
+                          onClick={() => setActiveSizeRange(range)}
                           aria-pressed={activeSizeRange === range}
                         >
                           {range}
@@ -285,11 +291,9 @@ const AppProductDetails: React.FC<ProductDetailsProps> = ({
                         <tbody>
                           {sizeGuide[activeSizeRange]?.map((row, idx) => (
                             <tr key={idx} className="border-t border-muted">
-                              <td className="border p-2 font-medium text-foreground">{row?.label}</td>
-                              {row?.values?.map((val, i) => (
-                                <td key={i} className="border p-2 text-center text-foreground">
-                                  {val}
-                                </td>
+                              <td className="border p-2 font-medium text-foreground">{row.label}</td>
+                              {row.values.map((val, i) => (
+                                <td key={i} className="border p-2 text-center text-foreground">{val}</td>
                               ))}
                             </tr>
                           ))}

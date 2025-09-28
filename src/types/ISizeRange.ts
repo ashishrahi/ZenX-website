@@ -1,4 +1,2 @@
-export interface SizeRange {
-  min: number;
-  max: number;
-}
+export type SizeRange = "XS" | "S" | "M" | "L" | "XL";
+

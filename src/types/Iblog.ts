@@ -4,6 +4,6 @@ export interface IBlog {
   title: string;
   description: string;
   // link?: string; // optional since it’s commented out
-  image: string; // or the type of `images.wellBeing` if it’s not a string
+  image: string; 
   tags: string[];
 }

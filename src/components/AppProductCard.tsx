@@ -1,5 +1,4 @@
-// src/components/AppProductCard.tsx
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Check, Heart, ImageOff, ShoppingBag } from "lucide-react";
 import {
@@ -12,56 +11,39 @@ import {
 } from "@/components/ui/card";
 import { renderStars } from "../utilis/renderStars";
 import AppButton from "./AppComponent/AppButton";
-import RibbonTag from "./RibbonTag";
 import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
 import { ProductCardProps } from "@/types/IproductTypes";
+
+
+
+
 
 const AppProductCard: FC<ProductCardProps> = ({ product, basePath, detailRoute }) => {
   const { cart, addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const navigate = useNavigate();
-
   const [imageError, setImageError] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
   const [selectedColor, setSelectedColor] = useState<string>(product.colors?.[0] || "");
 
-  // Check if product is already in cart or wishlist
   const isInCart = cart.some((item) => item._id === product._id);
   const isWishlisted = isInWishlist(product._id);
 
   // Generate product detail route dynamically
-  const getProductDetailRoute = () => {
-    const gender = product.gender ?? "men";
-    return detailRoute ?? `${basePath ?? `/${gender}`}/product/${product.slug}`;
-  };
-
+  const getProductDetailRoute = () => detailRoute ?? `/category/${product.category}/product/${product.slug}`;
   const handleViewDetails = () => navigate(getProductDetailRoute());
 
-  // Fix: Get primary image from variants
   const getPrimaryImage = () => {
-    // Try to find variant with selected color
-    const variant =
-      product.variants?.find(
-        (v) => v.color?.toLowerCase() === selectedColor.toLowerCase()
-      ) || product.variants?.[0]; // fallback to first variant
-
-    return variant?.images?.[0] || "";
+    if (selectedColor && product.images[selectedColor]) {
+      return product.images[selectedColor][0];
+    }
+    const firstColor = product.colors?.[0];
+    return firstColor ? product.images[firstColor][0] : "";
   };
-
-  const isBestSeller = Boolean(
-    product.isBestseller ||
-      product.bestseller ||
-      (Array.isArray(product.tag) &&
-        product.tag.some((t) => String(t).toLowerCase() === "bestseller"))
-  );
 
   return (
     <Card className="group relative rounded-2xl border shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col h-[520px]">
-      {/* Bestseller Ribbon */}
-      {isBestSeller && (
-        <RibbonTag label="Bestseller" className="right-[-5px] top-[10px]" />
-      )}
 
       {/* Wishlist Button */}
       <button
@@ -115,14 +97,11 @@ const AppProductCard: FC<ProductCardProps> = ({ product, basePath, detailRoute }
         <CardTitle className="text-lg font-semibold text-gray-800 line-clamp-1 group-hover:text-black transition">
           {product.name}
         </CardTitle>
-
         <div className="flex items-center gap-1 mb-2">
           {renderStars(product.rating)}
         </div>
-
         <CardDescription className="line-clamp-2 text-gray-500">
-          {product.description ||
-            "Premium quality product, designed for everyday comfort."}
+          {product.description || "Premium quality product, designed for everyday comfort."}
         </CardDescription>
       </CardHeader>
 
@@ -160,9 +139,7 @@ const AppProductCard: FC<ProductCardProps> = ({ product, basePath, detailRoute }
           )}
           <span
             className={`text-xl font-bold ${
-              product.discountPrice
-                ? "line-through text-gray-400"
-                : "text-gray-900"
+              product.discountPrice ? "line-through text-gray-400" : "text-gray-900"
             }`}
           >
             ₹{product.price}
@@ -175,10 +152,14 @@ const AppProductCard: FC<ProductCardProps> = ({ product, basePath, detailRoute }
               ? "bg-muted cursor-not-allowed text-muted-foreground"
               : "bg-primary text-primary-foreground hover:bg-primary/90"
           } transition-colors duration-300 shadow-md hover:shadow-lg`}
-          onClick={(e) => {
-            e.stopPropagation();
-            if (!isInCart) addToCart(product);
-          }}
+         onClick={(e) => {
+  e.stopPropagation();
+  addToCart({
+    ...product,
+    _id: product._id,
+    images: product.images || {} // provide a fallback empty object
+  });
+}}
         >
           {isInCart ? (
             <>

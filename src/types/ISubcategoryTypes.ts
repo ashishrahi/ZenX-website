@@ -1,4 +1,5 @@
 export interface ISubCategory  {
+  _id:string;
   name: string;
   slug: string;
   description?: string;
@@ -6,5 +7,6 @@ export interface ISubCategory  {
   categoryId: string
   createdAt: Date;
   updatedAt: Date;
-  isDeleted:boolean 
+  isDeleted:boolean;
+  category:string;
 }

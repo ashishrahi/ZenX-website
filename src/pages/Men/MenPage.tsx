@@ -8,11 +8,15 @@ import { useSubcategories } from "@/hooks/Subcategories";
 import { useProducts } from "@/hooks/Products";
 
 const MenPage = () => {
+  // product
   const { data: subcategories } = useSubcategories();
   const { data: productsData } = useProducts();
-
-  // Filter products by slug if slug exists
+  
+  // product
   const filteredProducts = productsData?.filter((product) => product.category === "men");
+  // subcategory
+  const filteredSubcategories = subcategories?.filter((product) => product.category === "men");
+
 
   return (
     <Container>
@@ -25,14 +29,14 @@ const MenPage = () => {
           <AppProductCategoriesCarousel
             title="Effortless Comfort, Perfect Fit"
             description="Modern, product-focused tagline"
-            categories={subcategories ?? []} // optional chaining with fallback
+            categories={filteredSubcategories ?? []} 
           />
         </ShadowContainer>
 
         {/* Trending Products */}
         <ShadowContainer>
           <AppProductCarousel
-            productsData={filteredProducts ?? []} // optional chaining with fallback
+            productsData={filteredProducts ?? []} 
             title="Handpicked For You"
             description="Personalization ka touch, especially for logged-in users"
           />
@@ -41,7 +45,7 @@ const MenPage = () => {
         {/* Premium Products */}
         <ShadowContainer>
           <AppProductCarousel
-            productsData={filteredProducts ?? []} // optional chaining with fallback
+            productsData={filteredProducts ?? []} 
             title="Premium Choices"
             description="High-quality picks crafted for your ultimate satisfaction"
           />
@@ -50,7 +54,7 @@ const MenPage = () => {
         {/* Essential Products */}
         <ShadowContainer>
           <AppProductCarousel
-            productsData={filteredProducts ?? []} // optional chaining with fallback
+            productsData={filteredProducts ?? []} 
             title="Essentials Journal"
             description="Focuses on everyday wear elevated"
           />

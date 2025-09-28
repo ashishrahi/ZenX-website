@@ -14,7 +14,7 @@ interface ProductCategoriesCarouselProps {
     description?: string;
     images?: string[];
     categoryId?: {
-      slug?: string; // Optional for gender/category slug in URL
+      slug?: string;
     };
   }[];
 }

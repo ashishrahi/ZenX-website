@@ -20,7 +20,6 @@ const AccountPage: React.FC = () => {
   const { data: orders } = useOrders();
 
   const handleLogout = () => {
-    console.log("Logout clicked");
     navigate("/");
   };
 

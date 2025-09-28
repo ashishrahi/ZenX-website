@@ -3,17 +3,12 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Search, Info, Heart, ShoppingBag, User, Menu, X, ChevronDown } from "lucide-react";
 import JockeyLogo from "../assets/Zen-X-Logo-300x139-removebg-preview.webp";
 import { navLinks } from "../api/navItemsData";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import CartModal from "./CartModal";
 import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
 import InfoModal from "./InfoModal";
+import UserMenu from "./AppUserMenu";
 
 // IconButton component
 export const IconButton = React.forwardRef<
@@ -187,9 +182,7 @@ const Header: React.FC = () => {
             </div>
 
             {/* User */}
-            <IconButton onClick={() => navigate("/account")}>
-              <User size={25} />
-            </IconButton>
+            <UserMenu />
 
             {/* Mobile Menu Toggle */}
             <Button

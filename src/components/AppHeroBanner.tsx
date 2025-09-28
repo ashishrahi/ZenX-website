@@ -2,7 +2,7 @@ import React from "react";
 
 interface HeroBannerProps {
   image: string;
-  title: string;
+  title?: string;
   highlight?: string;
   subtitle?: string;
   buttonText?: string;

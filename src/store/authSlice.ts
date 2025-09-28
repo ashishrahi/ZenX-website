@@ -1,7 +1,7 @@
 "use client";
 
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { IAuthState, IUser, ILoginResponse } from "@/types/authenticationTypes";
+import { IAuthState, IUser, ILoginResponse, IRegisterResponse } from "@/types/authenticationTypes";
 import axiosInstance from "@/lib/axios";
 
 // ===== Initial State =====
@@ -23,11 +23,36 @@ export const loginUser = createAsyncThunk<
   async (userData, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/auth/login", userData);
-
-      // ✅ Correctly return the nested data
       return response.data.data;
-    } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message || "Login failed");
+    } catch (err: unknown) {
+      if (err && typeof err === "object" && "response" in err) {
+        const error = err as { response?: { data?: { message?: string } } };
+        return rejectWithValue(error.response?.data?.message || "Login failed");
+      }
+      if (err instanceof Error) return rejectWithValue(err.message);
+      return rejectWithValue("Login failed");
+    }
+  }
+);
+
+// ===== Async thunk for register =====
+export const registerUser = createAsyncThunk<
+  IRegisterResponse,
+  IUser,
+  { rejectValue: string }
+>(
+  "auth/register",
+  async (userData, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post("/auth/register", userData);
+      return response.data.data;
+    } catch (err: unknown) {
+      if (err && typeof err === "object" && "response" in err) {
+        const error = err as { response?: { data?: { message?: string } } };
+        return rejectWithValue(error.response?.data?.message || "Registration failed");
+      }
+      if (err instanceof Error) return rejectWithValue(err.message);
+      return rejectWithValue("Registration failed");
     }
   }
 );
@@ -55,16 +80,13 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // ===== Login Pending =====
+      // ===== Login =====
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      // ===== Login Fulfilled =====
-      .addCase(loginUser.fulfilled, (state, action: PayloadAction<any>) => {
+      .addCase(loginUser.fulfilled, (state, action: PayloadAction<ILoginResponse>) => {
         state.loading = false;
-
-        // ✅ Extract values correctly
         state.token = action.payload.token;
         state.email = action.payload.user.email;
         state.user = action.payload.user;
@@ -75,8 +97,29 @@ const authSlice = createSlice({
           localStorage.setItem("user", JSON.stringify(action.payload.user));
         }
       })
-      // ===== Login Rejected =====
       .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Something went wrong";
+      })
+
+      // ===== Register =====
+      .addCase(registerUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(registerUser.fulfilled, (state, action: PayloadAction<IRegisterResponse>) => {
+        state.loading = false;
+        state.token = action.payload.token;
+        state.email = action.payload.user.email;
+        state.user = action.payload.user;
+
+        if (typeof window !== "undefined") {
+          localStorage.setItem("token", action.payload.token);
+          localStorage.setItem("email", action.payload.user.email);
+          localStorage.setItem("user", JSON.stringify(action.payload.user));
+        }
+      })
+      .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Something went wrong";
       });

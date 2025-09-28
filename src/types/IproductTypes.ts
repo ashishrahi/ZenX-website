@@ -1,9 +1,7 @@
-// Represents a collection of product images
 export interface ProductImages {
-  [key: string]: string[]; // key could be 'thumbnail', 'gallery', etc.
+  [key: string]: string[];
 }
 
-// Core product interface
 export interface Product {
   _id: string;
   name: string;
@@ -19,13 +17,18 @@ export interface Product {
   inWishlist?: boolean;
   category?: string;
   slug?: string;
+  material?: string;
+  care?: string;
+  delivery?: string;
+  variants?: string[];
 }
 
-// Props for displaying products under a category
 export interface AppCategoryProductsProps {
   productsData: Product[];
   title?: string;
   description?: string;
+  onAddToBag?: (productId: string) => void; // optional callback
+  onWishlistToggle?: (productId: string) => void;
 }
 
 // Props for detailed product page
@@ -42,6 +45,9 @@ export interface ProductCardProps extends Product {
   detailRoute?: string;
   material?: string;
   care?: string;
+    onAddToBag?: (productId: string) => void;         // optional callback
+  onWishlistToggle?: (productId: string) => void;
+   hovered?: boolean;
 }
 
 // Props for product carousel

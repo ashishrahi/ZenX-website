@@ -71,9 +71,9 @@ const App = () => (
 
 
               {/* MEN */}
-              <Route path="/men">
+              <Route path="category/men">
                 <Route index element={<MenPage />} />
-                <Route path="category/:slug" element={<MenCategoryProductPage />} />
+                <Route path="collections/:slug" element={<MenCategoryProductPage />} />
                 <Route path="product/:slug" element={<MenProductDetailPage />} />
               </Route>
 
@@ -81,22 +81,22 @@ const App = () => (
               <Route path="/women">
                 <Route index element={<WomenPage />} />
                 <Route path="category/:slug" element={<WomenCategoryProductsPage />} />
-                <Route path="product/:id" element={<WomenProductDetailsPage />} />
+                <Route path="product/:slug" element={<WomenProductDetailsPage />} />
               </Route>
 
               {/* KIDS */}
               <Route path="/kid">
                 <Route index element={<KidsPage />} />
                 <Route path="category/:slug" element={<KidsCategoryProductsPage />} />
-                <Route path="product/:id" element={<KidsProductDetailPage />} />
+                <Route path="product/:slug" element={<KidsProductDetailPage />} />
               </Route>
 
               {/* Checkout and Account */}
-               <Route element={<ProtectedRoute />}>
+               {/* <Route element={<ProtectedRoute />}> */}
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/account" element={<AccountPage />} />
                   <Route path="/order-confirmation" element={<OrderConfirmation />} />
-              </Route>
+              {/* </Route> */}
               {/* 404 Page */}
               <Route path="*" element={<NotFound />} />
             </Route>

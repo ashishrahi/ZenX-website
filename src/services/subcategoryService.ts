@@ -19,7 +19,6 @@ export const SubcategoryService = {
   },
 
   update: async (subcategory: ISubCategory): Promise<ISubCategory> => {
-    console.log("subcategory", subcategory._id)
     const { data } = await axiosInstance.put(`/subcategories/update/${subcategory._id}`, subcategory);
     return data?.data; // <-- ensure consistency
   },

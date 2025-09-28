@@ -2,7 +2,7 @@ export interface IBanners  {
     id?:string;
   title: string;
   description: string;
-  images: string[]; // change to array
+  images: string[]; 
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;

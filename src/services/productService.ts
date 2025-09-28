@@ -8,10 +8,10 @@ export const ProductService = {
     return data?.data;
   },
 
-  getByslug: async (slug: string): Promise<Product> => {
-    const { data } = await axiosInstance.get(`/products/${slug}`,);
-    return data?.data;
-  },
+ getByslug: async (slug: string): Promise<Product> => {
+  const { data } = await axiosInstance.get(`/products/${slug}`);
+  return data?.data; // now data is already a single object
+},
 
   create: async (product: Omit<Product, "id">): Promise<Product> => {
     const { data } = await axiosInstance.post("/products/create", product);

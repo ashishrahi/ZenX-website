@@ -21,7 +21,7 @@ const ProductCategories = ({ title, categories = [], description }) => {
   const allSubCategories = categories;
 
   const handleCardClick = (slug?: string) => {
-    if (slug) navigate(`/${slug}`);
+    if (slug) navigate(`category/${slug}`);
   };
 
   const startAutoplay = () => {

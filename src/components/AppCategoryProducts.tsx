@@ -1,9 +1,10 @@
+
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useMemo } from "react";
 import { Button } from "./ui/button";
 import EmptyState from "./EmptyState";
 import AppProductCard from "./AppProductCard";
-import {AppCategoryProductsProps} from '../types/productTypes'
+import {AppCategoryProductsProps} from '../types/IproductTypes'
 
 
 const AppCategoryProducts = ({

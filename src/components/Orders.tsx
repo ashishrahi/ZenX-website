@@ -1,69 +1,91 @@
 import React from "react";
-import { Package, CheckCircle, XCircle, Clock } from "lucide-react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 import { IOrderPayload } from "@/types/IOrderPayload";
+import { Package, CheckCircle, XCircle, Clock } from "lucide-react";
 
 interface OrdersProps {
   orders?: IOrderPayload[];
 }
 
-const statusIcon = (status: string) => {
-  switch (status) {
-    case "Delivered":
-      return <CheckCircle className="text-green-500" />;
-    case "Shipped":
-      return <Package className="text-blue-500" />;
-    case "Pending":
-      return <Clock className="text-yellow-500" />;
-    case "Cancelled":
-      return <XCircle className="text-red-500" />;
-    default:
-      return <Package />;
-  }
-};
+const Orders: React.FC<OrdersProps> = ({ orders = [] }) => {
+  // Get logged-in user from Redux
+  const user = useSelector((state: RootState) => state.auth.user);
+  const userId = user?._id;
 
-const Orders: React.FC<OrdersProps> = ({ orders }) => {
+  // Filter orders for current logged-in user
+  const filteredOrders = orders.filter(order => {
+    return order.userId?._id === userId || order.userId === userId;
+  });
+
+  // Helper to get status icon
+  const getStatusIcon = (status: string) => {
+    switch (status.toLowerCase()) {
+      case "delivered":
+        return <CheckCircle className="w-5 h-5 text-green-600" />;
+      case "cancelled":
+        return <XCircle className="w-5 h-5 text-red-600" />;
+      case "shipped":
+        return <Package className="w-5 h-5 text-blue-600" />;
+      default:
+        return <Clock className="w-5 h-5 text-yellow-600" />;
+    }
+  };
+
+  // Format date
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleString("en-IN", {
+      dateStyle: "short",
+      timeStyle: "medium",
+    });
+  };
+
   return (
-    <div className="w-full">
-      <h2 className="text-2xl font-semibold mb-6">My Orders</h2>
-
-      {orders?.length === 0 ? (
-        <div className="text-center py-20">
-          <svg
-            width="150"
-            height="150"
-            viewBox="0 0 24 24"
-            fill="none"
-            className="mx-auto mb-4"
-          >
-            <rect x="3" y="3" width="18" height="14" stroke="#111827" strokeWidth="1.5" rx="2" />
-            <path d="M7 8v6" stroke="#111827" strokeWidth="1.5" strokeLinecap="round" />
-            <path d="M12 8v6" stroke="#111827" strokeWidth="1.5" strokeLinecap="round" />
-            <path d="M17 8v6" stroke="#111827" strokeWidth="1.5" strokeLinecap="round" />
-          </svg>
-          <p className="text-gray-500 text-lg">You have no recent orders.</p>
-        </div>
+    <div className="w-full space-y-4">
+      <h2 className="text-xl font-semibold mb-4">My Orders</h2>
+      {filteredOrders.length === 0 ? (
+        <p className="text-gray-500">No orders found for your account.</p>
       ) : (
-        <div className="space-y-4">
-          {orders?.map((order) => (
+        filteredOrders.map((order) => {
+          const totalItems = order.products.reduce(
+            (acc, item) => acc + item.quantity,
+            0
+          );
+
+          return (
             <div
               key={order._id}
-              className="border rounded-lg shadow-sm p-4 flex justify-between items-center hover:shadow-md transition"
+              className="border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200"
             >
-              <div className="flex items-center gap-4">
-                <div className="bg-gray-100 p-2 rounded-full">{statusIcon(order.status)}</div>
-                <div>
-                  <p className="font-semibold">Order ID: {order._id}</p>
-                  <p className="text-sm text-gray-500">{order.createdAt?.toString()}</p>
+              <div className="flex justify-between items-center mb-2">
+                <p className="text-sm font-medium">
+                  <span className="font-semibold">Order ID:</span> {order._id}
+                </p>
+                <div className="flex items-center space-x-2">
+                  {getStatusIcon(order.status)}
+                  <span className="capitalize text-sm">{order.status}</span>
                 </div>
               </div>
-              <div className="text-right">
-                <p className="text-sm text-gray-500">{order.products.length} items</p>
-                <p className="font-semibold">₹{order.totalPrice}</p>
-                <p className="text-xs mt-1">{order.status}</p>
+
+              <div className="flex justify-between text-sm text-gray-600 mb-3">
+                <span>{formatDate(order.createdAt)}</span>
+                <span>{totalItems} items</span>
+                <span className="font-semibold">₹{order.totalPrice}</span>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                {order.products.map((item) => (
+                  <div
+                    key={item._id}
+                    className="border rounded-md px-3 py-1 text-sm bg-gray-50"
+                  >
+                    {item.product.name} x {item.quantity}
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
-        </div>
+          );
+        })
       )}
     </div>
   );
