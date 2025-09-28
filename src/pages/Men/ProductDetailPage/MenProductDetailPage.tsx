@@ -4,6 +4,7 @@ import AppProductDetails from "@/components/AppProductDetails";
 import AppProductCard from "@/components/AppProductCard";
 import Comments, { Comment } from "@/components/Comments";
 import { useProduct } from "@/hooks/Products";
+import LoadingPage from "@/components/LoadingPage";
 
 interface Product {
   id: number;
@@ -30,11 +31,7 @@ const MenProductDetailPage = () => {
     <div className="min-h-screen">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 pt-20 md:pt-28 pb-12">
         {isLoading ? (
-          <div className="text-center py-28">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
-              Loading Product...
-            </h2>
-          </div>
+          <LoadingPage title="products"/>
         ) : product ? (
           <>
             {/* Product Details */}
