@@ -46,6 +46,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <ScrollToTop />
+           <div className="flex flex-col min-h-screen">
         {/* Global Header */}
         <Header />
 
@@ -56,19 +57,6 @@ const App = () => (
             <Route element={<MainLayout />}>
               {/* Home */}
               <Route path="/" element={<Index />} />
-
-              {/* Faq */}
-              <Route path="/faq" element={<FAQSectionPage />} />
-              {/* Blog */}
-              <Route path="/blog" element={<BlogPage />} />
-              {/* Export */}
-
-              <Route path="/export" element={<CountryExportPage />} />
-              {/* history */}
-              <Route path="/history" element={<ZenHistoryPage />} />
-
-
-
 
               {/* MEN */}
               <Route path="category/men">
@@ -91,12 +79,25 @@ const App = () => (
                 <Route path="product/:slug" element={<KidsProductDetailPage />} />
               </Route>
 
+              {/* Faq */}
+              <Route path="/faq" element={<FAQSectionPage />} />
+
+              {/* Blog */}
+              <Route path="/blog" element={<BlogPage />} />
+
+              {/* Export */}
+              <Route path="/export" element={<CountryExportPage />} />
+
+              {/* history */}
+              <Route path="/history" element={<ZenHistoryPage />} />
+
               {/* Checkout and Account */}
-               {/* <Route element={<ProtectedRoute />}> */}
-              <Route path="/checkout" element={<CheckoutPage />} />
-              <Route path="/account" element={<AccountPage />} />
-                  <Route path="/order-confirmation" element={<OrderConfirmation />} />
-              {/* </Route> */}
+              <Route element={<ProtectedRoute />}>
+                <Route path="/checkout" element={<CheckoutPage />} />
+                <Route path="/account" element={<AccountPage />} />
+                <Route path="/order-confirmation" element={<OrderConfirmation />} />
+              </Route>
+
               {/* 404 Page */}
               <Route path="*" element={<NotFound />} />
             </Route>
@@ -109,7 +110,7 @@ const App = () => (
         <Sidebar
           title={"LIFETIME PERFORMANCE WARRANTY"}
         />
-
+</div>
 
       </BrowserRouter>
     </TooltipProvider>

@@ -2,11 +2,9 @@ import Logo from '../assets/Zen-X-Logo-300x139-removebg-preview.webp';
 
 const Footer = () => {
   return (
-    <footer className="bg-foreground text-background py-6">
+    <footer className="bg-foreground text-background py-6 mt-auto">
       <div className="container mx-auto px-4">
-        {/* Grid Layout with Responsive Columns */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          
           {/* Logo + Description */}
           <div>
             <div className="flex items-center">
@@ -18,7 +16,7 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Products Section */}
+          {/* Products */}
           <div>
             <h4 className="font-semibold mb-3 uppercase text-xs tracking-wide">Products</h4>
             <ul className="space-y-1 text-background/70 text-xs">
@@ -28,7 +26,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Company Section */}
+          {/* Company */}
           <div>
             <h4 className="font-semibold mb-3 uppercase text-xs tracking-wide">Company</h4>
             <ul className="space-y-1 text-background/70 text-xs">
@@ -39,7 +37,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Support Section */}
+          {/* Support */}
           <div>
             <h4 className="font-semibold mb-3 uppercase text-xs tracking-wide">Support</h4>
             <ul className="space-y-1 text-background/70 text-xs">
@@ -51,7 +49,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Footer Bottom Text */}
         <div className="border-t border-background/20 mt-6 pt-4 text-center text-background/60 text-xs">
           <p>&copy; 2025 Zen-X. All rights reserved. | Made in India</p>
         </div>
