@@ -1,15 +1,6 @@
 import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import {
-  Search,
-  Info,
-  Heart,
-  ShoppingBag,
-  User,
-  Menu,
-  X,
-  ChevronDown,
-} from "lucide-react";
+import { Search, Info, Heart, ShoppingBag, User, Menu, X, ChevronDown } from "lucide-react";
 import JockeyLogo from "../assets/Zen-X-Logo-300x139-removebg-preview.webp";
 import { navLinks } from "../api/navItemsData";
 import { Button } from "@/components/ui/button";
@@ -19,6 +10,7 @@ import { useWishlist } from "../context/WishlistContext";
 import InfoModal from "./InfoModal";
 import UserMenu from "./AppUserMenu";
 
+// IconButton component
 export const IconButton = React.forwardRef<
   HTMLButtonElement,
   { children: React.ReactNode; onClick?: () => void; className?: string }
@@ -49,7 +41,6 @@ const Header: React.FC = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
-
   const navigate = useNavigate();
   const { cart } = useCart();
   const { wishlist } = useWishlist();
@@ -70,8 +61,9 @@ const Header: React.FC = () => {
     <header className="w-full fixed top-0 left-0 z-50 bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Logo */}
+          {/* Left Section - Logo */}
           <div className="flex items-center space-x-6">
+            
             <Link to="/">
               <img
                 src={JockeyLogo}
@@ -79,9 +71,14 @@ const Header: React.FC = () => {
                 className="h-14 cursor-pointer"
               />
             </Link>
+            <div className="relative flex items-center">
+              <span className="absolute -top-8 -right-1 text-[10px] bg-yellow-400 text-black font-bold px-1 rounded">
+                NEW
+              </span>
+            </div>
           </div>
 
-          {/* Desktop Navigation */}
+          {/* Center Section - Navigation */}
           <nav className="hidden md:flex space-x-8 relative">
             {navLinks.map((link) => (
               <div key={link.name} className="group relative py-6">
@@ -96,17 +93,20 @@ const Header: React.FC = () => {
                   onMouseLeave={() => setActiveSubmenu(null)}
                 >
                   {link.name}
-                  {link.subcategories && (
-                    <ChevronDown size={16} className="ml-1" />
-                  )}
+                  {link.subcategories && <ChevronDown size={16} className="ml-1" />}
                 </NavLink>
+
+                {/* Invisible hover area */}
+                {link.subcategories && (
+                  <div className="absolute left-0 right-0 h-4 bg-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                )}
 
                 {/* Subcategory Dropdown */}
                 {link.subcategories && (
-                  <div
+                  <div 
                     className={`absolute left-0 top-full bg-white rounded-lg shadow-lg border-t mt-0 p-6 w-[800px] z-50 transition-all duration-300 ease-in-out ${
-                      activeSubmenu === link.name
-                        ? "opacity-100 visible translate-y-0"
+                      activeSubmenu === link.name 
+                        ? "opacity-100 visible translate-y-0" 
                         : "opacity-0 invisible -translate-y-2"
                     }`}
                     onMouseEnter={() => setActiveSubmenu(link.name)}
@@ -115,18 +115,18 @@ const Header: React.FC = () => {
                     <div className="grid grid-cols-4 gap-6">
                       {link.subcategories.map((sub, idx) => (
                         <div key={idx}>
-                          <h3 className="font-semibold mb-3 text-sm">
-                            {sub.title}
-                          </h3>
+                          <h3 className="font-semibold mb-3 text-sm">{sub.title}</h3>
                           <ul className="space-y-2">
                             {sub.items.map((item, i) => (
                               <li key={i}>
                                 <Link
-                                  to={`${link.path}/${item.slug}`}
+                                  to={`/collections/${item
+                                    .toLowerCase()
+                                    .replace(/\s+/g, "-")}`}
                                   className="text-gray-600 text-sm hover:text-black transition"
                                   onClick={() => setActiveSubmenu(null)}
                                 >
-                                  {item.name}
+                                  {item}
                                 </Link>
                               </li>
                             ))}
@@ -140,10 +140,10 @@ const Header: React.FC = () => {
             ))}
           </nav>
 
-          {/* Right Section */}
+          {/* Right Section - Icons */}
           <div className="flex items-center space-x-5">
             {/* Search Bar */}
-            <div className="relative hidden md:block">
+            <div className="relative hidden md:block ml-2">
               <Search
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
                 size={18}
@@ -154,6 +154,9 @@ const Header: React.FC = () => {
                 className="bg-gray-100 pl-10 pr-24 py-2 h-12 rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-gray-300 transition"
               />
             </div>
+
+            {/* Info Modal */}
+             <InfoModal open={dialogOpen} setOpen={setDialogOpen} />
 
             {/* Wishlist */}
             <div className="relative">
@@ -179,6 +182,7 @@ const Header: React.FC = () => {
               )}
             </div>
 
+            {/* User */}
             <UserMenu />
 
             {/* Mobile Menu Toggle */}
@@ -198,7 +202,7 @@ const Header: React.FC = () => {
           <nav className="flex flex-col space-y-0 px-4 py-4">
             {navLinks.map((link) => (
               <div key={link.name}>
-                <div
+                <div 
                   className="flex items-center justify-between py-3"
                   onClick={() => {
                     if (link.subcategories) {
@@ -213,15 +217,13 @@ const Header: React.FC = () => {
                     {link.name}
                   </span>
                   {link.subcategories && (
-                    <ChevronDown
-                      size={16}
-                      className={`transform transition-transform ${
-                        activeSubmenu === link.name ? "rotate-180" : ""
-                      }`}
+                    <ChevronDown 
+                      size={16} 
+                      className={`transform transition-transform ${activeSubmenu === link.name ? 'rotate-180' : ''}`}
                     />
                   )}
                 </div>
-
+                
                 {/* Mobile Subcategories */}
                 {link.subcategories && activeSubmenu === link.name && (
                   <div className="pl-4 pb-3">
@@ -232,11 +234,13 @@ const Header: React.FC = () => {
                           {sub.items.map((item, i) => (
                             <li key={i}>
                               <Link
-                                to={`${link.path}/${item.slug}`}
+                                to={`/collections/${item
+                                  .toLowerCase()
+                                  .replace(/\s+/g, "-")}`}
                                 className="text-gray-600 text-sm block py-1"
                                 onClick={() => setMobileMenuOpen(false)}
                               >
-                                {item.name}
+                                {item}
                               </Link>
                             </li>
                           ))}
@@ -248,6 +252,19 @@ const Header: React.FC = () => {
               </div>
             ))}
           </nav>
+          <div className="flex flex-col space-y-2 px-4 py-2 border-t">
+            <div className="relative">
+              <Search
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
+                size={18}
+              />
+              <input
+                type="text"
+                placeholder="Search"
+                className="bg-gray-100 pl-10 pr-4 py-2 h-12 rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-gray-300 transition w-full"
+              />
+            </div>
+          </div>
         </div>
       )}
 
