@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import axios, { AxiosError } from "axios";
 import axiosInstance from "@/lib/axios";
 
-// ========== Interfaces ==========
+// ===== Interfaces =====
 export interface IAuth {
   _id: string;
   email: string;
@@ -23,7 +24,6 @@ export interface IUserProfile {
   __v?: number;
 }
 
-// Merged Auth + Profile for app usage
 export interface IUserState {
   _id: string;
   email: string;
@@ -34,29 +34,27 @@ export interface IUserState {
   updatedAt: string;
 }
 
-// API response
 export interface IAuthResponse {
   success: boolean;
   message: string;
   data: {
     auth: IAuth;
     userProfile: IUserProfile;
-    token: string;
-    refreshToken: string;
+    token?: string; // optional for registration
+    refreshToken?: string;
   };
 }
 
-// Redux state
 export interface IAuthState {
   token: string | null;
   email: string | null;
-  user: IUserState | null;         // merged object
-  userProfile: IUserProfile | null; // raw profile
+  user: IUserState | null;
+  userProfile: IUserProfile | null;
   loading: boolean;
   error: string | null;
 }
 
-// ========== Initial State ==========
+// ===== Initial State =====
 const initialState: IAuthState = {
   token: typeof window !== "undefined" ? localStorage.getItem("token") : null,
   email: typeof window !== "undefined" ? localStorage.getItem("email") : null,
@@ -66,7 +64,7 @@ const initialState: IAuthState = {
   error: null,
 };
 
-// ========== Async Thunks ==========
+// ===== Async Thunks =====
 export const loginUser = createAsyncThunk<
   IAuthResponse,
   { email: string; password: string },
@@ -76,17 +74,8 @@ export const loginUser = createAsyncThunk<
     const response = await axiosInstance.post<IAuthResponse>("/auth/login", userData);
     return response.data;
   } catch (error) {
-    if (
-      typeof error === "object" &&
-      error !== null &&
-      "response" in error &&
-      (error as { response?: { data?: { message?: string } } }).response?.data?.message
-    ) {
-      return rejectWithValue(
-        (error as { response: { data: { message: string } } }).response.data.message
-      );
-    }
-    return rejectWithValue("Login failed");
+    const axiosError = error as AxiosError<{ message: string }>;
+    return rejectWithValue(axiosError.response?.data.message || "Login failed");
   }
 });
 
@@ -99,21 +88,12 @@ export const registerUser = createAsyncThunk<
     const response = await axiosInstance.post<IAuthResponse>("/auth/register", userData);
     return response.data;
   } catch (error) {
-    if (
-      typeof error === "object" &&
-      error !== null &&
-      "response" in error &&
-      (error as { response?: { data?: { message?: string } } }).response?.data?.message
-    ) {
-      return rejectWithValue(
-        (error as { response: { data: { message: string } } }).response.data.message
-      );
-    }
-    return rejectWithValue("Registration failed");
+    const axiosError = error as AxiosError<{ message: string }>;
+    return rejectWithValue(axiosError.response?.data.message || "Registration failed");
   }
 });
 
-// ========== Slice ==========
+// ===== Slice =====
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -145,12 +125,10 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action: PayloadAction<IAuthResponse>) => {
         const { auth, userProfile, token } = action.payload.data;
-
         state.loading = false;
-        state.token = token;
+        state.token = token || null;
         state.email = auth.email;
 
-        // merged object
         state.user = {
           _id: auth._id,
           email: auth.email,
@@ -160,12 +138,10 @@ const authSlice = createSlice({
           createdAt: userProfile.createdAt,
           updatedAt: userProfile.updatedAt,
         };
-
-        // raw profile
         state.userProfile = userProfile;
 
         if (typeof window !== "undefined") {
-          localStorage.setItem("token", token);
+          localStorage.setItem("token", token || "");
           localStorage.setItem("email", auth.email);
           localStorage.setItem("user", JSON.stringify(state.user));
           localStorage.setItem("userProfile", JSON.stringify(userProfile));
@@ -182,13 +158,9 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(registerUser.fulfilled, (state, action: PayloadAction<IAuthResponse>) => {
-        const { auth, userProfile, token } = action.payload.data;
-
+        const { auth, userProfile } = action.payload.data;
         state.loading = false;
-        state.token = token;
-        state.email = auth.email;
 
-        // merged object
         state.user = {
           _id: auth._id,
           email: auth.email,
@@ -198,15 +170,13 @@ const authSlice = createSlice({
           createdAt: userProfile.createdAt,
           updatedAt: userProfile.updatedAt,
         };
-
-        // raw profile
         state.userProfile = userProfile;
 
         if (typeof window !== "undefined") {
-          localStorage.setItem("token", token);
-          localStorage.setItem("email", auth.email);
           localStorage.setItem("user", JSON.stringify(state.user));
           localStorage.setItem("userProfile", JSON.stringify(userProfile));
+          localStorage.removeItem("token");
+          localStorage.removeItem("email");
         }
       })
       .addCase(registerUser.rejected, (state, action) => {
@@ -216,6 +186,6 @@ const authSlice = createSlice({
   },
 });
 
-// ========== Export ==========
+// ===== Export =====
 export const { logout, clearError } = authSlice.actions;
 export default authSlice.reducer;

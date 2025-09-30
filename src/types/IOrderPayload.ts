@@ -35,6 +35,7 @@ export interface IOrderPayload {
   totalPrice: number;
   status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
   deliveredAt?: Date;
-  createdAt?: Date;
+  createdAt: Date;
   updatedAt?: Date;
+  orderId:string;
 }

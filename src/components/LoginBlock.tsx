@@ -7,7 +7,7 @@ import { Label } from './ui/label';
 import { RootState } from '@/store/store';
 
 interface LoginBlockProps {
-  onSuccess: () => void; // to close modal or navigate after login
+  onSuccess: () => void;
 }
 
 const LoginBlock: React.FC<LoginBlockProps> = ({ onSuccess }) => {
@@ -23,7 +23,7 @@ const LoginBlock: React.FC<LoginBlockProps> = ({ onSuccess }) => {
     e.preventDefault();
     try {
       await dispatch(loginUser(formData)).unwrap();
-      onSuccess(); // close modal or navigate
+      onSuccess();
     } catch (err) {
       console.error('Login failed:', err);
     }

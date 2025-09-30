@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
-import { registerUser } from '@/store/authSlice'; // adjust path
+import { registerUser } from '@/store/authSlice';
 
-const RegisterBlock: React.FC = () => {
+interface RegisterBlockProps {
+  onRegisterSuccess: () => void; // only switch tab, do not close modal
+}
+
+const RegisterBlock: React.FC<RegisterBlockProps> = ({ onRegisterSuccess }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [loading, setLoading] = useState(false);
 
@@ -22,8 +24,7 @@ const RegisterBlock: React.FC = () => {
     try {
       const resultAction = await dispatch(registerUser(formData) as any);
       if (registerUser.fulfilled.match(resultAction)) {
-        // Navigate to login tab after successful registration
-        navigate('/auth?tab=login');
+        onRegisterSuccess(); // switch to login tab
       } else {
         console.error('Registration failed:', resultAction.payload || resultAction.error);
       }

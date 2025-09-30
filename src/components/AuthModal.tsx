@@ -6,12 +6,12 @@ import LoginBlock from './LoginBlock';
 import RegisterBlock from './RegisterBlock';
 import { RootState } from '@/store/store';
 import { X } from 'lucide-react';
-import Logo from '../assets/Zen-X-Logo-300x139-removebg-preview.webp'
+import Logo from '../assets/Zen-X-Logo-300x139-removebg-preview.webp';
 
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSuccess: () => void;
+  onSuccess: () => void; // called when login succeeds
 }
 
 const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => {
@@ -19,29 +19,29 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
   const [isVisible, setIsVisible] = useState(false);
   const { token } = useSelector((state: RootState) => state.auth);
 
+  // Auto close modal when logged in
   useEffect(() => {
     if (token && isOpen) onSuccess();
   }, [token, isOpen, onSuccess]);
 
+  // Visibility for fade in/out
   useEffect(() => {
-    if (isOpen) {
-      setIsVisible(true);
-    } else {
+    if (isOpen) setIsVisible(true);
+    else {
       const timer = setTimeout(() => setIsVisible(false), 300);
       return () => clearTimeout(timer);
     }
   }, [isOpen]);
-
-  const handleRegisterSuccess = () => setActiveTab('login');
 
   if (!isVisible && !isOpen) return null;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 transition-opacity duration-300" />
-      
+
       <DialogContent className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 transform transition-all duration-300">
         <div className="relative bg-gradient-to-br from-gray-900 to-black rounded-2xl border border-gray-800 shadow-2xl overflow-hidden">
+
           {/* Close Button */}
           <button
             onClick={onClose}
@@ -54,11 +54,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
           <div className="relative pt-8 pb-4 bg-gradient-to-r from-red-900/20 to-transparent">
             <div className="flex justify-center mb-2">
               <div className="relative">
-                <img 
-                  src={Logo} 
-                  alt="Zen X Logo" 
-                  className="h-16 w-auto filter drop-shadow-lg" 
-                />
+                <img src={Logo} alt="Zen X Logo" className="h-16 w-auto filter drop-shadow-lg" />
                 <div className="absolute inset-0 bg-red-500/10 rounded-full blur-lg" />
               </div>
             </div>
@@ -77,8 +73,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
                 <TabsTrigger
                   value="login"
                   className={`relative text-sm font-medium transition-all duration-300 py-2.5 rounded-md ${
-                    activeTab === 'login' 
-                      ? 'bg-gradient-to-r from-red-600 to-red-700 text-white shadow-lg shadow-red-500/25' 
+                    activeTab === 'login'
+                      ? 'bg-gradient-to-r from-red-600 to-red-700 text-white shadow-lg shadow-red-500/25'
                       : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
                   }`}
                 >
@@ -87,11 +83,12 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
                     <div className="absolute bottom-0 left-1/2 w-1/2 h-0.5 bg-red-400 rounded-full -translate-x-1/2 translate-y-1.5" />
                   )}
                 </TabsTrigger>
+
                 <TabsTrigger
                   value="register"
                   className={`relative text-sm font-medium transition-all duration-300 py-2.5 rounded-md ${
-                    activeTab === 'register' 
-                      ? 'bg-gradient-to-r from-red-600 to-red-700 text-white shadow-lg shadow-red-500/25' 
+                    activeTab === 'register'
+                      ? 'bg-gradient-to-r from-red-600 to-red-700 text-white shadow-lg shadow-red-500/25'
                       : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
                   }`}
                 >
@@ -102,18 +99,12 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
                 </TabsTrigger>
               </TabsList>
 
-              <TabsContent 
-                value="login" 
-                className="animate-in fade-in-0 zoom-in-95 duration-300"
-              >
-                <LoginBlock onSuccess={onSuccess} />
+              <TabsContent value="login" className="animate-in fade-in-0 zoom-in-95 duration-300">
+                <LoginBlock onSuccess={onSuccess} /> {/* closes modal */}
               </TabsContent>
 
-              <TabsContent 
-                value="register" 
-                className="animate-in fade-in-0 zoom-in-95 duration-300"
-              >
-                <RegisterBlock onSuccess={handleRegisterSuccess} />
+              <TabsContent value="register" className="animate-in fade-in-0 zoom-in-95 duration-300">
+                <RegisterBlock onRegisterSuccess={() => setActiveTab('login')} /> {/* switches to login tab */}
               </TabsContent>
             </Tabs>
           </div>
