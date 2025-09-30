@@ -1,56 +1,86 @@
 export const navLinks = [
   {
     name: "MEN",
-    path: "category/men",
+    path: "collections",
     subcategories: [
       {
         title: "INNERWEAR",
-        items: ["Briefs", "Trunks", "Boxer Briefs", "Inner Boxer"],
+        items: [
+          { name: "Briefs", slug: "briefs-for-men" },
+          { name: "Trunks", slug: "trunks-for-men" },
+          { name: "Boxer Briefs", slug: "boxer-briefs-for-men" },
+          { name: "Inner Boxer", slug: "inner-boxer-for-men" },
+        ],
       },
       {
         title: "VESTS",
-        items: ["Sleeveless Vests", "Sleeved Vests", "Gym Vests"],
+        items: [
+          { name: "Sleeveless Vests", slug: "sleeveless-vests-for-men" },
+          { name: "Sleeved Vests", slug: "sleeved-vests-for-men" },
+          { name: "Gym Vests", slug: "gym-vests-for-men" },
+        ],
       },
       {
         title: "APPAREL TOPS",
         items: [
-          "Tank Tops",
-          "T-Shirts",
-          "Polos",
-          "Sweatshirts",
-          "Jackets & Hoodies",
+          { name: "Tank Tops", slug: "tank-tops-for-men" },
+          { name: "T-Shirts", slug: "t-shirts-for-men" },
+          { name: "Polos", slug: "polos-for-men" },
+          { name: "Sweatshirts", slug: "sweatshirts-for-men" },
+          { name: "Jackets & Hoodies", slug: "jackets-hoodies-for-men" },
         ],
       },
       {
         title: "APPAREL BOTTOMS",
-        items: ["Boxer Shorts", "Shorts", "Joggers", "Track Pants", "Pyjamas"],
+        items: [
+          { name: "Boxer Shorts", slug: "boxer-shorts-for-men" },
+          { name: "Shorts", slug: "shorts-for-men" },
+          { name: "Joggers", slug: "joggers-for-men" },
+          { name: "Track Pants", slug: "track-pants-for-men" },
+          { name: "Pyjamas", slug: "pyjamas-for-men" },
+        ],
       },
       {
         title: "MULTIPACKS",
-        items: ["Briefs Pack", "Vests Pack", "Socks Pack"],
+        items: [
+          { name: "Briefs Pack", slug: "briefs-pack-for-men" },
+          { name: "Vests Pack", slug: "vests-pack-for-men" },
+          { name: "Socks Pack", slug: "socks-pack-for-men" },
+        ],
       },
       {
         title: "THERMALS",
-        items: ["Top Thermals", "Bottom Thermals"],
+        items: [
+          { name: "Top Thermals", slug: "top-thermals-for-men" },
+          { name: "Bottom Thermals", slug: "bottom-thermals-for-men" },
+        ],
       },
     ],
     rightBanner: {
-      image: "/assets/men-banner.jpg", // apni image path rakho
+      image: "/assets/men-banner.jpg",
       link: "/men",
       text: "Everything for MEN",
     },
   },
   {
     name: "WOMEN",
-    path: "category/women",
+    path: "collections",
     subcategories: [
       {
         title: "INNERWEAR",
-        items: ["Bras", "Panties", "Camisoles"],
+        items: [
+          { name: "Bras", slug: "bras-for-women" },
+          { name: "Panties", slug: "panties-for-women" },
+          { name: "Camisoles", slug: "camisoles-for-women" },
+        ],
       },
       {
         title: "APPAREL",
-        items: ["Tops", "Leggings", "Pyjamas"],
+        items: [
+          { name: "Tops", slug: "tops-for-women" },
+          { name: "Leggings", slug: "leggings-for-women" },
+          { name: "Pyjamas", slug: "pyjamas-for-women" },
+        ],
       },
     ],
     rightBanner: {
@@ -61,20 +91,28 @@ export const navLinks = [
   },
   {
     name: "KIDS",
-    path: "/kid",
+    path: "collections",
     subcategories: [
       {
         title: "BOYS",
-        items: ["T-Shirts", "Shorts", "Track Pants"],
+        items: [
+          { name: "T-Shirts", slug: "t-shirts-for-boys" },
+          { name: "Shorts", slug: "shorts-for-boys" },
+          { name: "Track Pants", slug: "track-pants-for-boys" },
+        ],
       },
       {
         title: "GIRLS",
-        items: ["Tops", "Leggings", "Nightwear"],
+        items: [
+          { name: "Tops", slug: "tops-for-girls" },
+          { name: "Leggings", slug: "leggings-for-girls" },
+          { name: "Nightwear", slug: "nightwear-for-girls" },
+        ],
       },
     ],
     rightBanner: {
       image: "/assets/kids-banner.jpg",
-      link: "/kid",
+      link: "/kids",
       text: "Everything for KIDS",
     },
   },
@@ -82,5 +120,4 @@ export const navLinks = [
   { name: "FAQ", path: "/faq" },
   { name: "Export", path: "/export" },
   { name: "History", path: "/history" },
-
 ];

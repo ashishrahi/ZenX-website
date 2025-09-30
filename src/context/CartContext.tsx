@@ -1,16 +1,18 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 export interface Product {
-  _id: string; // Use MongoDB _id
+  _id: string;
   name: string;
   description?: string;
   price: number;
   discountPrice?: number;
-  images: { [key: string]: string[] };
+  images?: { [key: string]: string[] }; // Make images optional
   colors?: string[];
   category?: string;
   trending?: boolean;
   bestSeller?: boolean;
+  rating?: number; // Add other common properties
+  slug?: string;
 }
 
 export interface CartItem extends Product {

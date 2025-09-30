@@ -57,11 +57,14 @@ const App = () => (
             <Route element={<MainLayout />}>
               {/* Home */}
               <Route path="/" element={<Index />} />
+              
+              {/* Collection */}
+                <Route path="collections/:slug" element={<MenCategoryProductPage />} />
 
               {/* MEN */}
               <Route path="category/men">
                 <Route index element={<MenPage />} />
-                <Route path="collections/:slug" element={<MenCategoryProductPage />} />
+                <Route path="category/:slug" element={<MenCategoryProductPage />} />
                 <Route path="product/:slug" element={<MenProductDetailPage />} />
               </Route>
 
