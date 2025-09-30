@@ -172,7 +172,7 @@ const AppProductCard: FC<ProductCardProps> = ({ product, basePath, detailRoute }
         {/* Add to Cart / Quantity Controls */}
         {!isInCart ? (
           <AppButton
-            className="w-full py-2.5 rounded-lg font-medium flex items-center justify-center gap-2 bg-red-700 text-white hover:bg-gray-800 border border-gray-900 transition-all duration-200 shadow-sm hover:shadow-md"
+            className="w-full py-2.5 rounded-lg font-medium flex items-center justify-center gap-2 bg-red-700 text-white hover:bg-red-800 border border-gray-900 transition-all duration-200 shadow-sm hover:shadow-md"
             onClick={(e) => {
               e.stopPropagation();
               handleAddToCart();
