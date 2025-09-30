@@ -1,38 +1,39 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useLocation, useNavigate, Outlet } from 'react-router-dom';
-import { RootState } from '@/store/store';
-import AuthModal from './AuthModal';
+import React from "react";
+import { useSelector } from "react-redux";
+import { useLocation, useNavigate, Outlet } from "react-router-dom";
+import { RootState } from "@/store/store";
+import AuthModal from "./AuthModal";
 
 const ProtectedRoute: React.FC = () => {
   const { token } = useSelector((state: RootState) => state.auth);
-  const [showAuthModal, setShowAuthModal] = useState(false);
-
   const location = useLocation();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!token) {
-      setShowAuthModal(true);
-    }
-  }, [token]);
+  const [forceOpen, setForceOpen] = React.useState(false);
 
   const handleSuccess = () => {
-    setShowAuthModal(false);
+    setForceOpen(false);
     navigate(location.pathname, { replace: true });
   };
 
   if (!token) {
     return (
-      <AuthModal
-        isOpen={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
-        onSuccess={handleSuccess}
-      />
+      <>
+        {/* Checkout background disable/blur */}
+        <div className="pointer-events-none opacity-30">
+          <Outlet />
+        </div>
+
+        {/* Auth modal should ALWAYS open when token is missing */}
+        <AuthModal
+          isOpen={true}                 // 🔑 always true if not logged in
+          onClose={() => setForceOpen(false)} // user may close manually
+          onSuccess={handleSuccess}
+        />
+      </>
     );
   }
 
-  // Render nested routes
   return <Outlet />;
 };
 
