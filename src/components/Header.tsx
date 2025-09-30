@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Search, Info, Heart, ShoppingBag, User, Menu, X, ChevronDown } from "lucide-react";
+import { Search, Heart, ShoppingBag, User, Menu, X, ChevronDown } from "lucide-react";
 import JockeyLogo from "../assets/Zen-X-Logo-300x139-removebg-preview.webp";
 import { navLinks } from "../api/navItemsData";
 import { Button } from "@/components/ui/button";
@@ -19,9 +19,7 @@ export const IconButton = React.forwardRef<
     ref={ref}
     type="button"
     onClick={onClick}
-    className={`p-2 m-0 w-auto h-auto flex items-center justify-center bg-transparent rounded-full hover:bg-gray-100 transition-colors ${
-      className ?? ""
-    }`}
+    className={`p-2 m-0 w-auto h-auto flex items-center justify-center bg-transparent rounded-full hover:bg-gray-100 transition-colors ${className ?? ""}`}
   >
     {children}
   </button>
@@ -45,8 +43,7 @@ const Header: React.FC = () => {
   const { cart } = useCart();
   const { wishlist } = useWishlist();
 
-  const iconClass =
-    "p-2 rounded-full hover:text-current focus:text-current !hover:bg-transparent";
+  const iconClass = "p-2 rounded-full hover:text-current focus:text-current !hover:bg-transparent";
   const iconSize = 40;
 
   const toggleMobileSubmenu = (name: string) => {
@@ -63,7 +60,6 @@ const Header: React.FC = () => {
         <div className="flex items-center justify-between h-20">
           {/* Left Section - Logo */}
           <div className="flex items-center space-x-6">
-            
             <Link to="/">
               <img
                 src={JockeyLogo}
@@ -120,13 +116,11 @@ const Header: React.FC = () => {
                             {sub.items.map((item, i) => (
                               <li key={i}>
                                 <Link
-                                  to={`/collections/${item
-                                    .toLowerCase()
-                                    .replace(/\s+/g, "-")}`}
+                                  to={`/collections/${item.slug}`}  // ✅ use slug
                                   className="text-gray-600 text-sm hover:text-black transition"
                                   onClick={() => setActiveSubmenu(null)}
                                 >
-                                  {item}
+                                  {item.name}
                                 </Link>
                               </li>
                             ))}
@@ -156,7 +150,7 @@ const Header: React.FC = () => {
             </div>
 
             {/* Info Modal */}
-             <InfoModal open={dialogOpen} setOpen={setDialogOpen} />
+            <InfoModal open={dialogOpen} setOpen={setDialogOpen} />
 
             {/* Wishlist */}
             <div className="relative">
@@ -234,13 +228,11 @@ const Header: React.FC = () => {
                           {sub.items.map((item, i) => (
                             <li key={i}>
                               <Link
-                                to={`/collections/${item
-                                  .toLowerCase()
-                                  .replace(/\s+/g, "-")}`}
+                                to={`/collections/${item.slug}`}  // ✅ use slug
                                 className="text-gray-600 text-sm block py-1"
                                 onClick={() => setMobileMenuOpen(false)}
                               >
-                                {item}
+                                {item.name}
                               </Link>
                             </li>
                           ))}

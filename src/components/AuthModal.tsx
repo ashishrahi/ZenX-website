@@ -47,7 +47,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
             onClick={onClose}
             className="absolute right-4 top-4 z-10 rounded-full p-2 transition-all hover:bg-gray-800/50 group"
           >
-            <X className="h-5 w-5 text-gray-400 group-hover:text-white transition-colors" />
+            {/* <X className="h-5 w-5 text-gray-400 group-hover:text-white transition-colors" /> */}
           </button>
 
           {/* Header with Logo */}
