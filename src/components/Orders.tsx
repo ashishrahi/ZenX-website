@@ -1,6 +1,4 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
 import { IOrderPayload } from "@/types/IOrderPayload";
 import { Package, CheckCircle, XCircle, Clock } from "lucide-react";
 
@@ -9,15 +7,6 @@ interface OrdersProps {
 }
 
 const Orders: React.FC<OrdersProps> = ({ orders = [] }) => {
-  // Get logged-in user from Redux
-  const user = useSelector((state: RootState) => state.auth.user);
-
-  // Filter orders for current logged-in user safely using optional chaining
-  const filteredOrders = orders.filter(
-    (order) => order.userId?._id === user?._id || order.userId === user?._id
-  );
-
-  // Helper to get status icon
   const getStatusIcon = (status?: string) => {
     switch (status?.toLowerCase()) {
       case "delivered":
@@ -31,7 +20,6 @@ const Orders: React.FC<OrdersProps> = ({ orders = [] }) => {
     }
   };
 
-  // Format date safely
   const formatDate = (dateString?: string) => {
     if (!dateString) return "-";
     return new Date(dateString).toLocaleString("en-IN", {
@@ -44,10 +32,10 @@ const Orders: React.FC<OrdersProps> = ({ orders = [] }) => {
     <div className="w-full space-y-4">
       <h2 className="text-xl font-semibold mb-4">My Orders</h2>
 
-      {filteredOrders.length === 0 ? (
+      {orders.length === 0 ? (
         <p className="text-gray-500">No orders found for your account.</p>
       ) : (
-        filteredOrders.map((order) => {
+        orders.map((order) => {
           const totalItems = order.products?.reduce(
             (acc, item) => acc + (item?.quantity ?? 0),
             0
@@ -55,12 +43,12 @@ const Orders: React.FC<OrdersProps> = ({ orders = [] }) => {
 
           return (
             <div
-              key={order._id}
+              key={order.orderId}
               className="border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200"
             >
               <div className="flex justify-between items-center mb-2">
                 <p className="text-sm font-medium">
-                  <span className="font-semibold">Order ID:</span> {order._id ?? "-"}
+                  <span className="font-semibold">Order ID:</span> {order.orderId ?? "-"}
                 </p>
                 <div className="flex items-center space-x-2">
                   {getStatusIcon(order.status)}
@@ -75,12 +63,12 @@ const Orders: React.FC<OrdersProps> = ({ orders = [] }) => {
               </div>
 
               <div className="flex flex-wrap gap-2">
-                {order.products?.map((item) => (
+                {order.products?.map((item, index) => (
                   <div
-                    key={item?._id}
+                    key={index}
                     className="border rounded-md px-3 py-1 text-sm bg-gray-50"
                   >
-                    {item?.product?.name ?? "Unknown"} x {item?.quantity ?? 0}
+                    {item?.product?.name ?? `Item ${index + 1}`} x {item?.quantity ?? 0}
                   </div>
                 )) ?? null}
               </div>

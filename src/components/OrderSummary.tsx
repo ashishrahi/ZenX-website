@@ -1,4 +1,4 @@
-import { CartItem } from "@/types/cartTypes";
+import { CartItem } from "@/types/IcartTypes";
 
 interface OrderSummaryProps {
   cart?: CartItem[];
