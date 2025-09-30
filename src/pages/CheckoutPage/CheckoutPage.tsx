@@ -36,7 +36,7 @@ const CheckoutPage: React.FC = () => {
   const { mutate: createOrder, isPending } = useCreateOrder(); // ✅ use isPending instead of isLoading
   const navigate = useNavigate();
 
-  const user = useSelector((state: RootState) => state.auth.user);
+  const user = useSelector((state: RootState) => state.auth.userProfile);
   const userId = user?._id;
 
   const handleSubmit = (values: DeliveryFormValues) => {

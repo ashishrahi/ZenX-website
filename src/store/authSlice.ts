@@ -1,63 +1,119 @@
-"use client";
-
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { IAuthState, IUser, ILoginResponse, IRegisterResponse } from "@/types/authenticationTypes";
 import axiosInstance from "@/lib/axios";
 
-// ===== Initial State =====
+// ========== Interfaces ==========
+export interface IAuth {
+  _id: string;
+  email: string;
+  password?: string;
+  role: string;
+  refreshTokens?: string[];
+  createdAt: string;
+  updatedAt: string;
+  __v?: number;
+}
+
+export interface IUserProfile {
+  _id: string;
+  authId: string;
+  name: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+  __v?: number;
+}
+
+// Merged Auth + Profile for app usage
+export interface IUserState {
+  _id: string;
+  email: string;
+  role: string;
+  name: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// API response
+export interface IAuthResponse {
+  success: boolean;
+  message: string;
+  data: {
+    auth: IAuth;
+    userProfile: IUserProfile;
+    token: string;
+    refreshToken: string;
+  };
+}
+
+// Redux state
+export interface IAuthState {
+  token: string | null;
+  email: string | null;
+  user: IUserState | null;         // merged object
+  userProfile: IUserProfile | null; // raw profile
+  loading: boolean;
+  error: string | null;
+}
+
+// ========== Initial State ==========
 const initialState: IAuthState = {
   token: typeof window !== "undefined" ? localStorage.getItem("token") : null,
   email: typeof window !== "undefined" ? localStorage.getItem("email") : null,
   user: typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user") || "null") : null,
+  userProfile: typeof window !== "undefined" ? JSON.parse(localStorage.getItem("userProfile") || "null") : null,
   loading: false,
   error: null,
 };
 
-// ===== Async thunk for login =====
+// ========== Async Thunks ==========
 export const loginUser = createAsyncThunk<
-  ILoginResponse,
-  IUser,
+  IAuthResponse,
+  { email: string; password: string },
   { rejectValue: string }
->(
-  "auth/loginUser",
-  async (userData, { rejectWithValue }) => {
-    try {
-      const response = await axiosInstance.post("/auth/login", userData);
-      return response.data.data;
-    } catch (err: unknown) {
-      if (err && typeof err === "object" && "response" in err) {
-        const error = err as { response?: { data?: { message?: string } } };
-        return rejectWithValue(error.response?.data?.message || "Login failed");
-      }
-      if (err instanceof Error) return rejectWithValue(err.message);
-      return rejectWithValue("Login failed");
+>("auth/loginUser", async (userData, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.post<IAuthResponse>("/auth/login", userData);
+    return response.data;
+  } catch (error) {
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "response" in error &&
+      (error as { response?: { data?: { message?: string } } }).response?.data?.message
+    ) {
+      return rejectWithValue(
+        (error as { response: { data: { message: string } } }).response.data.message
+      );
     }
+    return rejectWithValue("Login failed");
   }
-);
+});
 
-// ===== Async thunk for register =====
 export const registerUser = createAsyncThunk<
-  IRegisterResponse,
-  IUser,
+  IAuthResponse,
+  { email: string; password: string; name: string },
   { rejectValue: string }
->(
-  "auth/register",
-  async (userData, { rejectWithValue }) => {
-    try {
-      const response = await axiosInstance.post("/auth/register", userData);
-      return response.data.data;
-    } catch (err: unknown) {
-      if (err && typeof err === "object" && "response" in err) {
-        const error = err as { response?: { data?: { message?: string } } };
-        return rejectWithValue(error.response?.data?.message || "Registration failed");
-      }
-      if (err instanceof Error) return rejectWithValue(err.message);
-      return rejectWithValue("Registration failed");
+>("auth/registerUser", async (userData, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.post<IAuthResponse>("/auth/register", userData);
+    return response.data;
+  } catch (error) {
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "response" in error &&
+      (error as { response?: { data?: { message?: string } } }).response?.data?.message
+    ) {
+      return rejectWithValue(
+        (error as { response: { data: { message: string } } }).response.data.message
+      );
     }
+    return rejectWithValue("Registration failed");
   }
-);
+});
 
-// ===== Auth Slice =====
+// ========== Slice ==========
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -66,12 +122,14 @@ const authSlice = createSlice({
       state.token = null;
       state.email = null;
       state.user = null;
+      state.userProfile = null;
       state.error = null;
 
       if (typeof window !== "undefined") {
         localStorage.removeItem("token");
         localStorage.removeItem("email");
         localStorage.removeItem("user");
+        localStorage.removeItem("userProfile");
       }
     },
     clearError(state) {
@@ -85,16 +143,32 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(loginUser.fulfilled, (state, action: PayloadAction<ILoginResponse>) => {
+      .addCase(loginUser.fulfilled, (state, action: PayloadAction<IAuthResponse>) => {
+        const { auth, userProfile, token } = action.payload.data;
+
         state.loading = false;
-        state.token = action.payload.token;
-        state.email = action.payload.user.email;
-        state.user = action.payload.user;
+        state.token = token;
+        state.email = auth.email;
+
+        // merged object
+        state.user = {
+          _id: auth._id,
+          email: auth.email,
+          role: auth.role,
+          name: userProfile.name,
+          isActive: userProfile.isActive,
+          createdAt: userProfile.createdAt,
+          updatedAt: userProfile.updatedAt,
+        };
+
+        // raw profile
+        state.userProfile = userProfile;
 
         if (typeof window !== "undefined") {
-          localStorage.setItem("token", action.payload.token);
-          localStorage.setItem("email", action.payload.user.email);
-          localStorage.setItem("user", JSON.stringify(action.payload.user));
+          localStorage.setItem("token", token);
+          localStorage.setItem("email", auth.email);
+          localStorage.setItem("user", JSON.stringify(state.user));
+          localStorage.setItem("userProfile", JSON.stringify(userProfile));
         }
       })
       .addCase(loginUser.rejected, (state, action) => {
@@ -107,16 +181,32 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(registerUser.fulfilled, (state, action: PayloadAction<IRegisterResponse>) => {
+      .addCase(registerUser.fulfilled, (state, action: PayloadAction<IAuthResponse>) => {
+        const { auth, userProfile, token } = action.payload.data;
+
         state.loading = false;
-        state.token = action.payload.token;
-        state.email = action.payload.user.email;
-        state.user = action.payload.user;
+        state.token = token;
+        state.email = auth.email;
+
+        // merged object
+        state.user = {
+          _id: auth._id,
+          email: auth.email,
+          role: auth.role,
+          name: userProfile.name,
+          isActive: userProfile.isActive,
+          createdAt: userProfile.createdAt,
+          updatedAt: userProfile.updatedAt,
+        };
+
+        // raw profile
+        state.userProfile = userProfile;
 
         if (typeof window !== "undefined") {
-          localStorage.setItem("token", action.payload.token);
-          localStorage.setItem("email", action.payload.user.email);
-          localStorage.setItem("user", JSON.stringify(action.payload.user));
+          localStorage.setItem("token", token);
+          localStorage.setItem("email", auth.email);
+          localStorage.setItem("user", JSON.stringify(state.user));
+          localStorage.setItem("userProfile", JSON.stringify(userProfile));
         }
       })
       .addCase(registerUser.rejected, (state, action) => {
@@ -126,6 +216,6 @@ const authSlice = createSlice({
   },
 });
 
-// ===== Export Actions & Reducer =====
+// ========== Export ==========
 export const { logout, clearError } = authSlice.actions;
 export default authSlice.reducer;
