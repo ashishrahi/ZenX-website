@@ -22,6 +22,7 @@ const Index = () => {
   const {data:slides} = useBanners()
 
   return (
+    
     <div className="min-h-screen bg-background relative flex flex-col gap-10">
 
       {/* Hero Section */}

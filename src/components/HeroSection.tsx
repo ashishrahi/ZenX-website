@@ -43,9 +43,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({ slides }) => {
   };
 
   return (
-    <section className="relative w-full h-[80vh] md:h-screen overflow-hidden group">
+    <section className="relative w-full h-[80vh] md:h-screen overflow-hidden group rounded-lg">
       {/* Custom Arrows */}
-      <button
+      {/* <button
         className="absolute top-1/2 left-4 transform -translate-y-1/2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
         onClick={() => sliderRef.current?.slickPrev()}
       >
@@ -56,7 +56,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ slides }) => {
         onClick={() => sliderRef.current?.slickNext()}
       >
         <ChevronRight className="text-white w-10 h-10" />
-      </button>
+      </button> */}
 
       {/* Main Slider */}
       <Slider ref={sliderRef} {...settings} className="w-full h-full">
@@ -79,22 +79,22 @@ const HeroSection: React.FC<HeroSectionProps> = ({ slides }) => {
 
             {/* Overlay */}
             <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center p-4">
-              <motion.h1
+              {/* <motion.h1
                 className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg"
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
               >
                 {slide.title}
-              </motion.h1>
-              <motion.p
+              </motion.h1> */}
+              {/* <motion.p
                 className="text-lg md:text-xl text-gray-200 max-w-2xl"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, ease: "easeOut", delay: 0.2 }}
               >
                 {slide.description}
-              </motion.p>
+              </motion.p> */}
             </div>
           </div>
         ))}

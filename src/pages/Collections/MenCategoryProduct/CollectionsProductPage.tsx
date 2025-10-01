@@ -1,5 +1,4 @@
 import AppCategoryProducts from '@/components/AppCategoryProducts'
-import { useCollectionSlug } from '@/hooks/Products/index';
 
 const CollectionsProductPage = () => {
 
