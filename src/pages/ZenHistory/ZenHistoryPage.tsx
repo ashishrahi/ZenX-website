@@ -6,8 +6,8 @@ import React from 'react'
 const ZenHistoryPage = () => {
   return (
     <ShadowContainer>
-        <ZenHistory/>
-        </ShadowContainer>
+      <ZenHistory />
+    </ShadowContainer>
   )
 }
 

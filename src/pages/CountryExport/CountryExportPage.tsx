@@ -3,12 +3,12 @@ import CountryExports from '@/components/CountryExports'
 import ShadowContainer from '@/components/ShadowContainer'
 import { useExports } from "@/hooks/Exports/useExports";
 const CountryExportPage = () => {
-    const {data:exportData} = useExports()
+    // const {data:exportData} = useExports()
     return (
         <Container>
             <ShadowContainer>
                 <CountryExports
-                exportData ={exportData}
+                // exportData ={exportData}
                 />
             </ShadowContainer>
         </Container>

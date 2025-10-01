@@ -46,13 +46,13 @@ const ZenHistory = () => {
   return (
     <main className="max-w-6xl mx-auto px-6">
       {/* Logo Section */}
-      <div className="flex flex-col items-center mb-16">
+      <div className="flex flex-col items-center mb-10">
         <img
           src={ZenxLogo}
           alt="Zenx Logo"
           className="h-60 w-60 mb-6 object-contain rounded-lg "
         />
-        <h1 className="text-5xl font-bold text-center text-gray-800 mb-4">
+        <h1 className="text-5xl font-bold text-center text-gray-800 mb-2">
           Zenx History
         </h1>
         <p className="text-xl text-gray-600 text-center max-w-3xl">
