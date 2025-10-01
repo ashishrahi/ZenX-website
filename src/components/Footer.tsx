@@ -50,7 +50,8 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-background/20 mt-6 pt-4 text-center text-background/60 text-xs">
-          <p>&copy; 2025 Zen-X. All rights reserved. | Made in India</p>
+          <p>&copy; 2025 <a href="https://optiflowtechnologies.com/portfolio" target="_blank" rel="noopener noreferrer">Optiflow Technologies</a>. All rights reserved. | Made in India</p>
+
         </div>
       </div>
     </footer>
