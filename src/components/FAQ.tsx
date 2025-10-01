@@ -7,9 +7,9 @@ import ColoredTitle from "./ColoredTitle";
 const FAQSection = ({faqData}) => {
   return (
     <section className="w-full max-w-6xl mx-auto px-4 py-16 rounded-3xl shadow-sm bg-background">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
         {/* Left Side - Image with Overlay */}
-        <div className="relative w-full h-[420px] rounded-2xl overflow-hidden shadow-lg">
+        <div className="relative w-80 h-80 rounded-2xl overflow-hidden shadow-lg">
           <img
             src={images.fqQ}
             alt="Innerwear FAQ Illustration"

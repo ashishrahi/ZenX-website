@@ -5,6 +5,7 @@ import EmptyState from "./EmptyState";
 import AppProductCard from "./AppProductCard";
 import { AppCategoryProductsProps } from '../types/IproductTypes';
 import { useCollectionSlug } from "@/hooks/Products";
+import LoadingPage from "./LoadingPage";
 
 const AppCategoryProducts = ({
   title,
@@ -70,9 +71,7 @@ const AppCategoryProducts = ({
   if (isLoading) {
     return (
       <div className="container mx-auto px-4 pt-12 pb-16">
-        <div className="text-center">
-          <p className="text-lg">Loading products...</p>
-        </div>
+       <LoadingPage title="Products"/>
       </div>
     );
   }
