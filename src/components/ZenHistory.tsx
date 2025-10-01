@@ -44,7 +44,7 @@ const ZenHistory = () => {
   const scrollNext = () => emblaApi?.scrollNext();
 
   return (
-    <main className="max-w-6xl mx-auto px-6 py-8">
+    <main className="max-w-6xl mx-auto px-6">
       {/* Logo Section */}
       <div className="flex flex-col items-center mb-16">
         <img
