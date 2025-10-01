@@ -4,3 +4,4 @@ export { useProduct } from "./useProduct";
 export { useAddProduct } from "./useAddProduct";
 export { useUpdateProduct } from "./useUpdateProduct";
 export { useDeleteProduct } from "./useDeleteProduct";
+export {useCollectionSlug} from "./useCollections"
