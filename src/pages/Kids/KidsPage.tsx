@@ -12,8 +12,8 @@ const KidsPage = () => {
 
   const { data: subcategoryData } = useSubcategories();
       const { data: productsData } = useProducts();
-        const filteredProducts = productsData?.filter((product) => product.category === "kid")
-        const subcategories = subcategoryData?.filter((subcategory) => subcategory.category === "kid")
+        const filteredProducts = productsData?.filter((product) => product.category === "men")
+        const subcategories = subcategoryData?.filter((subcategory) => subcategory.category === "men")
   return (
     <Container>
       {/* Hero Section */}

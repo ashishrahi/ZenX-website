@@ -1,7 +1,5 @@
 import images from '@/assets/men/images'
 import Container from '@/components/Container'
-import { WomenCategories } from '../../api/women/womenCateogryData'
-import { womenInnerwear } from '../../api/women/womenProductsData'
 import ShadowContainer from '@/components/ShadowContainer'
 import AppHeroBanner from '../../components/AppHeroBanner'
 import AppProductCategoriesCarousel from '@/components/AppProductCategoriesCarousel'
@@ -13,8 +11,8 @@ const WomenPage = () => {
 
    const { data: subcategoryData } = useSubcategories();
     const { data: productsData } = useProducts();
-      const filteredProducts = productsData?.filter((product) => product.category === "women")
-      const subcategories = subcategoryData?.filter((subcategory) => subcategory.category === "women")
+      const filteredProducts = productsData?.filter((product) => product.category === "men")
+      const subcategories = subcategoryData?.filter((subcategory) => subcategory.category === "men")
 
   return (
     <Container>
