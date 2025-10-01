@@ -50,7 +50,7 @@ const ZenHistory = () => {
         <img
           src={ZenxLogo}
           alt="Zenx Logo"
-          className="h-32 w-32 mb-6 object-contain rounded-lg shadow-lg"
+          className="h-60 w-60 mb-6 object-contain rounded-lg "
         />
         <h1 className="text-5xl font-bold text-center text-gray-800 mb-4">
           Zenx History
